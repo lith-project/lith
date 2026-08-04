@@ -9,7 +9,7 @@ created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
 requires: []
-capability:
+subsystem:
   - Core Engine
   - Architecture
 supersedes: []
@@ -195,7 +195,9 @@ A **Capability** (see [docs/glossary.md](../docs/glossary.md)) is a domain-level
 ```yaml
 id: CAP-0001            # stable, never reused
 name: Search            # display name; may change
-status: Implemented     # Proposed | Accepted | Implemented | Stable | Deprecated | Removed
+status: Proposed        # Proposed | Accepted | Implemented | Stable | Deprecated | Removed
+                        # illustrative entry — every catalogued capability
+                        # is currently Proposed, since no RFC is Accepted
 type: Core              # Core | Plugin | Future
 category: Knowledge     # grouping for the catalog
 mvp: true               # in the first shippable surface?
@@ -297,7 +299,7 @@ The architecture must satisfy all three without structural change. Any design th
 | **Local daemon** | Long-lived process beside an editor | Must tolerate concurrent external file mutation and its own restart |
 | **Sidecar process** | Beside an agent runner, possibly containerized | No assumption of a desktop session, GUI, or interactive terminal |
 
-Multi-tenant and multi-workspace deployment is out of scope for M1 but must not be structurally excluded: *Workspace* and *Tenant* exist in the glossary so the boundary is nameable now and populable later.
+Multi-tenant and multi-workspace deployment is out of scope for M1 but must not be structurally excluded: [*Workspace*](../docs/glossary.md#workspace) and [*Tenant*](../docs/glossary.md#tenant) are already defined in the glossary, so the boundary is nameable now and populable later.
 
 ## Alternatives Considered
 
@@ -362,7 +364,7 @@ None. This is the root architectural specification of a project with no implemen
 ### C-8: Canonical terminology
 **Assertion:** Domain terms used normatively in any RFC MUST be defined in [docs/glossary.md](../docs/glossary.md).
 **Verification:** Documentation lint over `rfcs/*.md` extracting capitalized domain terms and asserting glossary presence; failures block the RFC PR.
-**Milestone:** M0
+**Milestone:** M1-A — the lint is built with the first CI pipeline. Until it exists, this assertion is enforced by the *Acceptance Checklist* at review time, which is a documented manual procedure rather than an automated one. It is deliberately **not** M0: M0 ships no executable, and an assertion whose verification cannot run at its own milestone is aspirational.
 
 ## Open Questions
 
@@ -387,11 +389,12 @@ Implementation begins only when RFC-0001 through RFC-0005 are all `Accepted`.
 - [ ] Every `Conformance` assertion has a Verification method and an owning milestone
 - [ ] No assertion depends on unresolved *Open Questions*
 - [ ] *Non-Goals* are explicit
-- [ ] At least one diagram, and every diagram renders as valid Mermaid
-- [ ] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md); new terms added there in the same PR
+- [x] At least one diagram covering the primary data flow, component topology, or state lifecycle — three: system overview, truth/derivation flow, capability lifecycle
+- [x] Every diagram validated as Mermaid by a parser, not by eye — 3/3 valid
+- [x] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md); new terms added there in the same PR — *Capability Registry*, *Capability Catalog*, *Conformance Assertion*, *Transaction Coordinator*, *Plugin Host*
 - [ ] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md); the proposed Principle 9 amendment is stated verbatim above and applied in the accepting PR
-- [ ] Every capability referenced exists in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) with a `CAP-NNNN` identifier
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated
+- [x] Every capability named exists in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) with a `CAP-NNNN` identifier — catalog created in this PR, instantiating the model defined in §3
+- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — *both are corrected in stack 7 ([RFC-0004](0004-indexing.md)), which is where the metadata for all five RFCs lands together; this box cannot be checked from this PR alone*
 - [ ] Reviewed and approved by maintainers
 
 ## References
