@@ -70,7 +70,7 @@ Lith is designed to run in multiple deployment modes:
 
 Full specifications, metadata filters, and lifecycle guidelines are maintained in **[rfcs/index.md](rfcs/index.md)** and **[rfcs/README.md](rfcs/README.md)**.
 
-| RFC # | Title | Status | Milestone | Capabilities | Description |
+| RFC # | Title | Status | Milestone | Subsystems | Description |
 | ----- | ----- | ------ | --------- | ------------ | ----------- |
 | [0001](rfcs/0001-project-vision.md) | [Project Vision & Strategic Architecture](rfcs/0001-project-vision.md) | Draft | M0 | Core Engine, Architecture | Defines the layer model, the state model, the capability model, the plugin boundary, and supported deployment models. |
 | [0002](rfcs/0002-domain-model.md) | [Domain Model & Vault AST](rfcs/0002-domain-model.md) | Draft | M1 | Core Engine, Parsing | Specifies entities, byte-range addressing, total parsing, and deterministic link resolution. |

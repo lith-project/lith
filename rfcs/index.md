@@ -8,7 +8,7 @@ For RFC lifecycle guidelines, metadata specifications, and contribution workflow
 
 ## Index Table
 
-| RFC # | Title | Status | Milestone | Capabilities | Requires |
+| RFC # | Title | Status | Milestone | Subsystems | Requires |
 | ----- | ----- | ------ | --------- | ------------ | -------- |
 | [0001](0001-project-vision.md) | [Project Vision & Strategic Architecture](0001-project-vision.md) | Draft | M0 | Core Engine, Architecture | - |
 | [0002](0002-domain-model.md) | [Domain Model & Vault AST](0002-domain-model.md) | Draft | M1 | Core Engine, Parsing | 0001 |

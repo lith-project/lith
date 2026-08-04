@@ -13,7 +13,7 @@ requires:
   - "0002"
   - "0003"
   - "0005"
-capability:
+subsystem:
   - Graph
   - Indexing
 supersedes: []
@@ -119,6 +119,8 @@ Editors do not emit the events a naïve design expects. Three patterns matter:
 An atomic save misread as a delete removes a live note from the index until the next scan. This is asserted directly ([C-10](#c-10-atomic-save-handling)).
 
 **Debouncing is bounded in both directions.** A quiet period after the last event avoids indexing a half-written file; a maximum delay ensures a continuously written file is still indexed within a stated bound rather than starved indefinitely ([C-5](#c-5-bounded-debounce)).
+
+**The M1 values are a 200 ms quiet period and a 5 s maximum delay.** The quiet period is longer than the gap between the events an editor's atomic save produces, and shorter than a person notices. The maximum matches the cancellation bound of [RFC-0005 §3](0005-job-engine.md), so a shutdown never has to wait on a debounce that outlives it. Both are tuning values expected to move after measurement; what is fixed is that *a* maximum exists.
 
 **Symlinks are never followed outside the vault root.** A symlink pointing outside is recorded and not traversed; a symlink inside resolves to a note already in the vault. Following an outward symlink would index arbitrary filesystem content as vault knowledge (`EC-FS-014`, [C-8](#c-8-symlink-containment)).
 
@@ -274,7 +276,7 @@ None. No implementation exists.
 **Milestone:** M1-D
 
 ### C-5: Bounded debounce
-**Assertion:** Debouncing MUST have a maximum delay. A continuously modified file MUST be indexed within that bound rather than deferred indefinitely.
+**Assertion:** Debouncing MUST have a maximum delay — **5 seconds** for M1 (§2). A continuously modified file MUST be indexed within that bound rather than deferred indefinitely.
 **Verification:** Test writing to a file continuously for longer than the bound and asserting an index update occurs within it.
 **Milestone:** M1-D
 
@@ -306,7 +308,7 @@ None. No implementation exists.
 ## Open Questions
 
 - [ ] Periodic verification interval, and whether it is time-based or change-volume-based. *Any interval satisfies [C-4](#c-4-scan-hashes-every-file); the choice is a latency/CPU trade to make after tier-L measurement.*
-- [ ] Debounce quiet period and maximum delay values. *Tuning; [C-5](#c-5-bounded-debounce) holds for any declared bound.*
+- [x] ~~Debounce quiet period and maximum delay values.~~ **Resolved:** 200 ms quiet period, 5 s maximum, declared in §2 and aligned with the RFC-0005 cancellation bound. [C-5](#c-5-bounded-debounce) now asserts against a stated number.
 - [ ] Is the reverse resolution index persisted, or rebuilt in memory at startup? *Persisted starts faster; in-memory is simpler and provably fresh. Decide with tier-M measurements.*
 - [ ] Do embeds count as edges for orphan detection? *Query-layer semantics; deferred to the M2 Graph capability.*
 
@@ -317,15 +319,16 @@ None. No implementation exists.
 
 ## Acceptance Checklist
 
-- [ ] Every `Conformance` assertion has a Verification method and an owning milestone
-- [ ] No assertion depends on unresolved *Open Questions*
-- [ ] *Non-Goals* are explicit
-- [ ] At least one diagram, and every diagram renders as valid Mermaid
-- [ ] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md); new terms (*Dirty set*, *Reconciliation scan*, *Resolution key*, *Watcher gap*) added there in the same PR
-- [ ] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
-- [ ] Every capability referenced exists in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) with a `CAP-NNNN` identifier
-- [ ] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated, including the added `requires: "0003"` and `"0005"`
+- [x] Every `Conformance` assertion has a Verification method and an owning milestone — all ten
+- [x] No assertion depends on unresolved *Open Questions* — the debounce bound C-5 depended on is now declared in §2; the remaining questions are tuning, storage placement, and query-layer semantics, none of which touch an assertion
+- [x] *Non-Goals* are explicit
+- [x] At least one diagram covering the primary data flow, component topology, or state lifecycle — three: change observation, resolution invalidation, recovery states
+- [x] Every diagram validated as Mermaid by a parser, not by eye — 3/3 valid
+- [x] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md) — *Dirty Set*, *Reconciliation Scan*, *Resolution Key*, *Watcher Gap* are added in stack 3 ([RFC-0001](0001-project-vision.md)), which merges before this PR
+- [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
+- [x] **N/A** — this RFC names no capability. It specifies the indexing subsystem; [CAP-0003 Graph](../docs/reference/capability-catalog.md) names RFC-0004 as owner, but the capability itself is catalogued there rather than defined here
+- [x] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
+- [x] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated, including the added `requires: "0003"` and `"0005"` — corrected in this PR for all five RFCs
 - [ ] Reviewed and approved by maintainers
 
 ## References
