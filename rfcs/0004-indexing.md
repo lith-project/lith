@@ -66,7 +66,7 @@ Incremental indexing is where knowledge engines go quietly wrong. The failure is
 
 Consumes [RFC-0002](0002-domain-model.md) (parse results, unresolved links, resolution order), [RFC-0003](0003-storage-engine.md) (schema, content hashes, canonical dump), and [RFC-0005](0005-job-engine.md) (job scheduling, batching, cancellation, recovery).
 
-This is the last RFC of the M0 gate. Implementation begins only once all five are `Accepted`.
+This is the last of the five RFCs that gate M1 implementation. No implementation begins until all five are `Accepted`.
 
 ## Proposed Design
 
@@ -242,7 +242,7 @@ Watcher gaps, symlink refusals, and resolution ambiguity each emit a diagnostic.
 | Risk | Mitigation |
 | ---- | ---------- |
 | **Always-hashing scan is expensive at scale** | Scan is a low-priority background job; watcher covers interactive latency; cost measured at tier L |
-| **Reverse index itself goes stale** | It is derived state included in the canonical dump; [C-1](#c-1-convergence) catches divergence |
+| **Reverse index itself goes stale** | It is derived state, rebuilt like everything else, and [C-1](#c-1-convergence) catches divergence whether or not it is persisted |
 | **Resolution fan-out storms on a large MOC change** | Work bounded by referrers of affected keys; batches are cancellable and coalescing (`EC-CNT-005`) |
 | **Platform watcher differences** | Watcher is optional by construction ([C-2](#c-2-watcher-independence)); each platform's gap signal maps to a forced reconciliation |
 | **Debounce starves a continuously written file** | Maximum delay bound ([C-5](#c-5-bounded-debounce)) |
@@ -267,7 +267,7 @@ None. No implementation exists.
 
 ### C-3: No stale resolutions
 **Assertion:** After any note is added, removed, renamed, or has its alias set changed, all affected resolutions MUST be recomputed. No resolution outcome may differ from a full rebuild.
-**Verification:** Targeted tests for each fan-out case — broken becoming resolved, resolved becoming ambiguous, alias added and removed — each comparing resolution rows against a full rebuild. Covers `EC-LNK-011` … `EC-LNK-014`.
+**Verification:** Targeted tests for each fan-out case — broken becoming resolved, resolved becoming ambiguous, alias added and removed — each comparing resolution rows against a full rebuild. Covers `EC-LNK-011`, `EC-LNK-013`, and `EC-LNK-014`. `EC-LNK-012` is excluded deliberately: circular links are a traversal concern, and adding or removing a note does not change whether a cycle resolves.
 **Milestone:** M1-D
 
 ### C-4: Scan hashes every file
@@ -309,7 +309,7 @@ None. No implementation exists.
 
 - [ ] Periodic verification interval, and whether it is time-based or change-volume-based. *Any interval satisfies [C-4](#c-4-scan-hashes-every-file); the choice is a latency/CPU trade to make after tier-L measurement.*
 - [x] ~~Debounce quiet period and maximum delay values.~~ **Resolved:** 200 ms quiet period, 5 s maximum, declared in §2 and aligned with the RFC-0005 cancellation bound. [C-5](#c-5-bounded-debounce) now asserts against a stated number.
-- [ ] Is the reverse resolution index persisted, or rebuilt in memory at startup? *Persisted starts faster; in-memory is simpler and provably fresh. Decide with tier-M measurements.*
+- [ ] Is the reverse resolution index persisted, or rebuilt in memory at startup? *Persisted starts faster; in-memory is simpler and provably fresh. Decide with tier-M measurements. If persisted, it is a durable table and enters the canonical dump; if in-memory, it never appears there. [C-1](#c-1-convergence) holds either way, because it compares end state rather than the structures used to reach it.*
 - [ ] Do embeds count as edges for orphan detection? *Query-layer semantics; deferred to the M2 Graph capability.*
 
 ## Future Work
