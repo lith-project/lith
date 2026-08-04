@@ -88,6 +88,8 @@ erDiagram
     NOTE ||--o{ DIAGNOSTIC : reports
     NOTE ||--o| FTS_ROW : indexes
     LINK ||--o| RESOLUTION : resolves
+    RESOLUTION }o--o| NOTE : "may target"
+    RESOLUTION }o--o| ASSET : "may target"
 
     NOTE {
         text note_id PK "canonical NFC vault-relative path"
@@ -131,7 +133,8 @@ erDiagram
         text note_id FK
         int range_start FK
         text outcome "resolved ambiguous broken external"
-        text target_note_id "null unless resolved"
+        text target_kind "note or asset, null unless resolved"
+        text target_id "note_id or asset_id, null unless resolved"
         text candidates "sorted, null unless ambiguous"
     }
     TAG {
@@ -149,8 +152,8 @@ erDiagram
     }
     DIAGNOSTIC {
         text note_id FK
-        int range_start
-        text code "LITH-P-NNNN or LITH-S-NNNN"
+        int range_start PK
+        text code PK "LITH-P-NNNN or LITH-S-NNNN"
         text severity
     }
     FTS_ROW {
@@ -163,6 +166,7 @@ erDiagram
         text content_hash
     }
     META {
+        int singleton PK "always 1, enforced"
         text schema_version
         text vault_fingerprint
         text tokenizer
@@ -175,7 +179,13 @@ erDiagram
 
 This is deliberate and it costs storage. Autoincrement ids are assigned in insertion order, so a full rebuild that walks the filesystem in a different order produces different ids — any dump containing them differs, making determinism unassertable without a renumbering pass. Natural keys make the canonical dump fall out of the schema instead of being reconstructed by tooling. Storage overhead is measured at benchmark tier M before this is revisited.
 
-**Note body text is stored**, because FTS5 needs it and the filesystem is not a table. This duplicates vault content into the store — accepted, and precisely why the store is never backed up and never synced.
+**Note body text is stored**, because FTS5 needs it and the filesystem is not a table. This duplicates vault content into the store — accepted, and precisely why the store is never backed up and never synced. A *contentless* FTS5 table would avoid the duplication, but it cannot return snippets or re-rank without re-reading the source file for every hit, which trades a bounded disk cost for an unbounded I/O cost on the query path. Revisit if store size becomes the binding constraint at benchmark tier L.
+
+**Assets are addressable targets, not orphans.** An `ASSET` row carries path identity exactly as a note does, and has no foreign key to `NOTE` because an asset belongs to the vault rather than to any note. It exists in the schema because a resolution can *target* one: `![[diagram.png]]` resolves to an asset, not a note. `RESOLUTION` therefore carries `target_kind` alongside `target_id`, and a resolution pointing at an asset is `Resolved` rather than `Broken`. Asset *contents* remain uninterpreted, per [RFC-0002 §1](0002-domain-model.md).
+
+**`META` holds exactly one row**, enforced by a constant primary key. It is a singleton by construction rather than by convention, so a second row is a schema violation rather than a silent ambiguity about which row is authoritative.
+
+**Skipped files occupy a `NOTE` row** carrying `skipped_reason` and a content hash, rather than being absent. A skipped file that vanished from the store would be re-examined on every scan, and its skip would not survive into the canonical dump — making two stores with identical vaults compare unequal depending on whether a skip had been observed yet.
 
 ### 3. Durable vs Volatile
 
@@ -198,6 +208,8 @@ Two rules make the classification meaningful:
 The unit of comparison for rebuild determinism.
 
 **Definition.** For each durable table, in a fixed table order: all rows, projected to durable columns only, sorted by the table's natural key, serialized in a fixed line-oriented encoding with an explicit `NULL` representation and no floating-point values. The dump's SHA-256 is the state's logical identity.
+
+**Table order is ASCII-ascending by table name**, and column order within a table is ASCII-ascending by column name. Leaving this to the implementation would let two conformant implementations produce different dumps for identical state, which would silently void [C-1](#c-1-rebuild-determinism) — the assertion the rest of this RFC exists to make checkable. Adding a table therefore never reorders existing ones, and the ordering rule is fixed here rather than pinned in code.
 
 Requirements:
 
@@ -373,7 +385,7 @@ None, and none will ever exist. Schema evolution is expressed as a version bump 
 
 - [x] ~~Does the canonical dump cover FTS index *content*, or only the source text it derives from?~~ **Resolved:** source text only, tokenizer pinned in `meta`. Covering the index would make the dump engine-dependent. Specified in [§4](#4-canonical-dump); [C-1](#c-1-rebuild-determinism) no longer depends on an open question.
 - [ ] Rebuild resumability granularity — per batch, or per directory subtree? *Deferred to RFC-0005, which owns job checkpointing.*
-- [ ] Do skipped files occupy a `note` row carrying a reason, or a separate table? *Affects dump shape only; decide with the first schema draft.*
+- [x] ~~Do skipped files occupy a `note` row carrying a reason, or a separate table?~~ **Resolved:** a `NOTE` row with `skipped_reason`, specified in §2. A separate table would leave skips outside the canonical dump, making two stores over identical vaults compare unequal depending on scan history.
 - [ ] Retention of diagnostics across rebuilds. Currently none — diagnostics are derived like everything else. *Confirm no capability needs diagnostic history.*
 
 ## Future Work
