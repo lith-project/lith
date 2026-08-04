@@ -34,7 +34,7 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 
 ---
 
-## M0: Project Foundation 🚧 *(Current)*
+## M0: Project Foundation ✅ *(Complete)*
 
 **Objective**: Establish governance, the RFC process, engineering workflow, and the architectural foundation that makes implementation almost inevitable.
 
@@ -53,8 +53,9 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 - [x] **RFC-0004** — Indexing & Link Graph Engine — `Accepted`
 - [x] Capability catalog (`docs/reference/capability-catalog.md`), instantiating the model defined by RFC-0001
 - [x] Test vault corpus committed — 96 edge-case files, byte-integrity-verified manifest ([tests/vault/](tests/vault/))
-- [ ] Per-note parse goldens — deliberately deferred; no RFC-0002 reference implementation exists yet to compute them against, and a hand-computed golden would be confidently wrong rather than honestly absent (see [tests/vault/README.md](tests/vault/README.md))
-- [ ] Epics and issues broken out from each accepted RFC
+- [x] Epics and issues broken out for the next milestone to begin — M1-A, tracked in [#14](https://github.com/lith-project/lith/issues/14)
+
+> **On the epic breakout.** This was originally scoped as "epics and issues broken out from *each* accepted RFC". It is deliberately narrowed to *the next milestone to begin*, and repeated at the start of each subsequent milestone. Writing M1-D's issues today means writing them before M1-A, M1-B, and M1-C have taught us anything — they would be rewritten, and in the meantime they would look like decisions rather than guesses. The RFCs are the durable artefact; issues are the disposable plan for the work immediately in front of us.
 
 **Definition of Done**
 1. RFC-0001 through RFC-0005 are all `Accepted`.
@@ -66,7 +67,7 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 
 ---
 
-## M1: Knowledge Engine
+## M1: Knowledge Engine 🚧 *(Current)*
 
 **Objective**: Prove the architectural core — observe a vault, understand it, store it, query it.
 
@@ -89,19 +90,24 @@ No parser. No SQLite. No graph. No MCP.
 3. Restart leaves no orphaned state or lock.
 4. Conformance: [RFC-0001/C-1](rfcs/0001-project-vision.md#c-1-core-semantic-independence) and [C-6](rfcs/0001-project-vision.md#c-6-plugin-absence-safety) pass in CI.
 
-*Candidate epics:* filesystem abstraction · watcher · event queue · debouncer · daemon lifecycle & signals · config loading · structured logging
+**Epics** — tracked in [#14](https://github.com/lith-project/lith/issues/14), in build order:
+
+[#15](https://github.com/lith-project/lith/issues/15) config loading · [#16](https://github.com/lith-project/lith/issues/16) structured logging · [#17](https://github.com/lith-project/lith/issues/17) filesystem path identity · [#18](https://github.com/lith-project/lith/issues/18) filesystem watcher · [#19](https://github.com/lith-project/lith/issues/19) debouncer · [#20](https://github.com/lith-project/lith/issues/20) event queue · [#21](https://github.com/lith-project/lith/issues/21) daemon lifecycle & signals
+
+Path identity is its own epic, ahead of the watcher, and was not in the original candidate list. Building the M0 corpus hit Unicode NFC/NFD corruption twice in one sitting — silently, in tooling — and every note identity in M1-B is built on it.
 
 ### M1-B · Parse & Store
 
 Filesystem → Markdown parser → SQLite metadata. Still no AI.
 
 **Definition of Done**
-1. Every note in the test vault corpus parses to its golden result.
-2. A full index of the corpus completes with no unhandled error.
-3. Deleting all derived state and re-indexing yields logically identical state — [RFC-0001/C-2](rfcs/0001-project-vision.md#c-2-rebuild-determinism).
-4. No component outside the transaction coordinator writes to the vault — [RFC-0001/C-3](rfcs/0001-project-vision.md#c-3-single-write-path).
+1. Per-note parse goldens are generated for the committed corpus and reviewed as a diff — carried over from M0, where they were deliberately not hand-written ([tests/vault/README.md](tests/vault/README.md)).
+2. Every note in the test vault corpus parses to its golden result.
+3. A full index of the corpus completes with no unhandled error.
+4. Deleting all derived state and re-indexing yields logically identical state — [RFC-0001/C-2](rfcs/0001-project-vision.md#c-2-rebuild-determinism).
+5. No component outside the transaction coordinator writes to the vault — [RFC-0001/C-3](rfcs/0001-project-vision.md#c-3-single-write-path).
 
-*Candidate epics:* markdown parser · frontmatter extraction · AST & domain model · block addressing · SQLite schema · transactional persistence · full rebuild
+*Candidate epics:* markdown parser · frontmatter extraction · AST & domain model · block addressing · parse goldens · SQLite schema · transactional persistence · full rebuild
 
 ### M1-C · Query
 
