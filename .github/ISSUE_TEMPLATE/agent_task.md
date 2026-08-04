@@ -32,7 +32,7 @@ assignees: ''
 
 ## Parent
 
-Part of #<epic-issue-number>.
+Part of #[epic-issue-number].
 
 ## Objective
 
@@ -121,4 +121,4 @@ Part of #<epic-issue-number>.
   executing this task does not need to open these.
 -->
 
-- RFC-000X/C-N — <what it constrains>
+- RFC-000X/C-N — [what it constrains]
