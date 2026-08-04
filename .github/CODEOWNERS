@@ -1,0 +1,11 @@
+# Lith CODEOWNERS
+# Rules applied in order of appearance.
+
+# Global default owners for all files
+*       @lith-project/maintainers @GM-Ant
+
+# Core documentation and governance
+PROJECT_PRINCIPLES.md   @lith-project/maintainers @GM-Ant
+ARCHITECTURE.md         @lith-project/maintainers @GM-Ant
+ROADMAP.md              @lith-project/maintainers @GM-Ant
+rfcs/                   @lith-project/maintainers @GM-Ant
