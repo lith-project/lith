@@ -9,7 +9,7 @@ created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
 requires: []
-capability:
+subsystem:
   - Core Engine
   - Architecture
 supersedes: []
