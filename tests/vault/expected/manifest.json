@@ -1,0 +1,777 @@
+{
+  "spec_version": 1,
+  "corpus_id": "lith-corpus-v1",
+  "generated_at": "2026-08-04T00:00:00Z",
+  "corpus_digest": "sha256:10d5f9517f5f506431762a2c88ae6e548dbfa4c2b54a3ed5d75406bd006fa3ff",
+  "file_count": 96,
+  "files": [
+    {
+      "path": "assets/board.canvas",
+      "size_bytes": 33,
+      "digest": "sha256:1ddf1d31190da6e68449f240aefa5e9b87896f675196008d26c8ea7431ec8b4c",
+      "edge_cases": [
+        "EC-FS-009"
+      ]
+    },
+    {
+      "path": "assets/minimal.pdf",
+      "size_bytes": 329,
+      "digest": "sha256:7d5371d3d9d5588cdb4c7851773488380aa8e9644001ad32ba5dad8084272746",
+      "edge_cases": [
+        "EC-FS-009"
+      ]
+    },
+    {
+      "path": "assets/pixel.png",
+      "size_bytes": 67,
+      "digest": "sha256:847ced28183e09ccba876ab2ef8d67999337a7dd356256f046399ffb955ed91c",
+      "edge_cases": [
+        "EC-FS-009"
+      ]
+    },
+    {
+      "path": "assets/readme.txt",
+      "size_bytes": 39,
+      "digest": "sha256:615a46614aedaa5a9e0b55d8f2e864d657725ce5262e2348592f2dc99db49dcf",
+      "edge_cases": [
+        "EC-FS-009"
+      ]
+    },
+    {
+      "path": "assets/view.base",
+      "size_bytes": 74,
+      "digest": "sha256:5acad5701544667cefd9abf7091fc7b7bf9152c430e0f20600242cda5bbdf689",
+      "edge_cases": [
+        "EC-FS-009"
+      ]
+    },
+    {
+      "path": "content/callouts-nested.md",
+      "size_bytes": 205,
+      "digest": "sha256:bbaf4da639b6a29356be01cc541466df527c30f2737a3a1c06f0c829352b0356",
+      "edge_cases": [
+        "EC-CNT-011"
+      ]
+    },
+    {
+      "path": "content/daily-notes/2025-01-06.md",
+      "size_bytes": 69,
+      "digest": "sha256:e3f00e2411356e5c31ce5e9d763cda37a138848a1dbc0ecbdac82715eca29588",
+      "edge_cases": [
+        "EC-CNT-004"
+      ]
+    },
+    {
+      "path": "content/daily-notes/2025-01-07.md",
+      "size_bytes": 76,
+      "digest": "sha256:34a2bf467ffc753214084b523a23af9106f06675868f6e11a583a5911ae19918",
+      "edge_cases": [
+        "EC-CNT-004"
+      ]
+    },
+    {
+      "path": "content/daily-notes/2025-01-08.md",
+      "size_bytes": 75,
+      "digest": "sha256:5f33c3b26ac740a5ef5dbcdc839b14727c7467d5968ee46164dd87020c79938c",
+      "edge_cases": [
+        "EC-CNT-004"
+      ]
+    },
+    {
+      "path": "content/dataview-fields-and-queries.md",
+      "size_bytes": 240,
+      "digest": "sha256:72d071adbe26164cca2da8e510d36c199691597313f58a931390b500ac80285c",
+      "edge_cases": [
+        "EC-CNT-009"
+      ]
+    },
+    {
+      "path": "content/duplicate-concepts-a.md",
+      "size_bytes": 138,
+      "digest": "sha256:f51a36e7f522902d47467b276c7bd7398dd4b21c68602aacb407d7cc23b06812",
+      "edge_cases": [
+        "EC-CNT-006"
+      ]
+    },
+    {
+      "path": "content/duplicate-concepts-b.md",
+      "size_bytes": 145,
+      "digest": "sha256:764d6216156287379ec86ce47ce229c5612901e008cd1d27caacc2c3fbf5f906",
+      "edge_cases": [
+        "EC-CNT-006"
+      ]
+    },
+    {
+      "path": "content/empty-note.md",
+      "size_bytes": 10,
+      "digest": "sha256:23307147cb1c206737290e7668072d32c83ce5e2085281a4351fb3746bd02de3",
+      "edge_cases": [
+        "EC-CNT-003"
+      ]
+    },
+    {
+      "path": "content/entire-body-code-fence.md",
+      "size_bytes": 101,
+      "digest": "sha256:7eedde0030024fc32be82adcde33abe1a7bb24cfbe47c3a1e20ea9708cdae5c9",
+      "edge_cases": [
+        "EC-CNT-016"
+      ]
+    },
+    {
+      "path": "content/fenced-content-isolation.md",
+      "size_bytes": 315,
+      "digest": "sha256:e8cedbdab46775581eb6f770e67bf0b448f3fadb637b36bf3eb1494ab27f4306",
+      "edge_cases": [
+        "EC-CNT-010"
+      ]
+    },
+    {
+      "path": "content/footnotes-and-definitions.md",
+      "size_bytes": 261,
+      "digest": "sha256:c73705dde0855996d60c3795ba000757c8ba3a5de5d2b96d8bd70158fbe86f45",
+      "edge_cases": [
+        "EC-CNT-014"
+      ]
+    },
+    {
+      "path": "content/html-embedded.md",
+      "size_bytes": 245,
+      "digest": "sha256:2c2e9f0b24f11eda9d617f5d1b08fece613f4794eed69f2262d0a8790f4fb998",
+      "edge_cases": [
+        "EC-CNT-015"
+      ]
+    },
+    {
+      "path": "content/large-note-deep-headings.md",
+      "size_bytes": 1000075,
+      "digest": "sha256:7a1f65974987f187656b9b7c27ad50550cddd8131738d3d6a82388841ec2c162",
+      "edge_cases": [
+        "EC-CNT-001"
+      ]
+    },
+    {
+      "path": "content/massive-moc.md",
+      "size_bytes": 12019,
+      "digest": "sha256:50635e684e0287a42e87bddfbcb46e9ff0f6531ac8568feb11a042be5e3b86f7",
+      "edge_cases": [
+        "EC-CNT-005"
+      ]
+    },
+    {
+      "path": "content/nested-lists-10-levels.md",
+      "size_bytes": 263,
+      "digest": "sha256:f02e58d42aaf2272f9e3acdb7b39277bbed738cb5e3cfaaa4acad02f2bbfdfe0",
+      "edge_cases": [
+        "EC-CNT-007"
+      ]
+    },
+    {
+      "path": "content/tables-malformed-alignment.md",
+      "size_bytes": 217,
+      "digest": "sha256:593c23e27e24016f8eed3b17f0765280ca01e136f5c5d64886af2e341689d506",
+      "edge_cases": [
+        "EC-CNT-013"
+      ]
+    },
+    {
+      "path": "content/tasks-all-states.md",
+      "size_bytes": 311,
+      "digest": "sha256:25dd99adc5cd231ad904d4ee335b73bf73764ce9958ae5cf49d6559017683412",
+      "edge_cases": [
+        "EC-CNT-008"
+      ]
+    },
+    {
+      "path": "content/template-unresolved-placeholders.md",
+      "size_bytes": 99,
+      "digest": "sha256:7fe675fdb6f615e2b6301ff8285d46636b60f44f8aa2ed4cfefe3518b205d3fc",
+      "edge_cases": [
+        "EC-CNT-012"
+      ]
+    },
+    {
+      "path": "content/tiny-note.md",
+      "size_bytes": 4,
+      "digest": "sha256:3a2860ece5a4ee0b48b41ee96dd8054cf9bc6f113249ec601478b2582d72ead4",
+      "edge_cases": [
+        "EC-CNT-002"
+      ]
+    },
+    {
+      "path": "encoding/combining-rtl-zwj.md",
+      "size_bytes": 177,
+      "digest": "sha256:23cbcbcff758f547ef456ade3c540d713125e39dffd75cc06b9ed4db7af504c3",
+      "edge_cases": [
+        "EC-ENC-012"
+      ]
+    },
+    {
+      "path": "encoding/crlf-only.md",
+      "size_bytes": 64,
+      "digest": "sha256:728ed6ba99aac1995d92a1d4cbfc7e1ed457363e6be14d4d267b02b176669d84",
+      "edge_cases": [
+        "EC-ENC-002"
+      ]
+    },
+    {
+      "path": "encoding/invalid-utf8-sequence.md",
+      "size_bytes": 71,
+      "digest": "sha256:3251b0722581fa888e4be030e60260a0eae2358f9c3868c494047bd2b5d0fe6e",
+      "edge_cases": [
+        "EC-ENC-007"
+      ]
+    },
+    {
+      "path": "encoding/lf-only.md",
+      "size_bytes": 56,
+      "digest": "sha256:3146ef0a05e8e75573ffc7815e0537cfe959e9e61c7d46995a702c703f028d96",
+      "edge_cases": [
+        "EC-ENC-001"
+      ]
+    },
+    {
+      "path": "encoding/lone-cr.md",
+      "size_bytes": 94,
+      "digest": "sha256:9198fa616aa9af44be227ae8de56e50d8f32f8dc80010e22e044fa9c7ae83e0c",
+      "edge_cases": [
+        "EC-ENC-004"
+      ]
+    },
+    {
+      "path": "encoding/mixed-line-endings.md",
+      "size_bytes": 87,
+      "digest": "sha256:5e1cbda30a7185f90ba9262c77469940d0576351adc9fe8841f02155db150a52",
+      "edge_cases": [
+        "EC-ENC-003"
+      ]
+    },
+    {
+      "path": "encoding/multiple-trailing-newlines.md",
+      "size_bytes": 75,
+      "digest": "sha256:cf7d4c1af19e478082ea875bb1f1f989874ec6f1d3abc18e66629ae1af2c0070",
+      "edge_cases": [
+        "EC-ENC-009"
+      ]
+    },
+    {
+      "path": "encoding/nbsp-and-exotic-whitespace.md",
+      "size_bytes": 123,
+      "digest": "sha256:27ac740f3f2c455a164930bb121fd9aeb0e157523717676f477edf46933049e8",
+      "edge_cases": [
+        "EC-ENC-013"
+      ]
+    },
+    {
+      "path": "encoding/no-trailing-newline.md",
+      "size_bytes": 71,
+      "digest": "sha256:a5301739ca6ef2b5244aee7d86d9a85ac5994e8673d171a6386ac3497c355023",
+      "edge_cases": [
+        "EC-ENC-008"
+      ]
+    },
+    {
+      "path": "encoding/nul-byte.md",
+      "size_bytes": 69,
+      "digest": "sha256:fb09d6a13c84df4719c7855caf49249b8b365c39c272dbb3258afa48e2cb7656",
+      "edge_cases": [
+        "EC-ENC-011"
+      ]
+    },
+    {
+      "path": "encoding/utf16le-bom.md",
+      "size_bytes": 148,
+      "digest": "sha256:28abb4cc1328344365cd740b12d8094a11edd4d337901b55cca7fbd51f824ca3",
+      "edge_cases": [
+        "EC-ENC-006"
+      ]
+    },
+    {
+      "path": "encoding/utf8-bom.md",
+      "size_bytes": 63,
+      "digest": "sha256:d47be39fad147ed939c180a3766e7bad1d9470c4b2acb3b32765adbbbe6e3583",
+      "edge_cases": [
+        "EC-ENC-005"
+      ]
+    },
+    {
+      "path": "encoding/zero-byte.md",
+      "size_bytes": 0,
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "edge_cases": [
+        "EC-ENC-010"
+      ]
+    },
+    {
+      "path": "filesystem/ note-leading-and-trailing-space .md",
+      "size_bytes": 91,
+      "digest": "sha256:8715bce5d01f3a09cdd46a2ff7b99be7d76e3017dddcc01be2237157ed175959",
+      "edge_cases": [
+        "EC-FS-003"
+      ]
+    },
+    {
+      "path": "filesystem/.hidden-note.md",
+      "size_bytes": 43,
+      "digest": "sha256:d0a8f9033cad20714333c42dafe04d2c8e8a29ec2c1cf7aa38a3577df831f07d",
+      "edge_cases": [
+        "EC-FS-010"
+      ]
+    },
+    {
+      "path": "filesystem/.trash/deleted-note.md",
+      "size_bytes": 49,
+      "digest": "sha256:f61f96c66db394adfe8ab6e861a0acec0e67982aee624882e6006f1d43e055a8",
+      "edge_cases": [
+        "EC-FS-010"
+      ]
+    },
+    {
+      "path": "filesystem/UPPERCASE-EXT.MD",
+      "size_bytes": 50,
+      "digest": "sha256:6effdb70c89b9c2aafefc89fdaa23055584bcce53155fa398fa10ffa6151ab98",
+      "edge_cases": [
+        "EC-FS-011"
+      ]
+    },
+    {
+      "path": "filesystem/broken-symlink.md",
+      "size_bytes": 17,
+      "digest": "sha256:e011adeb7671944ba1609b710ef265f4e745be95268ae80249437d927a096462",
+      "edge_cases": [
+        "EC-FS-015"
+      ]
+    },
+    {
+      "path": "filesystem/collide.md",
+      "size_bytes": 76,
+      "digest": "sha256:8b5de99cf14eddd8ae69e8e2621296280a9058665d8ebe334e1fbee0a6874283",
+      "edge_cases": [
+        "EC-FS-012"
+      ]
+    },
+    {
+      "path": "filesystem/collide/inner-under-collide-dir.md",
+      "size_bytes": 97,
+      "digest": "sha256:cf5988d2c9b86a1e1c8d96363187a7c20e2c855d2386f43e56a61e97bb033492",
+      "edge_cases": [
+        "EC-FS-012"
+      ]
+    },
+    {
+      "path": "filesystem/deep/l1/l2/l3/l4/l5/l6/l7/l8/l9/l10/l11/l12/l13/l14/l15/deep-note.md",
+      "size_bytes": 44,
+      "digest": "sha256:dfba81daaec640a53dee5fa7f730d2d815b9df65665bb19e5fdbe2dbd5fc8c39",
+      "edge_cases": [
+        "EC-FS-008"
+      ]
+    },
+    {
+      "path": "filesystem/duplicate-name/dir-a/shared.md",
+      "size_bytes": 64,
+      "digest": "sha256:196f516fbd65c09b80230eee606119bef68c722bb8c5d2a712a24f0a17391d7b",
+      "edge_cases": [
+        "EC-FS-007"
+      ]
+    },
+    {
+      "path": "filesystem/duplicate-name/dir-b/shared.md",
+      "size_bytes": 64,
+      "digest": "sha256:9fe8f048f7f51c40a545d15ebcc9191279f075002f8cef509d7dfe2f1622ee1e",
+      "edge_cases": [
+        "EC-FS-007"
+      ]
+    },
+    {
+      "path": "filesystem/looks-like-a-file.md/inner.md",
+      "size_bytes": 80,
+      "digest": "sha256:6ed14c4af434ea19d1eee94b5af459c943c77fd3236d279e01f5bb2dceb678a9",
+      "edge_cases": [
+        "EC-FS-012"
+      ]
+    },
+    {
+      "path": "filesystem/note with spaces.md",
+      "size_bytes": 46,
+      "digest": "sha256:e8f5f1434ae6fbf0e02125187d76fa2f0a714caaed2a3a7bd777d52e338193b2",
+      "edge_cases": [
+        "EC-FS-001"
+      ]
+    },
+    {
+      "path": "filesystem/note#tag[section]50%done&more.md",
+      "size_bytes": 103,
+      "digest": "sha256:901818219414657428dd1dca4fe5136a8be12bc8a8a61a1ee22d664017ad0d1d",
+      "edge_cases": [
+        "EC-FS-002"
+      ]
+    },
+    {
+      "path": "filesystem/note.markdown",
+      "size_bytes": 55,
+      "digest": "sha256:a0135a39cc35bf8ae777e536716dc6ef08b633063b0b6d8b106d371bebd48dc0",
+      "edge_cases": [
+        "EC-FS-011"
+      ]
+    },
+    {
+      "path": "filesystem/symlink-external.md",
+      "size_bytes": 46,
+      "digest": "sha256:552f12126de87d8f37802c58d54d9e5fcf9c1533617faa2af407c744e4a3cdc7",
+      "edge_cases": [
+        "EC-FS-014"
+      ]
+    },
+    {
+      "path": "filesystem/symlink-internal.md",
+      "size_bytes": 23,
+      "digest": "sha256:5a8bc8b864f86d82b813201b063d48f65e66a736317ec87145be6056335aaae4",
+      "edge_cases": [
+        "EC-FS-013"
+      ]
+    },
+    {
+      "path": "filesystem/unicode-normalization/nfc/café.md",
+      "size_bytes": 402,
+      "digest": "sha256:2481f3b60747d6e7e08ef362b3521826c2710f8c8e751562d18759533559c354",
+      "edge_cases": [
+        "EC-FS-004"
+      ]
+    },
+    {
+      "path": "filesystem/🎉 celebration.md",
+      "size_bytes": 77,
+      "digest": "sha256:d5452f4810b0969a8fcfaf0b9499d252b132a973008321329d351dba3daacd96",
+      "edge_cases": [
+        "EC-FS-006"
+      ]
+    },
+    {
+      "path": "frontmatter/aliases-as-bare-string.md",
+      "size_bytes": 98,
+      "digest": "sha256:1323b21ae7a5c965bda515834cbb2f6aff8c0797457fce76b710789c2634ee06",
+      "edge_cases": [
+        "EC-FM-006"
+      ]
+    },
+    {
+      "path": "frontmatter/aliases-as-list.md",
+      "size_bytes": 107,
+      "digest": "sha256:852d3d5a09c014d5c0a1f373390e8ab8a9430d916841a447e5eb8d8442584832",
+      "edge_cases": [
+        "EC-FM-006"
+      ]
+    },
+    {
+      "path": "frontmatter/dates-variants.md",
+      "size_bytes": 198,
+      "digest": "sha256:ca338d0ec516e067c9aeabcb12be8e1ffe801e7d04ab83f16a119622bc24c989",
+      "edge_cases": [
+        "EC-FM-008"
+      ]
+    },
+    {
+      "path": "frontmatter/delimiter-in-code-block.md",
+      "size_bytes": 271,
+      "digest": "sha256:4063d666d9b6d6e89b756765963107bf655809192a68fc23249cdb96907b2b84",
+      "edge_cases": [
+        "EC-FM-011"
+      ]
+    },
+    {
+      "path": "frontmatter/duplicate-keys.md",
+      "size_bytes": 125,
+      "digest": "sha256:3fe65b3a0f36acb3c4c95e33267fef7808b74c59b588dea66965adfee6ec246f",
+      "edge_cases": [
+        "EC-FM-004"
+      ]
+    },
+    {
+      "path": "frontmatter/empty-frontmatter.md",
+      "size_bytes": 70,
+      "digest": "sha256:0293c16c2a1bf05ed0167048e1e614d32e3051e71c80e85ba87c5fad272566f0",
+      "edge_cases": [
+        "EC-FM-002"
+      ]
+    },
+    {
+      "path": "frontmatter/frontmatter-not-at-byte-zero.md",
+      "size_bytes": 150,
+      "digest": "sha256:e617c5d131d2690ab5621d70b4c3219f2ca5127f131136bb6698fdd3e45a16a5",
+      "edge_cases": [
+        "EC-FM-012"
+      ]
+    },
+    {
+      "path": "frontmatter/large-frontmatter-100-keys.md",
+      "size_bytes": 1972,
+      "digest": "sha256:d4a1d178c66a092881fdc739ff3d932475e9be2105f243920c545da897578561",
+      "edge_cases": [
+        "EC-FM-013"
+      ]
+    },
+    {
+      "path": "frontmatter/malformed-yaml.md",
+      "size_bytes": 148,
+      "digest": "sha256:fa792ab7b0fd2276ccb609591ba0ec6342db068d83fdcca367b4c470683af310",
+      "edge_cases": [
+        "EC-FM-003"
+      ]
+    },
+    {
+      "path": "frontmatter/nested-objects-and-arrays.md",
+      "size_bytes": 251,
+      "digest": "sha256:049be327caa75e0a40b6d20258019e81d873783bd2efd9f801b982c5433f0449",
+      "edge_cases": [
+        "EC-FM-007"
+      ]
+    },
+    {
+      "path": "frontmatter/no-frontmatter.md",
+      "size_bytes": 61,
+      "digest": "sha256:3d667bde5e26ccc890e48d4c4b7f53b31e985b31062e19854580de7b176ecf8a",
+      "edge_cases": [
+        "EC-FM-001"
+      ]
+    },
+    {
+      "path": "frontmatter/null-and-empty-keys.md",
+      "size_bytes": 190,
+      "digest": "sha256:af70458add7ba98a72c4775ece6d89ecd4779f488cc1d047bf20d82d39522f87",
+      "edge_cases": [
+        "EC-FM-014"
+      ]
+    },
+    {
+      "path": "frontmatter/tabs-indentation.md",
+      "size_bytes": 141,
+      "digest": "sha256:9ae09b4513f4a58957a2d7e3e511ff3722bd1f8b8e5566c1c19d5ec752dfdf37",
+      "edge_cases": [
+        "EC-FM-010"
+      ]
+    },
+    {
+      "path": "frontmatter/tags-as-comma-string.md",
+      "size_bytes": 118,
+      "digest": "sha256:4412cc5f5b7425f03c248db571c54221430055d8842c27f25da6aaa95b9d42e8",
+      "edge_cases": [
+        "EC-FM-005"
+      ]
+    },
+    {
+      "path": "frontmatter/tags-as-list.md",
+      "size_bytes": 93,
+      "digest": "sha256:a9b95bfd46b18db041a5efbbfb3948c2b16117aa5d03f6aa652387b1a3a71b26",
+      "edge_cases": [
+        "EC-FM-005"
+      ]
+    },
+    {
+      "path": "frontmatter/tags-as-string.md",
+      "size_bytes": 103,
+      "digest": "sha256:13de357c23cea96885323074db965d093904aea8d7f05c8a9638d132673083ee",
+      "edge_cases": [
+        "EC-FM-005"
+      ]
+    },
+    {
+      "path": "frontmatter/unicode-keys-and-values.md",
+      "size_bytes": 192,
+      "digest": "sha256:c3044bbb3ef6676f4c8ecbec4e12e3f5ffcd9712da967bc14c86b774c990d728",
+      "edge_cases": [
+        "EC-FM-009"
+      ]
+    },
+    {
+      "path": "links/Case-Mismatch-Target.md",
+      "size_bytes": 64,
+      "digest": "sha256:1d59e71dac7e091e41d60946f520e014682476de6abcf6cf07aae664e093d3b8",
+      "edge_cases": [
+        "EC-LNK-014"
+      ]
+    },
+    {
+      "path": "links/aliased-wikilink.md",
+      "size_bytes": 59,
+      "digest": "sha256:c37db7349d0c4a057f5bf5290120f2bb96b237cb1707cd9ef9f5fe04e2005a6e",
+      "edge_cases": [
+        "EC-LNK-002"
+      ]
+    },
+    {
+      "path": "links/ambiguous-link-source.md",
+      "size_bytes": 74,
+      "digest": "sha256:d3278204f486828fb288d7d14fc5207826c0a761b38dd694f6ff4a33d2b4f0de",
+      "edge_cases": [
+        "EC-LNK-013"
+      ]
+    },
+    {
+      "path": "links/ambiguous/dir-a/Target.md",
+      "size_bytes": 61,
+      "digest": "sha256:3e5d58bcc2357d93982af7a00e228bb3145886fe336a2829b2356fdbafb584d5",
+      "edge_cases": [
+        "EC-LNK-013"
+      ]
+    },
+    {
+      "path": "links/ambiguous/dir-b/Target.md",
+      "size_bytes": 61,
+      "digest": "sha256:e1455a4a4a5761800a1abe31a48fea56953ed297991c91481a1c8706bb98996a",
+      "edge_cases": [
+        "EC-LNK-013"
+      ]
+    },
+    {
+      "path": "links/block-link.md",
+      "size_bytes": 45,
+      "digest": "sha256:f33dafc14903e8464ef9c59c758f255fb420d5fdeb2aa11aad1381299d2754b9",
+      "edge_cases": [
+        "EC-LNK-004"
+      ]
+    },
+    {
+      "path": "links/broken-link.md",
+      "size_bytes": 43,
+      "digest": "sha256:92e75235a76d9d17c091008e1e7bf5907a57e156f8b44aaa3fa30f0e3d220f54",
+      "edge_cases": [
+        "EC-LNK-011"
+      ]
+    },
+    {
+      "path": "links/case-mismatch-link.md",
+      "size_bytes": 86,
+      "digest": "sha256:20d0aa8e33e9e1ec7b7afb8e3322cbd026db89f7546979dd6083c6292feea169",
+      "edge_cases": [
+        "EC-LNK-014"
+      ]
+    },
+    {
+      "path": "links/circular-a.md",
+      "size_bytes": 34,
+      "digest": "sha256:018db86be2724e420c15a867def03b4e97e4587e58539d0c457c33445b4bf082",
+      "edge_cases": [
+        "EC-LNK-012"
+      ]
+    },
+    {
+      "path": "links/circular-b.md",
+      "size_bytes": 34,
+      "digest": "sha256:ac850b8feb9023513d5afcef576bf7ab0adb6e89aadb96df3ae6368b4fc9b68a",
+      "edge_cases": [
+        "EC-LNK-012"
+      ]
+    },
+    {
+      "path": "links/embeds.md",
+      "size_bytes": 97,
+      "digest": "sha256:cc24d5bde232c872acf1ad0f75ba2cc6cdcca03a7c6909c85b0095292b244974",
+      "edge_cases": [
+        "EC-LNK-005"
+      ]
+    },
+    {
+      "path": "links/escaped-brackets.md",
+      "size_bytes": 60,
+      "digest": "sha256:27c51c9eef82c259da8ee64a95b8384719e650fb8ce6382dc8f28edca26eea02",
+      "edge_cases": [
+        "EC-LNK-010"
+      ]
+    },
+    {
+      "path": "links/external-links.md",
+      "size_bytes": 188,
+      "digest": "sha256:5a20734f0c53139dd93e3f6cb3de11fe5f07f3cc2aa4900023e468ceb6d2756a",
+      "edge_cases": [
+        "EC-LNK-007"
+      ]
+    },
+    {
+      "path": "links/heading-link.md",
+      "size_bytes": 50,
+      "digest": "sha256:c68e3f018aa7e42cccf60caeda77f363f16a056cea816dd05793672852174529",
+      "edge_cases": [
+        "EC-LNK-003"
+      ]
+    },
+    {
+      "path": "links/link-in-fenced-code.md",
+      "size_bytes": 110,
+      "digest": "sha256:b511c128808617e885c0227d250f4b462b375af797653671eca1d7eac47dea9b",
+      "edge_cases": [
+        "EC-LNK-008"
+      ]
+    },
+    {
+      "path": "links/link-in-frontmatter.md",
+      "size_bytes": 118,
+      "digest": "sha256:ca9c18a188ca3a3d164387e33969af444663df25adf36a5aa77b94c9de2a58fa",
+      "edge_cases": [
+        "EC-LNK-015"
+      ]
+    },
+    {
+      "path": "links/link-in-inline-code.md",
+      "size_bytes": 100,
+      "digest": "sha256:186c23584eca86c25d7d08cf0887f83556b58ebc71b54127fb95cadf0f1dbf39",
+      "edge_cases": [
+        "EC-LNK-009"
+      ]
+    },
+    {
+      "path": "links/markdown-links.md",
+      "size_bytes": 207,
+      "digest": "sha256:fe552a638ceb529b5b1c3860f8c8bf08a7374ce29761888dcc34225edc0a368d",
+      "edge_cases": [
+        "EC-LNK-006"
+      ]
+    },
+    {
+      "path": "links/nested-embed-a.md",
+      "size_bytes": 38,
+      "digest": "sha256:f3c89283759c3af1cdcf4303122996f2b2372b7727da75735083cf1f4a31429e",
+      "edge_cases": [
+        "EC-LNK-017"
+      ]
+    },
+    {
+      "path": "links/nested-embed-b.md",
+      "size_bytes": 38,
+      "digest": "sha256:38a2d4df551c2512e2b5b24dfad7b97b35bd0443e83b14aad3b9f1cea4d9de64",
+      "edge_cases": [
+        "EC-LNK-017"
+      ]
+    },
+    {
+      "path": "links/self-link.md",
+      "size_bytes": 55,
+      "digest": "sha256:e3c9dd37ec0959b90447974954edc7a1ec61a87235d528b634f95c91e8efda18",
+      "edge_cases": [
+        "EC-LNK-012"
+      ]
+    },
+    {
+      "path": "links/simple-wikilink.md",
+      "size_bytes": 40,
+      "digest": "sha256:297b46887ec50aa60750112f675034c84e0a4bc13d353dced5dd94a43f48d2de",
+      "edge_cases": [
+        "EC-LNK-001"
+      ]
+    },
+    {
+      "path": "links/target-with-pin-and-cafe.md",
+      "size_bytes": 83,
+      "digest": "sha256:7398784964f0997cd68246f0fe85f7f26ec11e6f952352160eda76e617e65017",
+      "edge_cases": [
+        "EC-LNK-016"
+      ]
+    },
+    {
+      "path": "links/unicode-emoji-link.md",
+      "size_bytes": 47,
+      "digest": "sha256:ced4f20703cb8188bdf6a039e6440d0da34fe7f74e8c436c293114eb0bde33ee",
+      "edge_cases": [
+        "EC-LNK-016"
+      ]
+    }
+  ]
+}

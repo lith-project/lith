@@ -1,0 +1,12 @@
+# Corpus content is byte-exact test data. Git must never touch it.
+# See docs/testing/test-vault-spec.md section 6.
+#
+# Without this file, git normalizes line endings on checkout regardless
+# of a contributor's core.autocrlf setting, and every EC-ENC-* case
+# silently becomes EC-ENC-001. The corpus would then test nothing while
+# still appearing to pass.
+
+* -text -diff -export-subst
+
+*.png binary
+*.pdf binary

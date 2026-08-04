@@ -1,0 +1,1 @@
+# Lone CR (Classic Mac)This note uses classic Mac line endings.Each line ends with CR only.
