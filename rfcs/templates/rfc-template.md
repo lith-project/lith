@@ -2,13 +2,16 @@
 rfc: "000X"
 title: "RFC Title"
 status: Draft
+milestone: M0
 authors:
   - Author Name <email@example.com>
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
-discussion:
-supersedes:
-superseded_by:
+discussion: https://github.com/lith-project/lith/discussions
+requires: []
+capability: []
+supersedes: []
+superseded_by: []
 ---
 
 # RFC-000X: RFC Title
@@ -63,4 +66,10 @@ List unresolved questions or design trade-offs requiring community feedback:
 What technical capabilities or RFCs naturally follow from this design?
 
 ## References
-Links to related RFCs, specifications, papers, or external documentation.
+
+### Internal
+- [PROJECT_PRINCIPLES.md](../../PROJECT_PRINCIPLES.md)
+- [docs/glossary.md](../../docs/glossary.md)
+
+### External
+- [Specification Link](https://example.com)

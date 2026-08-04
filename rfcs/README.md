@@ -10,10 +10,10 @@ Lith follows an RFC-driven development workflow to ensure that architectural cha
 
 ```
 PROJECT_PRINCIPLES.md
-        │  (Constitution)
+        │  (Immutable Constitution — Amending requires an RFC)
         ▼
 RFCs (architecture)
-        │  (Specifications & Boundaries)
+        │  (Specifications & Subsystem Boundaries)
         ▼
 Issues (work)
         │  (Discrete Actionable Tasks)
@@ -26,6 +26,12 @@ Code
 
 ---
 
+## RFC Index
+
+For a full table of all RFCs filtered by status, milestone, and capability, see **[index.md](index.md)**.
+
+---
+
 ## RFC Lifecycle
 
 ```
@@ -35,7 +41,7 @@ Idea ──> Discussion ──> RFC Draft ──> Pull Request ──> Review �
 1. **Idea & Discussion**: Start a discussion in [GitHub Discussions](https://github.com/lith-project/lith/discussions) under `Architecture` or `RFCs`.
 2. **RFC Draft**: Copy [rfcs/templates/rfc-template.md](templates/rfc-template.md) to `rfcs/NNNN-feature-name.md` using a 4-digit RFC number.
 3. **Pull Request**: Open a PR submitting the RFC draft.
-4. **Review & Iteration**: Community and maintainers review the RFC design.
+4. **Review & Iteration**: Community and maintainers review the RFC design (`status: Review`).
 5. **Accepted**: Maintainers merge the PR and update status to `Accepted`.
 6. **Implementation**: Actionable GitHub Issues are created referencing the accepted RFC.
 
@@ -44,6 +50,7 @@ Idea ──> Discussion ──> RFC Draft ──> Pull Request ──> Review �
 ## When an RFC is Required
 
 An RFC is **mandatory** for:
+* Amending or modifying [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 * New architectural components or subsystems
 * Storage engine, schema, or indexing model changes
 * Public API or protocol modifications (CLI, REST, MCP, SDK)
@@ -61,48 +68,38 @@ An RFC is **NOT required** for:
 
 ---
 
-## RFC Rules & Standards
+## RFC Frontmatter Schema
 
-### 1. Four-Digit Numbering
-RFC numbers are always 4 digits (`0001`, `0002`, `0003`, ..., `0128`). Numbers are sequential and assigned upon draft submission.
-
-### 2. Machine-Readable Frontmatter
-Every RFC file must begin with a YAML frontmatter block:
+Every RFC file must begin with a machine-readable YAML frontmatter block:
 
 ```yaml
 ---
 rfc: "0001"
-title: "Project Vision & Core Architecture"
-status: Draft
+title: "Project Vision & Strategic Architecture"
+status: Draft        # Draft | Review | Accepted | Rejected | Superseded | Deprecated
+milestone: M0        # M0 | M1 | M2 | M3 | M4
 authors:
   - Author Name <email@example.com>
 created: 2026-08-04
 updated: 2026-08-04
-discussion: https://github.com/lith-project/lith/discussions/
-supersedes:
-superseded_by:
+discussion: https://github.com/lith-project/lith/discussions
+requires: []         # List of prerequisite RFC numbers, e.g. ["0001", "0002"]
+capability:          # Domain capabilities affected, e.g. ["Core Engine", "Graph"]
+  - Core Engine
+  - Architecture
+supersedes: []
+superseded_by: []
 ---
 ```
 
-### 3. RFC Status Values
-* **`Draft`**: Proposal under active community review.
+### Status Values
+Architectural status is separate from code implementation state:
+* **`Draft`**: Initial proposal being drafted.
+* **`Review`**: Proposal undergoing formal maintainer and community review.
 * **`Accepted`**: Approved architectural design ready for implementation issues.
-* **`Implemented`**: Feature fully built and released.
-* **`Deprecated`**: Design is obsolete and no longer recommended.
-* **`Superseded`**: Replaced by a newer RFC (link specified in `superseded_by`).
 * **`Rejected`**: Proposal declined after review.
+* **`Superseded`**: Replaced by a newer RFC (specified in `superseded_by`).
+* **`Deprecated`**: Design is obsolete and no longer recommended.
 
 > [!IMPORTANT]
 > **Never delete RFCs.** Even rejected, deprecated, or superseded RFCs remain in the repository as a historical record of architectural decisions and trade-offs.
-
----
-
-## Index of RFCs
-
-| RFC # | Title | Status | Authors |
-| ----- | ----- | ------ | ------- |
-| [0001](0001-project-vision.md) | [Project Vision & Core Architecture](0001-project-vision.md) | Draft | Lith Maintainers |
-| [0002](0002-domain-model.md) | Domain Model & Vault AST | Draft | Pending |
-| [0003](0003-storage-engine.md) | Storage Engine & State Rebuilds | Draft | Pending |
-| [0004](0004-indexing.md) | Indexing & Link Graph Engine | Draft | Pending |
-| [0005](0005-job-engine.md) | Background Worker & Job Engine | Draft | Pending |
