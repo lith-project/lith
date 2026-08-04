@@ -14,16 +14,15 @@ assignees: ''
   from this text alone. That standard is what every section below serves.
 
   Rules for the author:
-    * One package. If the work spans two, it is two tasks.
-    * Name exact file paths and exact exported signatures. Never "add a config
-      loader" — always `internal/core/config/config.go`, `func Load(path string)
-      (*Config, error)`.
+    * One coherent outcome. If two parts can land independently, write two tasks.
+    * Name exact file paths and exact interfaces, signatures, schema, or generated
+      artifacts when they apply. Never leave the implementation surface implicit.
     * Distil constraints into literal rules. "The queue is not durable state" is
       a design principle an agent can satisfy in the wrong way; "the Queue type
       must not have a Save or Load method, and must not import os or database/sql"
       is a rule it can obey.
-    * Required reading should be zero. If an RFC constraint governs this task,
-      restate it here as a rule and link the RFC as provenance, not as homework.
+    * Keep required reading bounded. Restate every governing RFC constraint here
+      as a rule and link the source assertion under Provenance.
     * Verification must be a command that can be pasted into a shell.
 
   Delete these comments before submitting.
@@ -37,25 +36,29 @@ Part of #<epic-issue-number>.
 
 <!-- One sentence. What exists after this task that did not exist before. -->
 
+## Scope
+
+<!-- Enumerate the exact behavior and artifacts this task owns. -->
+
+-
+
 ## Files
 
 <!-- Exact paths. Mark each created or modified. -->
 
 | Path | Action |
 | --- | --- |
-| `internal/core/<pkg>/<file>.go` | create |
-| `internal/core/<pkg>/<file>_test.go` | create |
+| `<exact/path>` | create / modify |
 
-## Public API
+## Interface / Contract
 
 <!--
-  Exact signatures this task must expose. If the task adds no exported symbol,
-  write "None — internal to the package." Do not leave this blank.
+  State exact exported signatures, command behavior, schema, generated artifacts,
+  or other externally observable contract. Write "None" when none applies.
+  Do not leave this blank.
 -->
 
-```go
-// package <pkg>
-```
+-
 
 ## Rules
 
@@ -79,16 +82,32 @@ Part of #<epic-issue-number>.
 <!-- Commands, exactly as they should be run from the repository root. -->
 
 ```bash
-go build ./...
-go test ./internal/core/<pkg>/...
-golangci-lint run ./internal/core/<pkg>/...
+<commands runnable from the repository root>
 ```
 
-## Out of Scope
+## Non-Goals
 
 <!--
   What an agent might reasonably add and must not. This section prevents more
   wasted work than any other; be specific and be generous with it.
+-->
+
+-
+
+## Dependencies
+
+<!--
+  List every blocked_by issue and why it must land first. Write "None" when the
+  task has no dependency. GitHub blocked_by metadata must match this section.
+-->
+
+-
+
+## Principles Check
+
+<!--
+  Name the PROJECT_PRINCIPLES.md tenets affected by this task and state how the
+  contract preserves them. Write "No constitutional impact" only after checking.
 -->
 
 -

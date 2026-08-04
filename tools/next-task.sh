@@ -8,9 +8,9 @@
 #   * it is unclaimed — no assignee, and no agent:wip / agent:blocked label
 #   * it is unblocked — every issue it is blocked_by is closed
 #
-# Ordering comes from the blocked_by graph, not from issue numbers and not from
-# prose in ROADMAP.md. Inside a linear epic that is what leaves exactly one task
-# actionable at a time.
+# Eligibility comes from the blocked_by graph (a task is actionable only when it has
+# no open blockers), not from prose in ROADMAP.md. When multiple tasks are actionable,
+# output is sorted by issue number for stability.
 #
 # Usage:
 #   tools/next-task.sh                # next task in M1-A
@@ -46,11 +46,16 @@ require_command() {
 	command -v "$1" >/dev/null 2>&1 || die "$1 is required but was not found on PATH"
 }
 
+fetch_paginated_array() {
+	gh api --paginate --slurp "$1" | jq -c 'add // []'
+}
+
 # Resolve a milestone title prefix ("M1-A") to its numeric id. Prefix matching
 # keeps the caller from having to type the "·" separator in the full title.
 resolve_milestone() {
 	prefix="$1"
-	milestones_json=$(gh api "repos/$REPO/milestones?state=all&per_page=$PAGE_SIZE") ||
+	milestones_json=$(fetch_paginated_array \
+		"repos/$REPO/milestones?state=all&per_page=$PAGE_SIZE") ||
 		die "failed to list milestones for $REPO"
 	number=$(jq -r --arg p "$prefix" \
 		'map(select(.title | startswith($p))) | .[0].number // empty' <<<"$milestones_json")
@@ -59,7 +64,8 @@ resolve_milestone() {
 }
 
 fetch_open_issues() {
-	gh api "repos/$REPO/issues?milestone=$1&state=open&per_page=$PAGE_SIZE" ||
+	fetch_paginated_array \
+		"repos/$REPO/issues?milestone=$1&state=open&per_page=$PAGE_SIZE" ||
 		die "failed to list open issues for milestone $1 in $REPO"
 }
 
@@ -78,15 +84,18 @@ candidate_numbers() {
 }
 
 open_blockers() {
-	blockers_json=$(gh api "repos/$REPO/issues/$1/dependencies/blocked_by") ||
+	blockers_json=$(fetch_paginated_array \
+		"repos/$REPO/issues/$1/dependencies/blocked_by?per_page=$PAGE_SIZE") ||
 		die "failed to read blocked_by dependencies for issue #$1"
 	jq -r 'map(select(.state == "open") | "#\(.number)") | join(", ")' <<<"$blockers_json"
 }
 
 print_issue() {
 	jq -r --argjson n "$2" '
+		def terminal_safe:
+			gsub("[\u0000-\u001f\u007f-\u009f]"; "");
 		map(select(.number == $n)) | .[0]
-		| "#\(.number)  \(.title)\n        \(.html_url)"
+		| "#\(.number)  \(.title | terminal_safe)\n        \(.html_url | terminal_safe)"
 	' <<<"$1"
 }
 

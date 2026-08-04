@@ -26,7 +26,7 @@ This document outlines mandatory guidelines for AI agents operating within the *
 
 ### Proposing Architectural Changes
 1. Draft an RFC file in `rfcs/NNNN-title.md` using [rfcs/templates/rfc-template.md](rfcs/templates/rfc-template.md).
-2. Ensure the proposal includes machine-readable frontmatter (`status: Draft`, `milestone`, `requires`, `capability`).
+2. Ensure the proposal includes machine-readable frontmatter (`status: Draft`, `milestone`, `requires`, `subsystem`).
 3. Update [rfcs/index.md](rfcs/index.md) and [ARCHITECTURE.md](ARCHITECTURE.md) to reference the new RFC.
 
 ### Code Editing & Refactoring
@@ -43,8 +43,9 @@ never have to parse [ROADMAP.md](ROADMAP.md) to decide what to do next.
 
 ```
 GitHub Milestone   M1-A · Lifecycle
-  Epic tracker     #14           has sub-issues — a tracker, never claim it
-    Epic / task    #15 … #21     leaf work, ordered by blocked_by
+  Epic tracker     #14                  has sub-issues — never claim it
+    Epic trackers  #15 … #21, #23 … #25 have sub-issues — never claim them
+      Task leaves  #27 … #63             claimable, ordered by blocked_by
 ```
 
 | Field | Meaning |

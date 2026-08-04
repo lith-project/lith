@@ -6,7 +6,7 @@ milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
 created: 2026-08-04
-updated: 2026-08-04
+updated: 2026-08-05
 discussion: https://github.com/lith-project/lith/discussions
 requires:
   - "0001"
@@ -112,12 +112,13 @@ graph TD
     CAP --> CORE
 
     ADP -. forbidden .-> CORE
+    PLG -. forbidden .-> CORE
     CORE -. forbidden .-> ADP
     CORE -. forbidden .-> PLG
     CORE -. forbidden transitively .-> DENY
 ```
 
-The asymmetry is the point. Core has exactly one inbound door — `internal/core/capability` — and no outbound edge to anything above it. An adapter that needs something core has today and the registry does not expose has found a missing capability, not a reason to reach past it.
+The asymmetry is the point. Core has exactly one inbound door — `internal/core/capability` — and no outbound edge to anything above it. An adapter or plugin that needs something core has today and the registry does not expose has found a missing capability, not a reason to reach past it.
 
 The Composition Root is exempt from the direction rules because that is precisely its job: something must know about every layer in order to assemble them, and confining that knowledge to `main` is what keeps it out of everywhere else. In exchange, nothing may import a Composition Root.
 
@@ -157,36 +158,48 @@ None. No Go code exists in the repository.
 ## Conformance
 
 ### C-1: Package classification is total
+**State:** Active
 **Assertion:** Every Go package in the main module outside `tools/…` MUST reside under `cmd/`, `internal/core/`, `internal/adapter/`, or `internal/plugin/`. Introducing a fifth class MUST require an amendment to this RFC.
 **Verification:** CI static check enumerating packages via `go list ./...` and failing on any path matching none of the four prefixes.
 **Milestone:** M1-A
 
 ### C-2: Core packages do not import upward
+**State:** Active
 **Assertion:** A Core Package MUST NOT import an Adapter Package, a Plugin Package, or a Composition Root package.
 **Verification:** CI static check over the resolved import graph of `internal/core/...`.
 **Milestone:** M1-A
 
 ### C-3: Adapter purity
+**State:** Active
 **Assertion:** An Adapter Package MUST NOT import any Core Package other than `internal/core/capability`.
-**Verification:** CI static check over the resolved import graph of `internal/adapter/...`. This is the mechanical form of [RFC-0001/C-5](0001-project-vision.md#c-5-interface-adapter-purity).
+**Verification:** CI static check over the direct imports of every package under `internal/adapter/...`; each import whose path begins `github.com/lith-project/lith/internal/core/` MUST equal `github.com/lith-project/lith/internal/core/capability`. This is the mechanical form of [RFC-0001/C-5](0001-project-vision.md#c-5-interface-adapter-purity). Transitive Core Package dependencies reached through the Capability Registry are permitted.
 **Milestone:** M1-C
 
 ### C-4: Core dependency denylist
+**State:** Active
 **Assertion:** The transitive module dependency graph of every Core Package MUST NOT contain any module path matching a prefix in `tools/conformance/core-dependency-denylist.txt`.
 **Verification:** CI static check over `go list -deps ./internal/core/...`. This is the mechanical form of [RFC-0001/C-1](0001-project-vision.md#c-1-core-semantic-independence).
 **Milestone:** M1-A
 
 ### C-5: Composition roots are not importable
+**State:** Active
 **Assertion:** No package MUST import a package under `cmd/`.
 **Verification:** CI static check over the reverse import graph of `cmd/...`.
 **Milestone:** M1-A
 
 ### C-6: The checker detects violations
+**State:** Active
 **Assertion:** The boundary checker MUST exit non-zero when given a tree containing a planted violation of C-1, C-2, C-4, or C-5.
 **Verification:** Test executing the checker against fixture trees under `tools/conformance/testdata/`, one per assertion, each asserting a non-zero exit and a message naming the violated assertion.
 **Milestone:** M1-A
 
 > C-6 exists because a check that never fails is indistinguishable from a check that cannot fail, and the second is worse than no check at all — it converts an unverified boundary into a verified-looking one.
+
+### C-7: Plugin purity
+**State:** Active
+**Assertion:** A Plugin Package MUST NOT import any Core Package other than `internal/core/capability`.
+**Verification:** CI static check over the direct imports of every package under `internal/plugin/...`; each import whose path begins `github.com/lith-project/lith/internal/core/` MUST equal `github.com/lith-project/lith/internal/core/capability`. Transitive Core Package dependencies reached through the Capability Registry are permitted.
+**Milestone:** M2-C
 
 ## Open Questions
 
@@ -200,7 +213,7 @@ None. No Go code exists in the repository.
 
 ## Acceptance Checklist
 
-- [x] Every `Conformance` assertion has a Verification method and an owning milestone
+- [x] Every `Conformance` assertion has a state, a Verification method, and an owning milestone — all seven
 - [x] No assertion depends on unresolved *Open Questions*
 - [x] *Non-Goals* are explicit
 - [x] At least one diagram covering the primary data flow, component topology, or state lifecycle of the proposal. A diagram must carry information the prose does not; a box-and-arrow restatement of a paragraph does not satisfy this item
