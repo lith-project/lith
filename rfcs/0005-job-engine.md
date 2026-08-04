@@ -12,7 +12,7 @@ requires:
   - "0001"
   - "0002"
   - "0003"
-capability:
+subsystem:
   - Jobs
 supersedes: []
 superseded_by: []
@@ -144,6 +144,8 @@ flowchart TD
 ### 3. Cancellation
 
 Every job receives a cancellation context and must observe it at bounded intervals — between batches, between files, between splices. A job that checks cancellation only at completion is not cancellable.
+
+**The M1 cancellation bound is 5 seconds**, applying uniformly to every job kind. A job kind may declare a shorter bound; none may exceed it without an RFC amendment. The number is a starting point chosen to be comfortably longer than a single batch and comfortably shorter than a user's patience during shutdown — it is expected to be tightened per kind once measured, which is a tuning change rather than a design one.
 
 Shutdown cancels all jobs, waits for the bound, and exits. An unresponsive job is a bug reported by the shutdown path, not something the process waits on indefinitely ([C-4](#c-4-bounded-cancellation)).
 
@@ -317,8 +319,8 @@ None. No implementation exists.
 **Milestone:** M1-B
 
 ### C-4: Bounded cancellation
-**Assertion:** Every job MUST observe cancellation and terminate within its declared bound. No job may check cancellation only at completion.
-**Verification:** Test cancelling each job kind mid-execution and asserting termination within the bound, plus a static check that long-running loops carry a cancellation check.
+**Assertion:** Every job MUST observe cancellation and terminate within the declared bound of **5 seconds** (§3), or within a shorter bound it declares for itself. No job may check cancellation only at completion.
+**Verification:** Test cancelling each job kind mid-execution and asserting termination within its bound, plus a static check that long-running loops carry a cancellation check.
 **Milestone:** M1-A
 
 ### C-5: Retry only non-deterministic failures
@@ -359,7 +361,7 @@ None. No implementation exists.
 ## Open Questions
 
 - [ ] Attempt budget and backoff parameters for non-deterministic failures. *Tuning values; [C-5](#c-5-retry-only-non-deterministic-failures) holds for any capped budget.*
-- [ ] Cancellation bound per job kind. *A number must be declared before [C-4](#c-4-bounded-cancellation) can assert one; a single global bound may suffice for M1.*
+- [x] ~~Cancellation bound per job kind.~~ **Resolved:** a single global bound of 5 seconds for M1, declared in §3, with per-kind tightening after measurement. [C-4](#c-4-bounded-cancellation) now asserts against a stated number.
 - [ ] Does `apply_transaction` block indexing of its targets, or race it and rely on the content-hash precondition? *Leaning block-then-index for reviewability; either satisfies the assertions.*
 - [ ] Does the intent journal live beside the store or in a dedicated recovery directory? *Placement only; the vault-isolation rule of [RFC-0003/C-6](0003-storage-engine.md#c-6-vault-isolation) applies either way.*
 
@@ -370,15 +372,16 @@ None. No implementation exists.
 
 ## Acceptance Checklist
 
-- [ ] Every `Conformance` assertion has a Verification method and an owning milestone
-- [ ] No assertion depends on unresolved *Open Questions*
-- [ ] *Non-Goals* are explicit
-- [ ] At least one diagram, and every diagram renders as valid Mermaid
-- [ ] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md); new terms (*Change proposal*, *Intent journal*, *Identity key*) added there in the same PR
-- [ ] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
-- [ ] Every capability referenced exists in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) with a `CAP-NNNN` identifier
-- [ ] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated, including the added `requires: "0003"`
+- [x] Every `Conformance` assertion has a Verification method and an owning milestone — all eleven
+- [x] No assertion depends on unresolved *Open Questions* — the cancellation bound C-4 depended on is now declared in §3; the remaining questions are tuning or placement and touch no assertion
+- [x] *Non-Goals* are explicit
+- [x] At least one diagram covering the primary data flow, component topology, or state lifecycle — four: job lifecycle, scheduling, proposal validation, transaction journal
+- [x] Every diagram validated as Mermaid by a parser, not by eye — 4/4 valid
+- [x] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md) — *Change Proposal*, *Intent Journal*, *Identity Key* are added in stack 3 ([RFC-0001](0001-project-vision.md)), which merges before this PR
+- [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
+- [x] **N/A** — this RFC names no capability. It specifies the job and transaction subsystem; [CAP-0004 Jobs](../docs/reference/capability-catalog.md) and [CAP-0005 Transactions](../docs/reference/capability-catalog.md) name RFC-0005 as owner, but the capabilities themselves are catalogued there rather than defined here
+- [x] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
+- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated, including the added `requires: "0003"` — *both land in stack 7 ([RFC-0004](0004-indexing.md)); not satisfiable from this PR alone*
 - [ ] Reviewed and approved by maintainers
 
 ## References
