@@ -2,16 +2,25 @@
 rfc: "0005"
 title: "Background Worker & Job Engine"
 status: Draft
+milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
 created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
-supersedes:
-superseded_by:
+requires:
+  - "0001"
+  - "0002"
+capability:
+  - Jobs
+supersedes: []
+superseded_by: []
 ---
 
 # RFC-0005: Background Worker & Job Engine
+
+> [!NOTE]
+> **Placeholder RFC**: Detailed technical specification will be finalized following completion of [RFC-0002: Domain Model](0002-domain-model.md).
 
 ## Summary
 Specifies the non-blocking background job pipeline for vault parsing, graph indexing, cache invalidation, and asynchronous plugin tasks.
@@ -26,28 +35,12 @@ In accordance with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md) (Principle 
 ## Non-Goals
 - Synchronous blocking file processing on client query paths.
 
-## Background
-See [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md).
-
-## Proposed Design
-*To be elaborated during M0 architecture phase.*
-
-## Alternatives Considered
-1. Synchronous single-threaded parsing.
-2. Unbounded goroutine spawns without task queues.
-
-## Risks
-TBD.
-
-## Migration
-None.
-
-## Open Questions
-- [ ] Memory limits for worker queues on large vaults (100k+ notes).
-
-## Future Work
-- Job engine implementation in Go.
-
 ## References
+
+### Internal
 - [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 - [RFC-0001](0001-project-vision.md)
+- [RFC-0002](0002-domain-model.md)
+
+### External
+- [Go Concurrency Patterns](https://go.dev/blog/pipelines)

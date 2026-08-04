@@ -2,13 +2,19 @@
 rfc: "0002"
 title: "Domain Model & Vault AST Representation"
 status: Draft
+milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
 created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
-supersedes:
-superseded_by:
+requires:
+  - "0001"
+capability:
+  - Core Engine
+  - Parsing
+supersedes: []
+superseded_by: []
 ---
 
 # RFC-0002: Domain Model & Vault AST Representation
@@ -31,7 +37,7 @@ Lith requires a consistent, memory-efficient domain model to represent Markdown 
 See [RFC-0001](0001-project-vision.md).
 
 ## Proposed Design
-*To be elaborated during M0 architecture phase.*
+*To be elaborated during M1 architecture phase.*
 
 ## Alternatives Considered
 1. Raw string manipulation.
@@ -50,4 +56,11 @@ None.
 - Implementation in core engine packages.
 
 ## References
+
+### Internal
+- [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 - [RFC-0001](0001-project-vision.md)
+- [docs/glossary.md](../docs/glossary.md)
+
+### External
+- [Obsidian Flavored Markdown Specification](https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown)

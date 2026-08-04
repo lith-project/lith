@@ -2,16 +2,25 @@
 rfc: "0003"
 title: "Storage Engine & State Rebuilds"
 status: Draft
+milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
 created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
-supersedes:
-superseded_by:
+requires:
+  - "0001"
+  - "0002"
+capability:
+  - Storage
+supersedes: []
+superseded_by: []
 ---
 
 # RFC-0003: Storage Engine & State Rebuilds
+
+> [!NOTE]
+> **Placeholder RFC**: Detailed technical specification will be finalized following completion of [RFC-0002: Domain Model](0002-domain-model.md).
 
 ## Summary
 Defines the disposable storage engine architecture, transactional state management, and complete vault re-indexing mechanisms.
@@ -26,28 +35,12 @@ In accordance with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md), SQLite and
 ## Non-Goals
 - Replacing Markdown files as the canonical source of truth.
 
-## Background
-See [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md) (Principle #2: SQLite is Disposable).
-
-## Proposed Design
-*To be elaborated during M0 architecture phase.*
-
-## Alternatives Considered
-1. Persistent database with manual sync.
-2. In-memory only state without local persistence.
-
-## Risks
-TBD.
-
-## Migration
-None.
-
-## Open Questions
-- [ ] Schema versioning and auto-rebuild triggers on version mismatch.
-
-## Future Work
-- Database driver and migration engine.
-
 ## References
+
+### Internal
 - [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 - [RFC-0001](0001-project-vision.md)
+- [RFC-0002](0002-domain-model.md)
+
+### External
+- [SQLite Documentation](https://www.sqlite.org/docs.html)

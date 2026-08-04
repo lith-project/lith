@@ -2,13 +2,18 @@
 rfc: "0001"
 title: "Project Vision & Strategic Architecture"
 status: Draft
+milestone: M0
 authors:
   - Lith Maintainers <maintainers@lith.dev>
 created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
-supersedes:
-superseded_by:
+requires: []
+capability:
+  - Core Engine
+  - Architecture
+supersedes: []
+superseded_by: []
 ---
 
 # RFC-0001: Project Vision & Strategic Architecture
@@ -124,5 +129,12 @@ Not applicable for initial architecture phase.
 
 ## References
 
+### Internal
 - [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
+- [VISION.md](../VISION.md)
 - [ARCHITECTURE.md](../ARCHITECTURE.md)
+- [docs/glossary.md](../docs/glossary.md)
+
+### External
+- [Obsidian Flavored Markdown Specification](https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io/)
