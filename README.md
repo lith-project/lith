@@ -1,5 +1,12 @@
 # Lith
 
+![License](https://img.shields.io/github/license/lith-project/lith)
+![Status](https://img.shields.io/badge/status-architecture_phase-blue)
+![Language](https://img.shields.io/badge/language-Go-00ADD8?logo=go)
+![Architecture](https://img.shields.io/badge/architecture-RFC--driven-orange)
+
+> Markdown is your data. Knowledge is our job.
+
 > Markdown is your data. Knowledge is our job.
 
 Lith is a local-first semantic knowledge engine for Markdown and Obsidian vaults.
