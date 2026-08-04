@@ -46,12 +46,12 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 - [x] Community templates & GitHub Discussions
 - [x] Conformance-assertion requirement + acceptance gate ([rfcs/README.md](rfcs/README.md))
 - [x] [Test vault specification](docs/testing/test-vault-spec.md)
-- [ ] **RFC-0001** — Project Vision & Strategic Architecture *(draft complete, awaiting review)*
-- [ ] **RFC-0002** — Domain Model & Vault AST
-- [ ] **RFC-0003** — Storage Engine & State Rebuilds
-- [ ] **RFC-0005** — Background Worker & Job Engine *(authored before 0004: it owns transaction semantics)*
-- [ ] **RFC-0004** — Indexing & Link Graph Engine
-- [ ] Capability catalog (`docs/reference/capability-catalog.md`), instantiating the model defined by RFC-0001
+- [x] **RFC-0001** — Project Vision & Strategic Architecture — `Accepted`
+- [x] **RFC-0002** — Domain Model & Vault AST — `Accepted`
+- [x] **RFC-0003** — Storage Engine & State Rebuilds — `Accepted`
+- [x] **RFC-0005** — Background Worker & Job Engine — `Accepted` *(authored before 0004: it owns transaction semantics)*
+- [x] **RFC-0004** — Indexing & Link Graph Engine — `Accepted`
+- [x] Capability catalog (`docs/reference/capability-catalog.md`), instantiating the model defined by RFC-0001
 - [ ] Test vault corpus + goldens committed
 - [ ] Epics and issues broken out from each accepted RFC
 

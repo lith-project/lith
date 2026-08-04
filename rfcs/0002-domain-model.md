@@ -1,7 +1,7 @@
 ---
 rfc: "0002"
 title: "Domain Model & Vault AST Representation"
-status: Draft
+status: Accepted
 milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
@@ -407,8 +407,8 @@ None. No implementation exists.
 - [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 - [x] **N/A** — this RFC names no capability. It specifies parsing infrastructure; the `subsystem` frontmatter values are not capabilities. See [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md)
 - [x] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — *both land in stack 7 ([RFC-0004](0004-indexing.md)), where the metadata for all five RFCs is corrected together; not satisfiable from this PR alone*
-- [ ] Reviewed and approved by maintainers
+- [x] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — corrected on `main`
+- [x] Reviewed and approved by maintainers
 
 ## References
 

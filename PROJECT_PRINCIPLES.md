@@ -37,6 +37,11 @@ Interfaces expose rich, domain-specific semantic capabilities (e.g., query conte
 ### 8. Background before Synchronous
 Heavy processing—such as parsing, graph indexing, relation extraction, and background semantic analysis—is performed asynchronously in non-blocking background workers so that user experience and query availability remain responsive.
 
+### 9. The Core is Semantically Independent
+The core engine shall never depend on embeddings, vector databases, or semantic models. These are optional capabilities provided through plugins.
+
+*Adopted by [RFC-0001](rfcs/0001-project-vision.md), accepted 2026-08-04. This is stronger than "embeddings are optional": it forbids the core from acquiring the dependency by accretion, and is mechanically enforced by [RFC-0001/C-1](rfcs/0001-project-vision.md#c-1-core-semantic-independence).*
+
 ---
 
 ## Adherence

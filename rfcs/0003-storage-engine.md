@@ -1,7 +1,7 @@
 ---
 rfc: "0003"
 title: "Storage Engine & State Rebuilds"
-status: Draft
+status: Accepted
 milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
@@ -405,8 +405,8 @@ None, and none will ever exist. Schema evolution is expressed as a version bump 
 - [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 - [x] **N/A** — this RFC names no capability. It specifies the storage subsystem; [CAP-0001 Search](../docs/reference/capability-catalog.md) names RFC-0003 as its owner, but the capability itself is catalogued there rather than defined here
 - [x] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — *both land in stack 7 ([RFC-0004](0004-indexing.md)); not satisfiable from this PR alone*
-- [ ] Reviewed and approved by maintainers
+- [x] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — corrected on `main`
+- [x] Reviewed and approved by maintainers
 
 ## References
 

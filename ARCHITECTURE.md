@@ -72,11 +72,11 @@ Full specifications, metadata filters, and lifecycle guidelines are maintained i
 
 | RFC # | Title | Status | Milestone | Subsystems | Description |
 | ----- | ----- | ------ | --------- | ------------ | ----------- |
-| [0001](rfcs/0001-project-vision.md) | [Project Vision & Strategic Architecture](rfcs/0001-project-vision.md) | Draft | M0 | Core Engine, Architecture | Defines the layer model, the state model, the capability model, the plugin boundary, and supported deployment models. |
-| [0002](rfcs/0002-domain-model.md) | [Domain Model & Vault AST](rfcs/0002-domain-model.md) | Draft | M1 | Core Engine, Parsing | Specifies entities, byte-range addressing, total parsing, and deterministic link resolution. |
-| [0003](rfcs/0003-storage-engine.md) | [Storage Engine & State Rebuilds](rfcs/0003-storage-engine.md) | Draft | M1 | Storage | Specifies the disposable SQLite schema, the canonical dump defining rebuild determinism, and atomic rebuild. No migrations exist. |
-| [0004](rfcs/0004-indexing.md) | [Indexing & Link Graph Engine](rfcs/0004-indexing.md) | Draft | M1 | Graph, Indexing | Specifies change observation, the dirty set, incremental non-local link resolution, and link graph materialization. |
-| [0005](rfcs/0005-job-engine.md) | [Background Worker & Job Engine](rfcs/0005-job-engine.md) | Draft | M1 | Jobs, Transactions | Specifies job lifecycle, scheduling, recovery, and the Transaction Coordinator — the single write path to the vault. |
+| [0001](rfcs/0001-project-vision.md) | [Project Vision & Strategic Architecture](rfcs/0001-project-vision.md) | Accepted | M0 | Core Engine, Architecture | Defines the layer model, the state model, the capability model, the plugin boundary, and supported deployment models. |
+| [0002](rfcs/0002-domain-model.md) | [Domain Model & Vault AST](rfcs/0002-domain-model.md) | Accepted | M1 | Core Engine, Parsing | Specifies entities, byte-range addressing, total parsing, and deterministic link resolution. |
+| [0003](rfcs/0003-storage-engine.md) | [Storage Engine & State Rebuilds](rfcs/0003-storage-engine.md) | Accepted | M1 | Storage | Specifies the disposable SQLite schema, the canonical dump defining rebuild determinism, and atomic rebuild. No migrations exist. |
+| [0004](rfcs/0004-indexing.md) | [Indexing & Link Graph Engine](rfcs/0004-indexing.md) | Accepted | M1 | Graph, Indexing | Specifies change observation, the dirty set, incremental non-local link resolution, and link graph materialization. |
+| [0005](rfcs/0005-job-engine.md) | [Background Worker & Job Engine](rfcs/0005-job-engine.md) | Accepted | M1 | Jobs, Transactions | Specifies job lifecycle, scheduling, recovery, and the Transaction Coordinator — the single write path to the vault. |
 
 > [!NOTE]
 > RFCs are **authored** in dependency order — `0001 → 0002 → 0003 → 0005 → 0004` — because RFC-0004 consumes the transaction semantics defined by RFC-0005. Numbering is stable and never reassigned. See [rfcs/index.md](rfcs/index.md).
