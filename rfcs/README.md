@@ -28,7 +28,7 @@ Code
 
 ## RFC Index
 
-For a full table of all RFCs filtered by status, milestone, and capability, see **[index.md](index.md)**.
+For a full table of all RFCs filtered by status, milestone, and subsystem, see **[index.md](index.md)**.
 
 ---
 
@@ -60,9 +60,11 @@ This exists so implementation review is mechanical rather than a matter of taste
 
 1. Every assertion states an outcome observable by a test, a static/CI check, a benchmark threshold, or a documented manual procedure. Prose that cannot be observed belongs in *Proposed Design*, not in *Conformance*.
 2. Every assertion names a Verification method and an owning milestone.
-3. Assertion identifiers are stable — never renumbered, never reused. Retired assertions remain in place marked `Withdrawn`.
+3. Assertion identifiers are stable — never renumbered, never reused. A retired assertion remains in place with assertion state `Withdrawn`.
+
+   > **Assertion state is not RFC status.** Assertions carry a two-value state, `Active` or `Withdrawn`, deliberately disjoint from the RFC [status values](#status-values) below. An RFC has a *status*; a clause inside it has an *assertion state*. `Deprecated` is not reused here on purpose: deprecation implies something still usable during a migration window, whereas a withdrawn assertion is simply no longer asserted and has no successor semantics.
 4. An assertion depending on an unresolved *Open Question* blocks acceptance.
-5. Implementation issues cite the assertions they satisfy. A PR closing such an issue is reviewed against those assertions first, and against code quality second.
+5. Implementation issues cite the assertions they satisfy. A PR closing such an issue is reviewed against those assertions **and** against the project's normal quality bar. Conformance is checked first, because a change that violates an assertion cannot be rescued by polish — but neither review is optional, and passing conformance is not grounds for skipping the other.
 6. The complete gate is the *Acceptance Checklist* at the end of [templates/rfc-template.md](templates/rfc-template.md); every box must be checked.
 
 ---
@@ -104,13 +106,16 @@ created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
 requires: []         # List of prerequisite RFC numbers, e.g. ["0001", "0002"]
-capability:          # Domain capabilities affected, e.g. ["Core Engine", "Graph"]
+subsystem:           # Engine subsystems this RFC touches, e.g. ["Storage", "Graph"]
   - Core Engine
   - Architecture
 supersedes: []
 superseded_by: []
 ---
 ```
+
+> [!NOTE]
+> **`subsystem` is not a capability list.** It records which parts of the engine an RFC touches — `Storage`, `Graph`, `Parsing` — and is a routing aid for reviewers. *Capabilities* are the public operations catalogued in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) under `CAP-NNNN` identifiers. The two vocabularies are deliberately separate: most RFCs specify infrastructure and expose no capability at all.
 
 ### Status Values
 Architectural status is separate from code implementation state:

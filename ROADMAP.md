@@ -58,7 +58,7 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 **Definition of Done**
 1. RFC-0001 through RFC-0005 are all `Accepted`.
 2. Every conformance assertion across those RFCs has a verification method and an owning milestone.
-3. The capability catalog exists, and every capability names an owning RFC.
+3. The capability catalog exists, and every capability **scheduled for M1** names an owning RFC. Capabilities beyond M1 may be catalogued without one — the catalog is a roadmap, and narrowing it to what is already specified would reduce it to a table of contents.
 4. The test vault corpus is committed with goldens and passes the corpus-integrity check.
 
 > No Go code is written until this milestone is done. That is the point of it.

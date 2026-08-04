@@ -10,7 +10,7 @@ updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
 requires:
   - "0001"
-capability:
+subsystem:
   - Core Engine
   - Parsing
 supersedes: []
@@ -398,15 +398,16 @@ None. No implementation exists.
 
 ## Acceptance Checklist
 
-- [ ] Every `Conformance` assertion has a Verification method and an owning milestone
-- [ ] No assertion depends on unresolved *Open Questions*
-- [ ] *Non-Goals* are explicit
-- [ ] At least one diagram, and every diagram renders as valid Mermaid
-- [ ] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md); new terms (*Asset*, *Diagnostic*, *Opaque block*) added there in the same PR
-- [ ] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
-- [ ] Every capability referenced exists in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) with a `CAP-NNNN` identifier
-- [ ] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated
+- [x] Every `Conformance` assertion has a Verification method and an owning milestone — all ten
+- [x] No assertion depends on unresolved *Open Questions* — each open question below states why it does not block an assertion
+- [x] *Non-Goals* are explicit
+- [x] At least one diagram covering the primary data flow, component topology, or state lifecycle — three: entity model, parse pipeline, link resolution
+- [x] Every diagram validated as Mermaid by a parser, not by eye — 3/3 valid
+- [x] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md) — *Asset*, *Diagnostic*, *Opaque Block* are added in stack 3 ([RFC-0001](0001-project-vision.md)), which merges before this PR; the glossary is a single shared file and per-branch edits would force a rebase of published history
+- [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
+- [x] **N/A** — this RFC names no capability. It specifies parsing infrastructure; the `subsystem` frontmatter values are not capabilities. See [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md)
+- [x] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
+- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — *both land in stack 7 ([RFC-0004](0004-indexing.md)), where the metadata for all five RFCs is corrected together; not satisfiable from this PR alone*
 - [ ] Reviewed and approved by maintainers
 
 ## References
