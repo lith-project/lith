@@ -25,6 +25,16 @@ Every capability has a stable identifier `CAP-NNNN`, assigned once and never reu
 
 **Status** follows the capability lifecycle in [RFC-0001 §3](../../rfcs/0001-project-vision.md): `Proposed → Accepted → Implemented → Stable → Deprecated → Removed`. This is *not* the RFC status enum — an RFC is an architectural decision that reaches a terminal state; a capability is a product feature that keeps moving after that decision.
 
+**Category** is a fixed vocabulary, declared here and extended only by a PR against this file:
+
+| Category | Meaning |
+| -------- | ------- |
+| **Knowledge** | Answers questions about vault content without changing it |
+| **Mutation** | Changes vault content, always transactionally |
+| **Operations** | Concerns the engine's own behaviour rather than the vault's content |
+
+Category is a grouping for readers, not an architectural boundary — nothing in the engine branches on it.
+
 **Every capability below is currently `Proposed`.** No RFC is `Accepted` and no code exists. That will read as repetitive; it is also the honest state of the project today.
 
 ---
