@@ -67,7 +67,7 @@ tests/vault/
 * **Stable ordering:** filenames sort deterministically; no test depends on directory iteration order.
 * **One concern per file.** A file exercising CRLF does not also exercise malformed YAML. Debugging a compound failure costs more than the extra file.
 * **Every file is registered** in `expected/manifest.json` with its edge-case IDs. An unregistered corpus file fails the corpus-integrity check.
-* **Regression files are permanent.** Named for the issue they came from, never deleted, never "cleaned up".
+* **Regression files are permanent.** Never deleted, never "cleaned up". Naming: the **file** is named for the issue it came from (`issue-142-crlf-in-callout.md`); the **edge-case ID** it registers under in the manifest is `EC-REG-142`, matching the issue number. The filename carries human context, the ID carries machine identity — where they appear to conflict, the manifest ID is authoritative.
 
 ---
 
@@ -237,6 +237,7 @@ A CI check MUST verify, after a fresh clone on Linux **and** on Windows, that th
 }
 ```
 
+* Digests in the example above are **illustrative placeholders**. Real values are the SHA-256 of the file's bytes as they exist on disk, hex-encoded, prefixed `sha256:`.
 * `generated_at` is a **fixed synthetic** RFC 3339 UTC value, not the actual generation time. Wall-clock in a golden makes every regeneration a diff.
 * `corpus_digest` is a stable hash over the sorted `(path, digest)` pairs.
 * Every corpus file appears exactly once, with at least one edge-case ID.
@@ -302,11 +303,13 @@ Specified here; implemented in M1. The generator produces vaults that are too la
 
 Fixed seeds, fixed configs — so a number measured today is comparable to one measured next year.
 
-| Tier | Notes | Purpose |
-| ---- | ----- | ------- |
-| **S** | 1,000 | Runs in CI on every PR; regression gate |
-| **M** | 10,000 | Nightly; realistic power-user vault |
-| **L** | 100,000 | Release gate; scale ceiling |
+| Tier | Notes | Seed | Purpose |
+| ---- | ----- | ---- | ------- |
+| **S** | 1,000 | `lith-s-1` | Runs in CI on every PR; regression gate |
+| **M** | 10,000 | `lith-m-1` | Nightly; realistic power-user vault |
+| **L** | 100,000 | `lith-l-1` | Release gate; scale ceiling |
+
+Each tier ships a **named configuration profile** committed alongside the generator, so a result is reproducible from the tier name alone without knowing the full knob set. A profile pins every knob in §8 plus the seed; changing any value in a profile is a new profile name, never an edit to an existing one — otherwise yesterday's numbers silently stop being comparable to today's.
 
 Every tier measures: cold full index · warm incremental index of a single-file change · full rebuild after deleting all derived state · core search latency (p50/p95/p99) · peak RSS.
 
