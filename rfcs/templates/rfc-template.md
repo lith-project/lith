@@ -58,12 +58,47 @@ Identify technical, operational, performance, security, or maintenance risks and
 ## Migration
 Describe how existing systems, configurations, databases, or client applications transition to this design. If none, state "None".
 
+## Conformance
+
+Numbered, independently verifiable assertions defining what it means for an implementation to conform to this RFC. Reviewers check implementations against these assertions, not against prose.
+
+**Rules:**
+* Every assertion has a stable identifier `C-N`, referenced project-wide as `RFC-000X/C-N`.
+* Assertions use RFC 2119 keywords (`MUST`, `MUST NOT`, `SHOULD`, `MAY`).
+* Every assertion states an **observable** outcome. If it cannot be observed by a test, a static check, a benchmark threshold, or a documented manual procedure, it is not an assertion — move it to *Proposed Design*.
+* Identifiers are never renumbered or reused. Retired assertions stay in place marked `Withdrawn`.
+* An RFC **cannot** move to `Accepted` while any assertion lacks a Verification method.
+
+### C-1: Short assertion title
+**Assertion:** Implementations MUST ...
+**Verification:** How conformance is demonstrated (unit test, integration test, property test, static/CI check, benchmark with a stated threshold, or documented manual procedure) and the expected observable outcome.
+**Milestone:** M1-A
+
+### C-2: Short assertion title
+**Assertion:** Implementations MUST NOT ...
+**Verification:** ...
+**Milestone:** M1-B
+
 ## Open Questions
 List unresolved questions or design trade-offs requiring community feedback:
 - [ ] Question 1
 
 ## Future Work
 What technical capabilities or RFCs naturally follow from this design?
+
+## Acceptance Checklist
+
+An RFC is `Accepted` only when every box is checked:
+
+- [ ] Every `Conformance` assertion has a Verification method and an owning milestone
+- [ ] No assertion depends on unresolved *Open Questions*
+- [ ] *Non-Goals* are explicit
+- [ ] At least one diagram, and every diagram renders as valid Mermaid
+- [ ] All domain terms used normatively exist in [docs/glossary.md](../../docs/glossary.md); new terms added there in the same PR
+- [ ] No conflict with [PROJECT_PRINCIPLES.md](../../PROJECT_PRINCIPLES.md); any proposed amendment is stated verbatim in this RFC
+- [ ] Every capability referenced exists in [docs/reference/capability-catalog.md](../../docs/reference/capability-catalog.md) with a `CAP-NNNN` identifier
+- [ ] [rfcs/index.md](../index.md) and [ARCHITECTURE.md](../../ARCHITECTURE.md) rows updated
+- [ ] Reviewed and approved by maintainers
 
 ## References
 

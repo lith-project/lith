@@ -42,8 +42,28 @@ Idea ──> Discussion ──> RFC Draft ──> Pull Request ──> Review �
 2. **RFC Draft**: Copy [rfcs/templates/rfc-template.md](templates/rfc-template.md) to `rfcs/NNNN-feature-name.md` using a 4-digit RFC number.
 3. **Pull Request**: Open a PR submitting the RFC draft.
 4. **Review & Iteration**: Community and maintainers review the RFC design (`status: Review`).
-5. **Accepted**: Maintainers merge the PR and update status to `Accepted`.
-6. **Implementation**: Actionable GitHub Issues are created referencing the accepted RFC.
+5. **Accepted**: Maintainers merge the PR and update status to `Accepted`. Gated by the [Acceptance Gate](#acceptance-gate) below.
+6. **Implementation**: Actionable GitHub Issues are created referencing the accepted RFC and the specific conformance assertions they satisfy.
+
+---
+
+## Acceptance Gate
+
+> [!IMPORTANT]
+> **An RFC cannot move to `Accepted` unless every Conformance assertion is testable.**
+
+Every RFC carries a `Conformance` section: numbered assertions (`C-1`, `C-2`, …) stating observable, verifiable requirements. Assertions are referenced project-wide as `RFC-000X/C-N`.
+
+This exists so implementation review is mechanical rather than a matter of taste. A reviewer does not ask *"does this look right?"* — they ask *"which assertion does this violate?"*. A coding agent can produce compiling, passing code that quietly abandons the intended architecture; conformance assertions are what make that detectable.
+
+**Rules:**
+
+1. Every assertion states an outcome observable by a test, a static/CI check, a benchmark threshold, or a documented manual procedure. Prose that cannot be observed belongs in *Proposed Design*, not in *Conformance*.
+2. Every assertion names a Verification method and an owning milestone.
+3. Assertion identifiers are stable — never renumbered, never reused. Retired assertions remain in place marked `Withdrawn`.
+4. An assertion depending on an unresolved *Open Question* blocks acceptance.
+5. Implementation issues cite the assertions they satisfy. A PR closing such an issue is reviewed against those assertions first, and against code quality second.
+6. The complete gate is the *Acceptance Checklist* at the end of [templates/rfc-template.md](templates/rfc-template.md); every box must be checked.
 
 ---
 
