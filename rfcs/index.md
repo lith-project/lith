@@ -15,6 +15,7 @@ For RFC lifecycle guidelines, metadata specifications, and contribution workflow
 | [0003](0003-storage-engine.md) | [Storage Engine & State Rebuilds](0003-storage-engine.md) | Accepted | M1 | Storage | 0001, 0002 |
 | [0004](0004-indexing.md) | [Indexing & Link Graph Engine](0004-indexing.md) | Accepted | M1 | Graph, Indexing | 0001, 0002, 0003, 0005 |
 | [0005](0005-job-engine.md) | [Background Worker & Job Engine](0005-job-engine.md) | Accepted | M1 | Jobs, Transactions | 0001, 0002, 0003 |
+| [0006](0006-package-layout.md) | [Package Layout & Dependency Boundaries](0006-package-layout.md) | Draft | M1 | Core Engine, Architecture | 0001 |
 
 ---
 
@@ -44,6 +45,7 @@ Implementation begins only when all five are `Accepted`.
 - [RFC-0003: Storage Engine & State Rebuilds](0003-storage-engine.md)
 - [RFC-0004: Indexing & Link Graph Engine](0004-indexing.md)
 - [RFC-0005: Background Worker & Job Engine](0005-job-engine.md)
+- [RFC-0006: Package Layout & Dependency Boundaries](0006-package-layout.md)
 
 ---
 
@@ -51,3 +53,6 @@ Implementation begins only when all five are `Accepted`.
 
 #### Accepted
 - [RFC-0001](0001-project-vision.md), [RFC-0002](0002-domain-model.md), [RFC-0003](0003-storage-engine.md), [RFC-0004](0004-indexing.md), [RFC-0005](0005-job-engine.md)
+
+#### Draft
+- [RFC-0006](0006-package-layout.md)
