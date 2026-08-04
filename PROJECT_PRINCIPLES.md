@@ -4,7 +4,14 @@ This document defines the immutable constitutional principles governing the arch
 
 ---
 
-## The Constitution
+## Constitution & Immutability
+
+> [!IMPORTANT]
+> **Immutability Rule**: This document serves as Lith's constitution. Amending, modifying, or removing any principle defined herein **requires a formal RFC** approved by maintainers.
+
+---
+
+## Core Tenets
 
 ### 1. Markdown is the Source of Truth
 The user's Markdown vault files are the sole canonical source of authority. Lith builds indexes, graphs, and representations *from* Markdown, but never treats secondary indexes or cache stores as authoritative state.
@@ -34,4 +41,4 @@ Heavy processing—such as parsing, graph indexing, relation extraction, and bac
 
 ## Adherence
 
-Any proposed feature, pull request, or RFC that violates any of these principles must be rejected or redesigned to comply with this document.
+Any proposed feature, pull request, or implementation that violates any of these principles must be rejected or redesigned to comply with this document.
