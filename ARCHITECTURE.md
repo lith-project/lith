@@ -2,7 +2,7 @@
 
 This document provides a high-level architectural overview of **Lith** and serves as the official map of accepted and proposed Requests for Comments (RFCs).
 
-Lith is designed around clear separation between architecture and implementation details. For constitutional principles, refer to [PROJECT_PRINCIPLES.md](PROJECT_PRINCIPLES.md).
+For executive vision, see [VISION.md](VISION.md). For constitutional principles, refer to [PROJECT_PRINCIPLES.md](PROJECT_PRINCIPLES.md). For canonical domain terms, see [docs/glossary.md](docs/glossary.md).
 
 ---
 
@@ -17,10 +17,13 @@ It continuously indexes, structures, and exposes vault knowledge through high-le
 ## Engineering Hierarchy
 
 ```
-PROJECT_PRINCIPLES.md  (Constitution)
+VISION.md              (Executive Vision & Scope)
         │
         ▼
-RFCs (architecture)    (rfcs/ directory & GitHub Issues)
+PROJECT_PRINCIPLES.md  (Immutable Constitution — Amending requires an RFC)
+        │
+        ▼
+RFCs (architecture)    (rfcs/ index.md & specifications)
         │
         ▼
 Issues (work)          (Actionable GitHub Issues)
@@ -65,21 +68,22 @@ Lith is designed to run in multiple deployment modes:
 
 ## Index of RFCs
 
-Full specifications and lifecycle guidelines are maintained in the [rfcs/](rfcs/README.md) directory.
+Full specifications, metadata filters, and lifecycle guidelines are maintained in **[rfcs/index.md](rfcs/index.md)** and **[rfcs/README.md](rfcs/README.md)**.
 
-| RFC # | Title | Status | Description |
-| ----- | ----- | ------ | ----------- |
-| [0001](rfcs/0001-project-vision.md) | [Project Vision & Core Architecture](rfcs/0001-project-vision.md) | Draft | Defines project philosophy, domain boundaries, and high-level component model. |
-| [0002](rfcs/0002-domain-model.md) | [Domain Model & Vault AST](rfcs/0002-domain-model.md) | Draft | Specifies notes, blocks, links, and frontmatter AST representations. |
-| [0003](rfcs/0003-storage-engine.md) | [Storage Engine & State Rebuilds](rfcs/0003-storage-engine.md) | Draft | Specifies disposable database schemas and full rebuild mechanisms. |
-| [0004](rfcs/0004-indexing.md) | [Indexing & Link Graph Engine](rfcs/0004-indexing.md) | Draft | Specifies link graph extraction, entity resolution, and graph query primitives. |
-| [0005](rfcs/0005-job-engine.md) | [Background Worker & Job Engine](rfcs/0005-job-engine.md) | Draft | Specifies non-blocking asynchronous job queues and task lifecycle. |
+| RFC # | Title | Status | Milestone | Capabilities | Description |
+| ----- | ----- | ------ | --------- | ------------ | ----------- |
+| [0001](rfcs/0001-project-vision.md) | [Project Vision & Core Architecture](rfcs/0001-project-vision.md) | Draft | M0 | Core Engine, Architecture | Defines project philosophy, domain boundaries, and high-level component model. |
+| [0002](rfcs/0002-domain-model.md) | [Domain Model & Vault AST](rfcs/0002-domain-model.md) | Draft | M1 | Core Engine, Parsing | Specifies notes, blocks, links, and frontmatter AST representations. |
+| [0003](rfcs/0003-storage-engine.md) | [Storage Engine & State Rebuilds](rfcs/0003-storage-engine.md) | Draft | M1 | Storage | Specifies disposable database schemas and full rebuild mechanisms. |
+| [0004](rfcs/0004-indexing.md) | [Indexing & Link Graph Engine](rfcs/0004-indexing.md) | Draft | M1 | Graph, Indexing | Specifies link graph extraction, entity resolution, and graph query primitives. |
+| [0005](rfcs/0005-job-engine.md) | [Background Worker & Job Engine](rfcs/0005-job-engine.md) | Draft | M1 | Jobs | Specifies non-blocking asynchronous job queues and task lifecycle. |
 
 ---
 
-## Sub-Directories
+## Technical Documentation
 
-* `rfcs/`: Specifications, RFC template, and lifecycle documentation (`rfcs/README.md`).
+* `rfcs/`: RFC specifications, index (`rfcs/index.md`), template (`rfcs/templates/rfc-template.md`), and lifecycle instructions.
+* `docs/glossary.md`: Canonical definitions for domain terminology.
 * `docs/architecture/`: Technical design docs and detailed component specifications.
 * `docs/diagrams/`: Architectural diagrams and topology visualizers.
 * `docs/adr/`: Architecture Decision Records tracking specific trade-offs and choices.

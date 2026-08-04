@@ -12,15 +12,16 @@ This document provides context, conventions, and operational rules for AI assist
 
 ## Core Rules & Principles
 
-1. **Constitutional Adherence**: Always respect [PROJECT_PRINCIPLES.md](PROJECT_PRINCIPLES.md).
+1. **Executive Vision & Scope**: Read [VISION.md](VISION.md) to understand project boundaries and intentional non-goals.
+2. **Constitutional Adherence**: Always respect [PROJECT_PRINCIPLES.md](PROJECT_PRINCIPLES.md). Amending principles requires an RFC.
    - Markdown is the canonical source of truth.
    - All SQLite / database indexes are disposable derived state.
    - AI agents never perform raw, unvalidated edits directly on Markdown files.
    - Everything must be transactional.
    - Interfaces (CLI, REST, MCP, SDK) are peers.
    - Vector embeddings are optional plugins, not hardcoded core assumptions.
-2. **RFC-Driven Architectural Changes**: Major architectural additions must be created and discussed as GitHub Issues with the `rfc` label before implementation.
-3. **No Premature Implementation Locking**: Keep architecture and domain models decoupled from specific parser libraries or hardcoded directory layouts until approved via RFC.
+3. **RFC-Driven Architectural Changes**: Major architectural additions must be created and submitted as an RFC under `rfcs/NNNN-title.md` following [rfcs/templates/rfc-template.md](rfcs/templates/rfc-template.md).
+4. **Canonical Glossary**: Consult [docs/glossary.md](docs/glossary.md) for canonical definitions of domain terms (*Vault*, *Workspace*, *Capability*, *Job*, *Block*, etc.).
 
 ---
 
@@ -40,8 +41,10 @@ When Go codebase development begins:
 
 ## Repository Structure
 
-- `docs/`: Technical documentation (`docs/architecture/`, `docs/diagrams/`, `docs/adr/`).
+- `VISION.md`: 5-minute executive vision and non-goals.
 - `PROJECT_PRINCIPLES.md`: Core project constitution.
-- `ARCHITECTURE.md`: High-level map of components and indexed RFC GitHub Issues.
+- `ARCHITECTURE.md`: High-level map of components and accepted RFCs.
+- `docs/glossary.md`: Canonical domain terminology.
+- `rfcs/`: Specifications, index ([rfcs/index.md](rfcs/index.md)), template ([rfcs/templates/rfc-template.md](rfcs/templates/rfc-template.md)), and documentation ([rfcs/README.md](rfcs/README.md)).
 - `ROADMAP.md`: Milestone progress (M0 - M4).
 - `.github/`: Issue templates, PR template, CODEOWNERS.
