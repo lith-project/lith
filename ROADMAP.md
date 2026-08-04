@@ -52,14 +52,15 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 - [x] **RFC-0005** — Background Worker & Job Engine — `Accepted` *(authored before 0004: it owns transaction semantics)*
 - [x] **RFC-0004** — Indexing & Link Graph Engine — `Accepted`
 - [x] Capability catalog (`docs/reference/capability-catalog.md`), instantiating the model defined by RFC-0001
-- [ ] Test vault corpus + goldens committed
+- [x] Test vault corpus committed — 96 edge-case files, byte-integrity-verified manifest ([tests/vault/](tests/vault/))
+- [ ] Per-note parse goldens — deliberately deferred; no RFC-0002 reference implementation exists yet to compute them against, and a hand-computed golden would be confidently wrong rather than honestly absent (see [tests/vault/README.md](tests/vault/README.md))
 - [ ] Epics and issues broken out from each accepted RFC
 
 **Definition of Done**
 1. RFC-0001 through RFC-0005 are all `Accepted`.
 2. Every conformance assertion across those RFCs has a verification method and an owning milestone.
 3. The capability catalog exists, and every capability **scheduled for M1** names an owning RFC. Capabilities beyond M1 may be catalogued without one — the catalog is a roadmap, and narrowing it to what is already specified would reduce it to a table of contents.
-4. The test vault corpus is committed with goldens and passes the corpus-integrity check.
+4. The test vault corpus is committed and passes the corpus-integrity check. Goldens are an M1-B deliverable, produced against a reference parser rather than by hand — see [tests/vault/README.md](tests/vault/README.md).
 
 > No Go code is written until this milestone is done. That is the point of it.
 
