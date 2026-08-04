@@ -11,7 +11,7 @@ discussion: https://github.com/lith-project/lith/discussions
 requires:
   - "0001"
   - "0002"
-capability:
+subsystem:
   - Storage
 supersedes: []
 superseded_by: []
@@ -205,6 +205,7 @@ Requirements:
 - **No physical artefacts.** No rowids, no page counts, no `sqlite_sequence`, no `PRAGMA` output.
 - **No environment.** No paths outside the vault-relative namespace, no hostname, no timezone-dependent rendering, no locale-dependent collation — collation is byte-wise over NFC-normalized text.
 - **Stable across SQLite versions.** The dump is produced by our projection, not by `.dump`, so an engine upgrade that changes physical layout does not change logical identity.
+- **FTS coverage is source text only.** The dump includes the body text the full-text index derives from; it does **not** include the index's internal structure. Including it would make the dump engine-dependent — the very property the previous rule protects. Tokenizer drift stays detectable because the tokenizer is pinned in `meta`, and changing it is a schema version change and therefore a rebuild ([§8](#8-full-text-index)).
 
 The dump is also the debugging artefact: when a rebuild diverges, the diff names the table, the key, and the column.
 
@@ -370,7 +371,7 @@ None, and none will ever exist. Schema evolution is expressed as a version bump 
 
 ## Open Questions
 
-- [ ] Does the canonical dump cover FTS index *content*, or only the source text it derives from? Covering the index makes tokenizer drift detectable; covering only the source keeps the dump engine-independent. *Leaning source-only, with the tokenizer pinned in `meta`; decide before the first golden is committed.*
+- [x] ~~Does the canonical dump cover FTS index *content*, or only the source text it derives from?~~ **Resolved:** source text only, tokenizer pinned in `meta`. Covering the index would make the dump engine-dependent. Specified in [§4](#4-canonical-dump); [C-1](#c-1-rebuild-determinism) no longer depends on an open question.
 - [ ] Rebuild resumability granularity — per batch, or per directory subtree? *Deferred to RFC-0005, which owns job checkpointing.*
 - [ ] Do skipped files occupy a `note` row carrying a reason, or a separate table? *Affects dump shape only; decide with the first schema draft.*
 - [ ] Retention of diagnostics across rebuilds. Currently none — diagnostics are derived like everything else. *Confirm no capability needs diagnostic history.*
@@ -383,15 +384,16 @@ None, and none will ever exist. Schema evolution is expressed as a version bump 
 
 ## Acceptance Checklist
 
-- [ ] Every `Conformance` assertion has a Verification method and an owning milestone
-- [ ] No assertion depends on unresolved *Open Questions*
-- [ ] *Non-Goals* are explicit
-- [ ] At least one diagram, and every diagram renders as valid Mermaid
-- [ ] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md); new terms (*Canonical dump*, *Durable column*, *Volatile column*, *Vault fingerprint*) added there in the same PR
-- [ ] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
-- [ ] Every capability referenced exists in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) with a `CAP-NNNN` identifier
-- [ ] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated
+- [x] Every `Conformance` assertion has a Verification method and an owning milestone — all ten
+- [x] No assertion depends on unresolved *Open Questions* — the FTS-coverage question that C-1 depended on is now resolved in §4; the remaining questions affect neither an assertion nor a verification
+- [x] *Non-Goals* are explicit
+- [x] At least one diagram covering the primary data flow, component topology, or state lifecycle — three: logical schema, rebuild swap, write path
+- [x] Every diagram validated as Mermaid by a parser, not by eye — 3/3 valid
+- [x] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md) — *Canonical Dump*, *Durable Column*, *Volatile Column*, *Vault Fingerprint* are added in stack 3 ([RFC-0001](0001-project-vision.md)), which merges before this PR
+- [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
+- [x] **N/A** — this RFC names no capability. It specifies the storage subsystem; [CAP-0001 Search](../docs/reference/capability-catalog.md) names RFC-0003 as its owner, but the capability itself is catalogued there rather than defined here
+- [x] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
+- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — *both land in stack 7 ([RFC-0004](0004-indexing.md)); not satisfiable from this PR alone*
 - [ ] Reviewed and approved by maintainers
 
 ## References
