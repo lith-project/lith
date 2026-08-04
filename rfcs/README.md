@@ -28,7 +28,7 @@ Code
 
 ## RFC Index
 
-For a full table of all RFCs filtered by status, milestone, and capability, see **[index.md](index.md)**.
+For a full table of all RFCs filtered by status, milestone, and subsystem, see **[index.md](index.md)**.
 
 ---
 
@@ -42,8 +42,30 @@ Idea ──> Discussion ──> RFC Draft ──> Pull Request ──> Review �
 2. **RFC Draft**: Copy [rfcs/templates/rfc-template.md](templates/rfc-template.md) to `rfcs/NNNN-feature-name.md` using a 4-digit RFC number.
 3. **Pull Request**: Open a PR submitting the RFC draft.
 4. **Review & Iteration**: Community and maintainers review the RFC design (`status: Review`).
-5. **Accepted**: Maintainers merge the PR and update status to `Accepted`.
-6. **Implementation**: Actionable GitHub Issues are created referencing the accepted RFC.
+5. **Accepted**: Maintainers merge the PR and update status to `Accepted`. Gated by the [Acceptance Gate](#acceptance-gate) below.
+6. **Implementation**: Actionable GitHub Issues are created referencing the accepted RFC and the specific conformance assertions they satisfy.
+
+---
+
+## Acceptance Gate
+
+> [!IMPORTANT]
+> **An RFC cannot move to `Accepted` unless every Conformance assertion is testable.**
+
+Every RFC carries a `Conformance` section: numbered assertions (`C-1`, `C-2`, …) stating observable, verifiable requirements. Assertions are referenced project-wide as `RFC-000X/C-N`.
+
+This exists so implementation review is mechanical rather than a matter of taste. A reviewer does not ask *"does this look right?"* — they ask *"which assertion does this violate?"*. A coding agent can produce compiling, passing code that quietly abandons the intended architecture; conformance assertions are what make that detectable.
+
+**Rules:**
+
+1. Every assertion states an outcome observable by a test, a static/CI check, a benchmark threshold, or a documented manual procedure. Prose that cannot be observed belongs in *Proposed Design*, not in *Conformance*.
+2. Every assertion names a Verification method and an owning milestone.
+3. Assertion identifiers are stable — never renumbered, never reused. A retired assertion remains in place with assertion state `Withdrawn`.
+
+   > **Assertion state is not RFC status.** Assertions carry a two-value state, `Active` or `Withdrawn`, deliberately disjoint from the RFC [status values](#status-values) below. An RFC has a *status*; a clause inside it has an *assertion state*. `Deprecated` is not reused here on purpose: deprecation implies something still usable during a migration window, whereas a withdrawn assertion is simply no longer asserted and has no successor semantics.
+4. An assertion depending on an unresolved *Open Question* blocks acceptance.
+5. Implementation issues cite the assertions they satisfy. A PR closing such an issue is reviewed against those assertions **and** against the project's normal quality bar. Conformance is checked first, because a change that violates an assertion cannot be rescued by polish — but neither review is optional, and passing conformance is not grounds for skipping the other.
+6. The complete gate is the *Acceptance Checklist* at the end of [templates/rfc-template.md](templates/rfc-template.md); every box must be checked.
 
 ---
 
@@ -84,13 +106,16 @@ created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
 requires: []         # List of prerequisite RFC numbers, e.g. ["0001", "0002"]
-capability:          # Domain capabilities affected, e.g. ["Core Engine", "Graph"]
+subsystem:           # Engine subsystems this RFC touches, e.g. ["Storage", "Graph"]
   - Core Engine
   - Architecture
 supersedes: []
 superseded_by: []
 ---
 ```
+
+> [!NOTE]
+> **`subsystem` is not a capability list.** It records which parts of the engine an RFC touches — `Storage`, `Graph`, `Parsing` — and is a routing aid for reviewers. *Capabilities* are the public operations catalogued in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) under `CAP-NNNN` identifiers. The two vocabularies are deliberately separate: most RFCs specify infrastructure and expose no capability at all.
 
 ### Status Values
 Architectural status is separate from code implementation state:
