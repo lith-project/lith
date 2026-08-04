@@ -1,7 +1,7 @@
 ---
 rfc: "0005"
 title: "Background Worker & Job Engine"
-status: Draft
+status: Accepted
 milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
@@ -382,8 +382,8 @@ None. No implementation exists.
 - [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 - [x] **N/A** — this RFC names no capability. It specifies the job and transaction subsystem; [CAP-0004 Jobs](../docs/reference/capability-catalog.md) and [CAP-0005 Transactions](../docs/reference/capability-catalog.md) name RFC-0005 as owner, but the capabilities themselves are catalogued there rather than defined here
 - [x] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated, including the added `requires: "0003"` — *both land in stack 7 ([RFC-0004](0004-indexing.md)); not satisfiable from this PR alone*
-- [ ] Reviewed and approved by maintainers
+- [x] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated, including the added `requires: "0003"` — corrected on `main`
+- [x] Reviewed and approved by maintainers
 
 ## References
 

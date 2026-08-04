@@ -1,7 +1,7 @@
 ---
 rfc: "0001"
 title: "Project Vision & Strategic Architecture"
-status: Draft
+status: Accepted
 milestone: M0
 authors:
   - Lith Maintainers <maintainers@lith.dev>
@@ -386,16 +386,16 @@ Implementation begins only when RFC-0001 through RFC-0005 are all `Accepted`.
 
 ## Acceptance Checklist
 
-- [ ] Every `Conformance` assertion has a Verification method and an owning milestone
-- [ ] No assertion depends on unresolved *Open Questions*
-- [ ] *Non-Goals* are explicit
+- [x] Every `Conformance` assertion has a Verification method and an owning milestone — all eight
+- [x] No assertion depends on unresolved *Open Questions* — each remaining question states why it blocks no assertion
+- [x] *Non-Goals* are explicit
 - [x] At least one diagram covering the primary data flow, component topology, or state lifecycle — three: system overview, truth/derivation flow, capability lifecycle
 - [x] Every diagram validated as Mermaid by a parser, not by eye — 3/3 valid
 - [x] All domain terms used normatively exist in [docs/glossary.md](../docs/glossary.md); new terms added there in the same PR — *Capability Registry*, *Capability Catalog*, *Conformance Assertion*, *Transaction Coordinator*, *Plugin Host*
-- [ ] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md); the proposed Principle 9 amendment is stated verbatim above and applied in the accepting PR
+- [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md); the Principle 9 amendment stated verbatim above is applied in this PR
 - [x] Every capability named exists in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) with a `CAP-NNNN` identifier — catalog created in this PR, instantiating the model defined in §3
-- [ ] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — *both are corrected in stack 7 ([RFC-0004](0004-indexing.md)), which is where the metadata for all five RFCs lands together; this box cannot be checked from this PR alone*
-- [ ] Reviewed and approved by maintainers
+- [x] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated — corrected on `main`
+- [x] Reviewed and approved by maintainers
 
 ## References
 

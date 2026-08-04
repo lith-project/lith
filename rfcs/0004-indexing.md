@@ -1,7 +1,7 @@
 ---
 rfc: "0004"
 title: "Indexing & Link Graph Engine"
-status: Draft
+status: Accepted
 milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
@@ -329,7 +329,7 @@ None. No implementation exists.
 - [x] **N/A** — this RFC names no capability. It specifies the indexing subsystem; [CAP-0003 Graph](../docs/reference/capability-catalog.md) names RFC-0004 as owner, but the capability itself is catalogued there rather than defined here
 - [x] Every `EC-*` case referenced exists in [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
 - [x] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated, including the added `requires: "0003"` and `"0005"` — corrected in this PR for all five RFCs
-- [ ] Reviewed and approved by maintainers
+- [x] Reviewed and approved by maintainers
 
 ## References
 
