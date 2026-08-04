@@ -255,6 +255,7 @@ flowchart LR
 - Validation for **every** file completes before **any** file is written. A transaction that would fail on its last file never touches its first.
 - The journal is not derived state and is not the store; it is a crash-recovery artefact with a lifetime measured in milliseconds.
 - Recovery runs before any indexing on startup, so the engine never indexes a half-applied transaction ([C-9](#c-9-multi-file-recovery)).
+- **Recovery also removes orphaned staged files.** A crash between staging and the journal being marked complete leaves staged versions on disk with no journal entry referring to them. Recovery deletes any staged file not named by a live journal, so the staging area does not accumulate debris across crashes. This is explicit rather than implied: "recovery runs before indexing" says *when*, not *what*.
 - Original content of every target is preserved until the journal is marked complete, which is what makes reversal possible.
 
 Single-file transactions — expected to be the overwhelming majority — skip the journal entirely and rely on rename atomicity.
@@ -367,7 +368,7 @@ None. No implementation exists.
 
 ## Future Work
 
-- **RFC-0004** — Indexing & Link Graph Engine *(next, and last of the M0 gate: produces the dirty set this engine schedules)*
+- **RFC-0004** — Indexing & Link Graph Engine *(next, and the last of the five RFCs that gate M1 implementation: it produces the dirty set this engine schedules)*
 - *Future:* plugin-supplied job kinds behind the plugin boundary; approval and policy layer for agent proposals (M4); multi-workspace scheduling
 
 ## Acceptance Checklist
