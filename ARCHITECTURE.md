@@ -14,6 +14,26 @@ It continuously indexes, structures, and exposes vault knowledge through high-le
 
 ---
 
+## Engineering Hierarchy
+
+```
+PROJECT_PRINCIPLES.md  (Constitution)
+        │
+        ▼
+RFCs (architecture)    (rfcs/ directory & GitHub Issues)
+        │
+        ▼
+Issues (work)          (Actionable GitHub Issues)
+        │
+        ▼
+Pull Requests (impl)   (Code changes & validation)
+        │
+        ▼
+Code
+```
+
+---
+
 ## Architectural Principles
 
 1. **Source of Truth**: Markdown files are canonical; database state is disposable derived context.
@@ -45,16 +65,21 @@ Lith is designed to run in multiple deployment modes:
 
 ## Index of RFCs
 
-RFCs are created, tracked, and discussed directly as [GitHub Issues](https://github.com/lith-project/lith/issues?q=is%3Aissue+label%3Arfc).
+Full specifications and lifecycle guidelines are maintained in the [rfcs/](rfcs/README.md) directory.
 
 | RFC # | Title | Status | Description |
 | ----- | ----- | ------ | ----------- |
-| [#3](https://github.com/lith-project/lith/issues/3) | Project Vision & Core Architecture | Proposed | Defines project philosophy, domain boundaries, and high-level component model. |
+| [0001](rfcs/0001-project-vision.md) | [Project Vision & Core Architecture](rfcs/0001-project-vision.md) | Draft | Defines project philosophy, domain boundaries, and high-level component model. |
+| [0002](rfcs/0002-domain-model.md) | [Domain Model & Vault AST](rfcs/0002-domain-model.md) | Draft | Specifies notes, blocks, links, and frontmatter AST representations. |
+| [0003](rfcs/0003-storage-engine.md) | [Storage Engine & State Rebuilds](rfcs/0003-storage-engine.md) | Draft | Specifies disposable database schemas and full rebuild mechanisms. |
+| [0004](rfcs/0004-indexing.md) | [Indexing & Link Graph Engine](rfcs/0004-indexing.md) | Draft | Specifies link graph extraction, entity resolution, and graph query primitives. |
+| [0005](rfcs/0005-job-engine.md) | [Background Worker & Job Engine](rfcs/0005-job-engine.md) | Draft | Specifies non-blocking asynchronous job queues and task lifecycle. |
 
 ---
 
 ## Sub-Directories
 
+* `rfcs/`: Specifications, RFC template, and lifecycle documentation (`rfcs/README.md`).
 * `docs/architecture/`: Technical design docs and detailed component specifications.
 * `docs/diagrams/`: Architectural diagrams and topology visualizers.
 * `docs/adr/`: Architecture Decision Records tracking specific trade-offs and choices.
