@@ -165,7 +165,6 @@ Line endings are the most fragile axis here; §6 exists solely so these survive 
 | EC-FS-002 | `#`, `[`, `]`, `%`, `&` in filename |
 | EC-FS-003 | Leading/trailing dots and spaces |
 | EC-FS-004 | Unicode filename, NFC-normalized |
-| EC-FS-005 | Unicode filename, NFD-normalized (macOS normalizes these — same logical name, different bytes) |
 | EC-FS-006 | Emoji filename |
 | EC-FS-007 | Same basename in multiple directories |
 | EC-FS-008 | Deeply nested path (15 levels) |
@@ -188,6 +187,7 @@ These cannot exist in a git checkout, or cannot exist identically across platfor
 | EC-FS-X-003 | Read-only file; directory without execute permission | Permissions not portably preserved by git |
 | EC-FS-X-004 | Hard link between two vault paths | Not representable in git |
 | EC-FS-X-005 | Single file >100 MB; 100k-line file | Repository weight |
+| EC-FS-X-006 | Unicode filename, NFD-normalized (was `EC-FS-005`) | `git`'s macOS-auto-detected `core.precomposeunicode` rewrites an NFD path to NFC at commit time, on any host, permanently — verified empirically while authoring the corpus, including at the `git update-index --cacheinfo` plumbing level. See `tests/vault/corpus/filesystem/unicode-normalization/README.md`. |
 | EC-DYN-001 | File modified **during** a scan | Timing, not content |
 | EC-DYN-002 | Identical `mtime` + identical size, different content | Forces content hashing over stat-only change detection |
 | EC-DYN-003 | `mtime` in the future / clock skew | Timing |

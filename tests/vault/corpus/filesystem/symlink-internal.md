@@ -1,0 +1,1 @@
+../content/tiny-note.md
