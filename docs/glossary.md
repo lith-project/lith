@@ -31,6 +31,18 @@ A structural subdivision of a Note demarcated by Markdown heading levels (`#` th
 ### Block
 The smallest addressable structural unit within a Note (e.g., a paragraph, list item, blockquote, code block, or callout). Blocks can be uniquely referenced via Obsidian block identifiers (`^block-id`).
 
+### Frontmatter
+The optional YAML metadata block at the very start of a Note, delimited by `---` lines. Lith imposes no schema on it: unknown keys are preserved verbatim, because the user's vocabulary is the user's. Malformed frontmatter never prevents the body from parsing — it yields empty frontmatter and a Diagnostic.
+
+### Link
+A reference from one Note to a Note, Asset, Section, or Block. Covers wiki links, embeds, and Markdown links. A Link is *parsed* as an unresolved reference; resolving it to a target is a separate, deterministic step that may also yield *ambiguous*, *broken*, or *external*.
+
+### Tag
+A label attached to a Note, originating either in the body (`#tag`) or in Frontmatter. Nested tags are stored whole and their hierarchy derived, not modelled separately. Case is preserved, with a case-folded key kept alongside for lookup.
+
+### Task
+A list item whose content begins with a single-character bracketed state marker. The marker is retained raw, so alternative vocabularies introduced by editor plugins survive without a parser change.
+
 ---
 
 ## System Abstractions
