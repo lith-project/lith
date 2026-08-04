@@ -120,7 +120,7 @@ graph TD
 
 The asymmetry is the point. Core has exactly one inbound door — `internal/core/capability` — and no outbound edge to anything above it. An adapter or plugin that needs something core has today and the registry does not expose has found a missing capability, not a reason to reach past it.
 
-The Composition Root is exempt from the direction rules because that is precisely its job: something must know about every layer in order to assemble them, and confining that knowledge to `main` is what keeps it out of everywhere else. In exchange, nothing may import a Composition Root.
+The Composition Root is exempt from the direction rules because that is precisely its job: something must know about every layer in order to assemble them, and confining that knowledge to `main` is what keeps it out of everywhere else. The CLI root `cmd/lith` is the exception to that exemption: because it presents an interface, C-3 restricts its Core Package imports to the Capability Registry. In exchange, nothing may import a Composition Root.
 
 ### The Denylist
 
@@ -171,8 +171,8 @@ None. No Go code exists in the repository.
 
 ### C-3: Adapter purity
 **State:** Active
-**Assertion:** An Adapter Package MUST NOT import any Core Package other than `internal/core/capability`.
-**Verification:** CI static check over the direct imports of every package under `internal/adapter/...`; each import whose path begins `github.com/lith-project/lith/internal/core/` MUST equal `github.com/lith-project/lith/internal/core/capability`. This is the mechanical form of [RFC-0001/C-5](0001-project-vision.md#c-5-interface-adapter-purity). Transitive Core Package dependencies reached through the Capability Registry are permitted.
+**Assertion:** An Adapter Package and the CLI Composition Root `cmd/lith` MUST NOT import any Core Package other than `internal/core/capability`.
+**Verification:** CI static check over the direct imports of every package under `internal/adapter/...` and `cmd/lith`; each import whose path begins `github.com/lith-project/lith/internal/core/` MUST equal `github.com/lith-project/lith/internal/core/capability`. This is the mechanical form of [RFC-0001/C-5](0001-project-vision.md#c-5-interface-adapter-purity). Transitive Core Package dependencies reached through the Capability Registry are permitted.
 **Milestone:** M1-C
 
 ### C-4: Core dependency denylist

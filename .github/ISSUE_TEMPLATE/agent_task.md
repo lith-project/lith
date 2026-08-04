@@ -14,6 +14,8 @@ assignees: ''
   from this text alone. That standard is what every section below serves.
 
   Rules for the author:
+    * After creation, set GitHub Issue type to `Task`; issue-template frontmatter
+      cannot assign organization issue types.
     * One coherent outcome. If two parts can land independently, write two tasks.
     * Name exact file paths and exact interfaces, signatures, schema, or generated
       artifacts when they apply. Never leave the implementation surface implicit.

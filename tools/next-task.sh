@@ -57,9 +57,14 @@ resolve_milestone() {
 	milestones_json=$(fetch_paginated_array \
 		"repos/$REPO/milestones?state=all&per_page=$PAGE_SIZE") ||
 		die "failed to list milestones for $REPO"
-	number=$(jq -r --arg p "$prefix" \
-		'map(select(.title | startswith($p))) | .[0].number // empty' <<<"$milestones_json")
-	[[ -n "$number" ]] || die "no milestone in $REPO with a title starting with '$prefix'"
+	matches=$(jq -c --arg p "$prefix" \
+		'map(select(.title | startswith($p)))' <<<"$milestones_json")
+	match_count=$(jq -r 'length' <<<"$matches")
+	[[ "$match_count" -gt 0 ]] ||
+		die "no milestone in $REPO with a title starting with '$prefix'"
+	[[ "$match_count" -eq 1 ]] ||
+		die "milestone prefix '$prefix' is ambiguous in $REPO"
+	number=$(jq -r '.[0].number' <<<"$matches")
 	printf '%s\n' "$number"
 }
 
@@ -74,10 +79,11 @@ candidate_numbers() {
 	jq -r --argjson claimed "$CLAIM_LABELS" '
 		def is_pull_request: has("pull_request");
 		def is_tracker:      (.sub_issues_summary.total // 0) > 0;
+		def is_task:         .type.name == "Task";
 		def is_claimed:      (.assignees | length) > 0
 		                     or ([.labels[].name] | any(IN($claimed[])));
 
-		map(select(is_pull_request or is_tracker or is_claimed | not))
+		map(select(is_task and ((is_pull_request or is_tracker or is_claimed) | not)))
 		| sort_by(.number)
 		| .[].number
 	' <<<"$1"
