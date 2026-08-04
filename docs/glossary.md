@@ -78,7 +78,7 @@ The component loading optional capabilities and managing their lifecycle. It is 
 Defined by [RFC-0006](../rfcs/0006-package-layout.md). Class membership is determined by a package's path prefix and by nothing else, so that every boundary rule is a mechanical check rather than a judgement.
 
 ### Composition Root
-A package under `cmd/…` whose sole job is to wire concrete implementations together and run them. It may import any other class, and no package may import it — confining cross-layer knowledge to `main` is what keeps it out of everywhere else.
+A package under `cmd/…` whose sole job is to wire concrete implementations together and run them. It may import any other class, and no package may import it — confining cross-layer knowledge to `main` is what keeps it out of everywhere else. The CLI root `cmd/lith` is the exception: because it presents an interface, it may import no Core Package other than the Capability Registry, as required by [RFC-0006/C-3](../rfcs/0006-package-layout.md#c-3-adapter-purity).
 
 ### Core Package
 A package under `internal/core/…`. The engine itself, semantically independent per [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md) §9: it never imports an Adapter Package, a Plugin Package, or a Composition Root, and its transitive module graph never reaches a denylisted dependency.
