@@ -9,7 +9,7 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 discussion: https://github.com/lith-project/lith/discussions
 requires: []
-capability: []
+subsystem: []
 supersedes: []
 superseded_by: []
 ---

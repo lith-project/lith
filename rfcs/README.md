@@ -28,7 +28,7 @@ Code
 
 ## RFC Index
 
-For a full table of all RFCs filtered by status, milestone, and capability, see **[index.md](index.md)**.
+For a full table of all RFCs filtered by status, milestone, and subsystem, see **[index.md](index.md)**.
 
 ---
 
@@ -106,13 +106,16 @@ created: 2026-08-04
 updated: 2026-08-04
 discussion: https://github.com/lith-project/lith/discussions
 requires: []         # List of prerequisite RFC numbers, e.g. ["0001", "0002"]
-capability:          # Domain capabilities affected, e.g. ["Core Engine", "Graph"]
+subsystem:           # Engine subsystems this RFC touches, e.g. ["Storage", "Graph"]
   - Core Engine
   - Architecture
 supersedes: []
 superseded_by: []
 ---
 ```
+
+> [!NOTE]
+> **`subsystem` is not a capability list.** It records which parts of the engine an RFC touches — `Storage`, `Graph`, `Parsing` — and is a routing aid for reviewers. *Capabilities* are the public operations catalogued in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) under `CAP-NNNN` identifiers. The two vocabularies are deliberately separate: most RFCs specify infrastructure and expose no capability at all.
 
 ### Status Values
 Architectural status is separate from code implementation state:
