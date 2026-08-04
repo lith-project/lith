@@ -2,6 +2,7 @@
 
 ![License](https://img.shields.io/github/license/lith-project/lith)
 ![Status](https://img.shields.io/badge/status-architecture_phase-blue)
+![Stage](https://img.shields.io/badge/stage-pre--alpha-red)
 ![Language](https://img.shields.io/badge/language-Go-00ADD8?logo=go)
 ![Architecture](https://img.shields.io/badge/architecture-RFC--driven-orange)
 
