@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
+
 	"github.com/lith-project/lith/internal/core/logging"
 	"github.com/lith-project/lith/internal/core/vaultpath"
 )

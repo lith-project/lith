@@ -20,7 +20,7 @@ func TestWatcherCreateFile(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	go w.Start(ctx)
+	go func() { _ = w.Start(ctx) }()
 
 	// Give the watcher time to start
 	time.Sleep(50 * time.Millisecond)
@@ -53,7 +53,7 @@ func TestWatcherWriteFile(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	go w.Start(ctx)
+	go func() { _ = w.Start(ctx) }()
 
 	time.Sleep(50 * time.Millisecond)
 
@@ -94,7 +94,7 @@ func TestWatcherRemoveFile(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	go w.Start(ctx)
+	go func() { _ = w.Start(ctx) }()
 
 	time.Sleep(50 * time.Millisecond)
 
