@@ -1,0 +1,594 @@
+# Terminology allowlist — terms that look capitalized but are NOT Lith domain terms.
+# One entry per line. # comments. Every entry MUST have an adjacent comment explaining
+# why it is not a domain term.
+
+# --- Project/product names ---
+GitHub          # code hosting platform, not a Lith concept
+Obsidian        # editor that hosts Lith vaults, not a Lith concept
+POSIX           # OS standard, not a Lith concept
+Mermaid         # diagram tool, not a Lith concept
+Dataview        # Obsidian plugin, not a Lith concept
+Lith            # project name, not a domain term
+
+# --- Language/framework names ---
+Go              # programming language
+Markdown        # file format, not a Lith-specific term
+YAML            # data format
+JSON            # data format
+
+# --- External tool names ---
+MCP             # Model Context Protocol, external standard
+Docker          # container runtime
+SQLite          # embedded database engine
+Badger          # embedded key-value store, external
+Pebble          # embedded key-value store, external
+
+# --- Generic technical terms used in context ---
+API             # generic interface term
+CLI             # generic interface term
+SDK             # generic interface term
+REST            # architectural style
+TLS             # transport security
+mTLS            # mutual transport security
+BGP             # routing protocol
+
+# --- RFC structural / conformance section terms ---
+Assertion       # RFC conformance assertion label
+Verification    # conformance verification label
+Milestone       # roadmap milestone label
+Rejected        # RFC decision label
+Accepted        # RFC decision label
+Deferred        # RFC decision label
+Specified       # RFC decision label
+Revisit         # RFC decision label
+Active          # RFC decision label
+Mitigated       # RFC decision label
+Review          # RFC review label
+Reviewed        # RFC review label
+Conformance     # RFC conformance section heading
+Non             # RFC section prefix (Non-Goals)
+Goals           # RFC section label
+Alternatives Considered  # RFC section heading
+Risk Mitigation # RFC section heading
+Acceptance Checklist  # RFC section heading
+Future Work     # RFC section heading
+Initial Packages  # RFC section heading
+Transitive Core Package  # RFC package class term
+Core Packages   # RFC package class term
+Open Questions  # RFC section heading
+Every Go        # RFC phrase (Every Go package)
+No Go           # RFC phrase (No Go package)
+Whether Go      # RFC phrase (Whether Go package)
+Public Go       # RFC phrase (Public Go package)
+
+# --- Common English words appearing mid-sentence ---
+The             # English determiner
+This            # English demonstrative
+That            # English demonstrative
+These           # English demonstrative
+Those           # English demonstrative
+It              # English pronoun
+Its             # English pronoun
+Their           # English pronoun
+There           # English adverb
+They            # English pronoun
+An              # English determiner
+All             # English determiner
+Any             # English determiner
+Each            # English determiner
+Both            # English determiner
+Every           # English determiner
+No              # English determiner
+One             # English numeral
+Two             # English numeral
+Three           # English numeral
+First           # English ordinal
+Some            # English determiner
+Many            # English determiner
+Most            # English determiner
+Other           # English adjective
+Other Tasks     # English phrase
+Few             # English determiner
+Several         # English determiner
+None            # English determiner
+Much            # English determiner
+For             # English preposition
+With            # English preposition
+From            # English preposition
+In              # English preposition
+On              # English preposition
+At              # English preposition
+To              # English preposition
+By              # English preposition
+Of              # English preposition
+As              # English preposition
+Or              # English conjunction
+And             # English conjunction
+Is              # English verb
+Are             # English verb
+If              # English conjunction
+Because         # English conjunction
+When            # English conjunction
+Whether         # English conjunction
+Until           # English conjunction
+After           # English preposition
+Before          # English preposition
+Per             # English preposition
+Under           # English preposition
+Between         # English preposition
+Through         # English preposition
+During          # English preposition
+While           # English conjunction
+Although        # English conjunction
+Unless          # English conjunction
+However         # English adverb
+Therefore       # English adverb
+Instead         # English adverb
+Yet             # English conjunction
+Still           # English adverb
+Also            # English adverb
+Just            # English adverb
+Only            # English adverb
+Even            # English adverb
+Not             # English negation
+So              # English conjunction
+Out             # English preposition
+Over            # English preposition
+Does            # English verb
+Do              # English verb
+Should          # English modal
+Can             # English modal
+Must            # English modal
+Will            # English modal
+Would           # English modal
+Could           # English modal
+May             # English modal
+Might           # English modal
+Shall           # English modal
+
+# --- RFC prose / generic capitalized words ---
+Agent           # generic term for automation actor
+Agents          # generic term for automation actors
+Plugin          # generic software term
+Plugins         # generic software term
+Core            # generic term for central component
+Interface       # generic software term
+Interfaces      # generic software term
+Model           # generic term
+Schema          # generic term
+Database        # generic term
+Graph           # generic term
+Query           # generic term
+Metadata        # generic term
+Content         # generic term
+Property        # generic term
+Index           # generic term
+Indexes         # plural of Index
+Type            # generic term
+Code            # generic term
+File            # generic term
+Path            # generic term
+Paths           # plural of Path
+Keys            # generic term
+Key             # generic term
+Value           # generic term
+Name            # generic term
+State           # generic term
+Storage         # generic term
+Store           # generic term
+Column          # generic term
+Table           # generic term
+Row             # generic term
+Entry           # generic term
+Entries         # generic term
+Record          # generic term
+Field           # generic term
+Set             # generic term
+Map             # generic term
+List            # generic term
+Item            # generic term
+Items           # generic term
+Block           # generic term
+Section         # generic term
+Page            # generic term
+Document        # generic term
+Directory       # generic term
+Folder          # generic term
+Link            # generic term
+Links           # plural of Link
+Tags            # plural of Tag
+Tag             # generic term
+Edge            # generic term
+Edges           # generic term
+Node            # generic term
+Nodes           # generic term
+Cycle           # generic term
+Component       # generic term
+Module          # generic term
+Package         # generic term
+Class           # generic term
+Struct          # generic term
+Function        # generic term
+Method          # generic term
+Variable        # generic term
+Constant        # generic term
+Parameter       # generic term
+Argument        # generic term
+Return          # generic term
+Error           # generic term
+Warning         # generic term
+Info            # generic term
+Debug           # generic term
+Trace           # generic term
+Log             # generic term
+Test            # generic term
+Tests           # generic term
+Benchmark       # generic term
+Fuzz            # generic term
+Linter          # generic term
+Formatter       # generic term
+Compiler        # generic term
+Runtime         # generic term
+Process         # generic term
+Thread          # generic term
+Goroutine       # generic term
+Channel         # generic term
+Mutex           # generic term
+Lock            # generic term
+Unlock          # generic term
+Atomic          # generic term
+Concurrent      # generic term
+Parallel        # generic term
+Synchronous     # generic term
+Asynchronous    # generic term
+Blocking        # generic term
+Non-blocking    # generic term
+Deterministic   # generic term
+Idempotent      # generic term
+Transactional   # generic term
+Consistent      # generic term
+Durable         # generic term
+Volatile        # generic term
+Ephemeral       # generic term
+Persistent      # generic term
+Temporary       # generic term
+Permanent       # generic term
+Immutable       # generic term
+Mutable         # generic term
+Valid           # generic term
+Invalid         # generic term
+Null            # generic term
+Empty           # generic term
+Full            # generic term
+Zero            # generic term
+True            # generic term
+False           # generic term
+Default         # generic term
+Custom          # generic term
+Optional        # generic term
+Required        # generic term
+Explicit        # generic term
+Implicit        # generic term
+Public          # generic term
+Private         # generic term
+Internal        # generic term
+External        # generic term
+Local           # generic term
+Remote          # generic term
+Global          # generic term
+Static          # generic term
+Dynamic         # generic term
+Raw             # generic term
+Parsed          # generic term
+Encoded         # generic term
+Decoded         # generic term
+Compressed      # generic term
+Uncompressed    # generic term
+Binary          # generic term
+Text            # generic term
+String          # generic term
+Integer         # generic term
+Float           # generic term
+Boolean         # generic term
+Number          # generic term
+Array           # generic term
+Object          # generic term
+Slice           # generic term
+Pointer         # generic term
+Reference       # generic term
+Address         # generic term
+Offset          # generic term
+Size            # generic term
+Length          # generic term
+Count           # generic term
+Capacity        # generic term
+Position        # generic term
+Location        # generic term
+Region          # generic term
+Zone            # generic term
+Range           # generic term
+Span            # generic term
+Bounds          # generic term
+Limit           # generic term
+Threshold       # generic term
+Maximum         # generic term
+Minimum         # generic term
+Average         # generic term
+Median          # generic term
+Sum             # generic term
+Product         # generic term
+Difference      # generic term
+Ratio           # generic term
+Percentage      # generic term
+Fraction        # generic term
+Decimal         # generic term
+Hexadecimal     # generic term
+Octal           # generic term
+ASCII           # generic term
+UTF             # generic term
+Unicode         # generic term
+Encoding        # generic term
+Decoding        # generic term
+Serialization   # generic term
+Deserialization # generic term
+Marshaling      # generic term
+Unmarshaling    # generic term
+Parsing         # generic term
+Tokenizing      # generic term
+Tokenizer       # generic term
+Lexer           # generic term
+Parser          # generic term
+Interpreter     # generic term
+AST             # generic term
+Syntax          # generic term
+Grammar         # generic term
+Semantics       # generic term
+Pragmatics      # generic term
+Type-checking   # generic term
+Linking         # generic term
+Loading         # generic term
+Unloading       # generic term
+Execution       # generic term
+Evaluation      # generic term
+Optimization    # generic term
+Inlining        # generic term
+Caching         # generic term
+Eviction        # generic term
+Replacement     # generic term
+Rotation        # generic term
+Compaction      # generic term
+Garbage         # generic term
+Collection      # generic term
+Finalization    # generic term
+Initialization  # generic term
+Startup         # generic term
+Shutdown        # generic term
+Restart         # generic term
+Recovery        # generic term
+Resilience      # generic term
+Fault           # generic term
+Tolerance       # generic term
+Redundancy      # generic term
+Replication     # generic term
+Consensus       # generic term
+Partition       # generic term
+Split-brain     # generic term
+Heartbeat       # generic term
+Timeout         # generic term
+Retry           # generic term
+Backoff         # generic term
+Circuit         # generic term
+Breaker         # generic term
+Rate            # generic term
+Limiter         # generic term
+Throttle        # generic term
+Queue           # generic term
+Buffer          # generic term
+Stream          # generic term
+Pipeline        # generic term
+Batch           # generic term
+Worker          # generic term
+Pool            # generic term
+Scheduler       # generic term
+Executor        # generic term
+Dispatcher      # generic term
+Handler         # generic term
+Callback        # generic term
+Listener        # generic term
+Emitter         # generic term
+Publisher       # generic term
+Subscriber      # generic term
+Consumer        # generic term
+Producer        # generic term
+Broker          # generic term
+Router          # generic term
+Gateway         # generic term
+Proxy           # generic term
+Load            # generic term
+Balancer        # generic term
+Health          # generic term
+Check           # generic term
+Probe           # generic term
+Monitor         # generic term
+Exporter        # generic term
+Collector       # generic term
+Aggregator      # generic term
+Processor       # generic term
+Transformer     # generic term
+Filter          # generic term
+Mapper          # generic term
+Reducer         # generic term
+Joiner          # generic term
+Splitter        # generic term
+Merger          # generic term
+Combiner        # generic term
+Accumulator     # generic term
+Window          # generic term
+Session         # generic term
+Transaction     # generic term
+Commit          # generic term
+Rollback        # generic term
+Savepoint       # generic term
+Isolation       # generic term
+Level           # generic term
+ACID            # generic term
+BASE            # generic term
+CAP             # generic term
+PACELC          # generic term
+Adapter         # generic term for interface adapter
+Future          # English adjective
+Domain          # English noun
+Ambiguity       # English noun
+Semantic Search # English phrase for search capability
+Change          # English noun
+Watchers        # English noun (plural)
+Jobs            # English noun (plural)
+Exposing        # English verb
+
+# --- RFC prose terms (common capitalized words in prose) ---
+Re              # prefix (Re-index, Re-build, etc.)
+Absence         # English noun
+Acceptance      # English noun
+Adding          # English verb
+Affects         # English verb
+Alternative     # English adjective
+Anything        # English pronoun
+Architectural   # English adjective
+Asserted        # English verb
+Attempt         # English noun
+Autoincrement   # database term
+Byte            # data unit
+Cancellation    # English noun
+Candidates      # English noun
+Capabilities    # English noun
+Capable         # English adjective
+Case            # English noun
+Changing        # English verb
+Codes           # English noun
+Complements     # English verb
+Concurrency     # English noun
+Confirm         # English verb
+Consider        # English verb
+Consumes        # English verb
+Correctness     # English noun
+Covering        # English verb
+Covers          # English verb
+Crash           # English noun
+Creating        # English verb
+Current         # English adjective
+Currently       # English adverb
+Debounce        # technical term
+Debouncing      # technical term
+Decide          # English verb
+Deleting        # English verb
+Derived         # English adjective
+Determinism     # English noun
+Directly        # English adverb
+Disabling       # English verb
+Discarding      # English verb
+Disposability   # English noun
+Documentation   # English noun
+Duplicate       # English adjective
+Editing         # English verb
+Either          # English determiner
+Emphasis        # English noun
+Enforced        # English verb
+Escaped         # English adjective
+Extends         # English verb
+Fenced          # English adjective
+Following       # English adjective
+Forward         # English adverb
+Golden          # English adjective
+Identical       # English adjective
+Identity        # English noun
+Implementations # English noun
+Import          # English noun
+Includes        # English verb
+Including       # English preposition
+Indexing        # English noun
+Instrumented    # English adjective
+Integration     # English noun
+Introducing     # English verb
+Keeping         # English verb
+Leaning         # English verb
+Leaving         # English verb
+Logical         # English adjective
+Logically       # English adverb
+Losing          # English verb
+Malformed       # English adjective
+Materialized    # English adjective
+Migration       # English noun
+Moving          # English verb
+Natural         # English adjective
+Nested          # English adjective
+Optimistic      # English adjective
+Ordering        # English noun
+Overlap         # English noun
+Parse           # English verb
+Pending         # English adjective
+Periodic        # English adjective
+Persisted       # English verb
+Placement       # English noun
+Principle       # English noun
+Queries         # English noun
+Randomized      # English adjective
+Readers         # English noun
+Real            # English adjective
+Reassembling    # English verb
+Rebuild         # English verb
+Refines         # English verb
+Rename          # English verb
+Renames         # English verb
+Reordering      # English verb
+Requiring       # English verb
+Resolution      # English noun
+Resolved        # English adjective
+Retention       # English noun
+Retrying        # English verb
+Running         # English verb
+Runs            # English verb
+Same            # English adjective
+Search          # English noun
+See             # English verb
+Seeded          # English adjective
+Semantic        # English adjective
+Semantically Independent  # English phrase
+Setext          # Markdown term
+Silent          # English adjective
+Sits            # English verb
+Skipping        # English verb
+Specifying      # English verb
+Stale           # English adjective
+Supports        # English verb
+Targeted        # English adjective
+Tasks           # English noun
+Tools           # English noun
+Total           # English adjective
+Transactions    # English noun
+Transitivity    # English noun
+Tuning          # English noun
+Wiki            # English noun
+Wire            # English noun
+Work            # English noun
+Writes          # English verb
+Writing         # English verb
+
+# --- Component / subsystem names used in RFCs (not in glossary) ---
+Knowledge Engine  # RFC component name, not a glossary term
+Domain Model      # RFC section/concept name, not a glossary term
+Job Engine        # RFC component name, not a glossary term
+Link Graph Engine # RFC component name, not a glossary term
+Storage Engine    # RFC component name, not a glossary term
+State Rebuilds    # RFC concept, not a glossary term
+Background Worker # RFC concept, not a glossary term
+Derived State Store  # RFC component name, not a glossary term
+Canvas            # Obsidian concept, not a Lith domain term
+Bases             # Obsidian concept, not a Lith domain term
+
+# --- External references ---
+Project Vision    # RFC title reference
+Strategic Architecture  # RFC title reference
+Obsidian Flavored Markdown Specification  # external spec reference
+Model Context Protocol Specification  # external spec reference
+Write Ahead Logging  # database concept reference
+Atomic Commit     # database concept reference
