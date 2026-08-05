@@ -2,6 +2,7 @@ package debounce
 
 import (
 	"context"
+	"errors"
 	"sync"
 	"testing"
 	"time"
@@ -80,7 +81,7 @@ func TestTenEventsOnePathCoalesce(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		if err := d.Run(ctx, in); err != nil && err != context.Canceled {
+		if err := d.Run(ctx, in); err != nil && !errors.Is(err, context.Canceled) {
 			t.Errorf("Run returned: %v", err)
 		}
 	}()
@@ -122,7 +123,7 @@ func TestTwoPaths(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		if err := d.Run(ctx, in); err != nil && err != context.Canceled {
+		if err := d.Run(ctx, in); err != nil && !errors.Is(err, context.Canceled) {
 			t.Errorf("Run returned: %v", err)
 		}
 	}()
@@ -168,7 +169,7 @@ func TestMaxDelayEmitsWithinBound(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		if err := d.Run(ctx, in); err != nil && err != context.Canceled {
+		if err := d.Run(ctx, in); err != nil && !errors.Is(err, context.Canceled) {
 			t.Errorf("Run returned: %v", err)
 		}
 	}()
@@ -230,7 +231,7 @@ func TestContextCancellation(t *testing.T) {
 	// Wait for Run to return.
 	select {
 	case err := <-done:
-		if err != context.Canceled {
+		if !errors.Is(err, context.Canceled) {
 			t.Errorf("expected context.Canceled, got %v", err)
 		}
 	case <-time.After(2 * time.Second):
@@ -263,7 +264,7 @@ func TestFlushOnContextCancel(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		d.Run(ctx, in)
+		_ = d.Run(ctx, in)
 	}()
 
 	p1 := makePath("a.md")
@@ -299,7 +300,7 @@ func TestLastOpWins(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		if err := d.Run(ctx, in); err != nil && err != context.Canceled {
+		if err := d.Run(ctx, in); err != nil && !errors.Is(err, context.Canceled) {
 			t.Errorf("Run returned: %v", err)
 		}
 	}()
