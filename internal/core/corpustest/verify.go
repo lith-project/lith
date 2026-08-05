@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 )
@@ -46,6 +47,14 @@ func Verify(repoRoot string, m *Manifest) ([]Mismatch, error) {
 		}
 		if err != nil {
 			return nil, fmt.Errorf("verify: lstat %s: %w", f.Path, err)
+		}
+
+		// On Windows, Git checks out symlinks as regular text files containing
+		// the target path, and os.Lstat reports different sizes than the
+		// manifest generated on macOS/Linux where symlinks are real. Skip
+		// size and digest checks for symlinks on Windows.
+		if runtime.GOOS == "windows" && fi.Mode()&os.ModeSymlink != 0 {
+			continue
 		}
 
 		if fi.Size() != f.SizeBytes {
