@@ -119,8 +119,8 @@ func TestRunJSONLogRecords(t *testing.T) {
 		records = append(records, rec)
 	}
 
-	if len(records) != 4 {
-		t.Fatalf("got %d log records, want 4", len(records))
+	if len(records) != 5 {
+		t.Fatalf("got %d log records, want 5", len(records))
 	}
 
 	// Record 1: daemon.starting
@@ -160,6 +160,14 @@ func TestRunJSONLogRecords(t *testing.T) {
 	}
 	if maxDelay, ok := records[3]["max_delay"]; !ok || maxDelay != "5s" {
 		t.Errorf("record 4 max_delay = %v, want \"5s\"", records[3]["max_delay"])
+	}
+
+	// Record 5: queue.capacity
+	if msg, ok := records[4]["msg"]; !ok || msg != "queue.capacity" {
+		t.Errorf("record 5 msg = %v, want \"queue.capacity\"", records[4]["msg"])
+	}
+	if cap, ok := records[4]["capacity"]; !ok || cap != float64(4096) {
+		t.Errorf("record 5 capacity = %v, want 4096", records[4]["capacity"])
 	}
 }
 

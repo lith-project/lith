@@ -1,14 +1,17 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"io"
 	"os"
+	"os/signal"
 
 	"github.com/lith-project/lith/internal/core/config"
 	"github.com/lith-project/lith/internal/core/debounce"
 	"github.com/lith-project/lith/internal/core/logging"
+	"github.com/lith-project/lith/internal/core/queue"
 	"github.com/lith-project/lith/internal/core/watch"
 )
 
@@ -72,13 +75,35 @@ func run(args []string, stdout, stderr io.Writer) int {
 
 	logger.Info("debounce.bounds", "quiet", cfg.Watcher.Debounce.Quiet.String(), "max_delay", cfg.Watcher.Debounce.MaxDelay.String())
 
-	// Drain settled events and log each one. The watcher and debouncer
-	// are not started here — the daemon loop will wire them in a later
-	// task. The goroutine blocks on <-settled until the channel is closed.
+	// Create bounded queue for settled events.
+	q, err := queue.New(cfg.Queue.Capacity, logger)
+	if err != nil {
+		fmt.Fprintf(stderr, "lithd: %v\n", err)
+		return 2
+	}
+	logger.Info("queue.capacity", "capacity", cfg.Queue.Capacity)
+
+	// The watcher and debouncer are not started here — the daemon loop
+	// will wire them in a later task.
 	_ = w  // will be started in the daemon loop task
 	_ = db // will be started in the daemon loop task
+
+	// Feed debouncer output into queue.
 	go func() {
 		for ev := range settled {
+			q.Push(ev)
+		}
+	}()
+
+	// Consumer: pop from queue, log, discard. Respects signal cancellation.
+	go func() {
+		ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
+		defer stop()
+		for {
+			ev, err := q.Pop(ctx)
+			if err != nil {
+				return
+			}
 			logger.Info(logging.EventFileChanged, logging.AttrPath, ev.Path.Raw())
 		}
 	}()
