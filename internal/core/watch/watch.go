@@ -43,6 +43,9 @@ type Watcher interface {
 	// Events returns the channel events are delivered on. It is closed when
 	// the watcher stops.
 	Events() <-chan Event
+	// Gaps returns the channel gap reasons are delivered on. It is closed when
+	// the watcher stops.
+	Gaps() <-chan GapReason
 	// Start begins watching. It returns when ctx is cancelled or setup fails.
 	Start(ctx context.Context) error
 }
