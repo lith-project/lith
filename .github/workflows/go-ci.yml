@@ -55,7 +55,7 @@ jobs:
 
       - name: Run Tests with Race Detector
         if: steps.mod.outputs.ready == 'true'
-        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic "./..."
 
       - name: Upload Coverage Report
         if: steps.mod.outputs.ready == 'true' && matrix.os == 'ubuntu-latest'
