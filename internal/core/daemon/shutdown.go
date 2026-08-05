@@ -2,6 +2,7 @@ package daemon
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"sync"
@@ -66,7 +67,7 @@ func Run(ctx context.Context, components []Component, log *slog.Logger) error {
 				continue
 			}
 			// Context cancellation errors are expected during shutdown; ignore.
-			if res.Err == context.Canceled || res.Err == context.DeadlineExceeded {
+			if errors.Is(res.Err, context.Canceled) || errors.Is(res.Err, context.DeadlineExceeded) {
 				continue
 			}
 			// First real error: cancel siblings and record it.
