@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"syscall"
 )
 
 // ErrLocked is returned when another live process holds the lock.
@@ -100,12 +99,6 @@ func forceAcquire(lockPath string, myPid int) (*Lock, error) {
 		return nil, fmt.Errorf("daemon: create lock: %w", err)
 	}
 	return &Lock{path: lockPath, pid: myPid}, nil
-}
-
-// isProcessAlive checks if a process with the given PID is running.
-func isProcessAlive(pid int) bool {
-	err := syscall.Kill(pid, 0)
-	return err == nil
 }
 
 // Release removes the lock. Safe to call more than once.
