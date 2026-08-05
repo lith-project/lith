@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"path/filepath"
+	"strings"
 
 	"github.com/fsnotify/fsnotify"
 
@@ -16,6 +17,7 @@ type fsnotifyWatcher struct {
 	vaultRoot string
 	log       *slog.Logger
 	events    chan Event
+	gaps      chan GapReason
 }
 
 // NewFSNotify builds a Watcher over the vault rooted at vaultRoot.
@@ -28,10 +30,12 @@ func NewFSNotify(vaultRoot string, log *slog.Logger) (Watcher, error) {
 		vaultRoot: vaultRoot,
 		log:       log,
 		events:    make(chan Event, 64),
+		gaps:      make(chan GapReason, 8),
 	}, nil
 }
 
-func (w *fsnotifyWatcher) Events() <-chan Event { return w.events }
+func (w *fsnotifyWatcher) Events() <-chan Event   { return w.events }
+func (w *fsnotifyWatcher) Gaps() <-chan GapReason { return w.gaps }
 
 func (w *fsnotifyWatcher) Start(ctx context.Context) error {
 	watcher, err := fsnotify.NewWatcher()
@@ -40,6 +44,7 @@ func (w *fsnotifyWatcher) Start(ctx context.Context) error {
 	}
 	defer watcher.Close()
 	defer close(w.events)
+	defer close(w.gaps)
 
 	if err := watcher.Add(w.vaultRoot); err != nil {
 		return fmt.Errorf("watch: adding vault root %q: %w", w.vaultRoot, err)
@@ -76,9 +81,25 @@ func (w *fsnotifyWatcher) Start(ctx context.Context) error {
 			if !ok {
 				return nil
 			}
-			return fmt.Errorf("watch: watcher error: %w", err)
+			reason := classifyGap(err)
+			w.log.Warn(logging.EventWatcherGap,
+				logging.AttrCode, string(reason),
+				logging.AttrCause, err.Error(),
+			)
+			select {
+			case w.gaps <- reason:
+			default:
+			}
 		}
 	}
+}
+
+func classifyGap(err error) GapReason {
+	msg := err.Error()
+	if strings.Contains(msg, "inotify") && strings.Contains(msg, "watch limit") {
+		return GapPlatformLimit
+	}
+	return GapWatchError
 }
 
 func mapOp(o fsnotify.Op) Op {
