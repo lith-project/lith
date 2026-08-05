@@ -72,13 +72,15 @@ func (r *rateLimiter) flush() {
 	r.count = 0
 	r.timer = nil
 	done := r.done
+	lastPath := r.lastPath
+	policy := r.policy
 	r.mu.Unlock()
 
 	if count > 0 {
 		r.log.Warn(logging.EventQueueOverflow,
-			logging.AttrPath, r.lastPath,
+			logging.AttrPath, lastPath,
 			logging.AttrCount, count,
-			logging.AttrPolicy, r.policy,
+			logging.AttrPolicy, policy,
 		)
 	}
 
