@@ -132,10 +132,18 @@ main() {
 	fi
 
 	found=false
+	first_blocked_number=""
+	first_blockers=""
 	while IFS= read -r number; do
 		[[ -n "$number" ]] || continue
 		blockers=$(open_blockers "$number")
-		[[ -z "$blockers" ]] || continue
+		if [[ -n "$blockers" ]]; then
+			if [[ -z "$first_blocked_number" ]]; then
+				first_blocked_number="$number"
+				first_blockers="$blockers"
+			fi
+			continue
+		fi
 
 		print_issue "$issues_json" "$number"
 		found=true
@@ -145,6 +153,10 @@ main() {
 	if [[ "$found" == false ]]; then
 		printf 'Nothing actionable in %s: every unclaimed issue still has an open blocker.\n' \
 			"$milestone_prefix" >&2
+		if [[ -n "$first_blocked_number" ]]; then
+			printf 'First blocked candidate #%s is waiting on %s.\n' \
+				"$first_blocked_number" "$first_blockers" >&2
+		fi
 		exit "$EXIT_NONE_ACTIONABLE"
 	fi
 }

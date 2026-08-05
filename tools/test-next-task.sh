@@ -59,7 +59,8 @@ failure_rc=$?
 set -e
 
 [[ "$blocked_rc" -eq 2 ]]
-[[ "$blocked_output" == "Nothing actionable in M1-A: every unclaimed issue still has an open blocker." ]]
+expected_blocked=$'Nothing actionable in M1-A: every unclaimed issue still has an open blocker.\nFirst blocked candidate #40 is waiting on #26.'
+[[ "$blocked_output" == "$expected_blocked" ]]
 [[ "$missing_rc" -eq 1 ]]
 [[ "$missing_output" == "error: no milestone in lith-project/lith with a title starting with 'M9-Z'" ]]
 [[ "$ambiguous_rc" -eq 1 ]]
