@@ -17,8 +17,7 @@ conformance:
 	go run ./tools/conformance/boundary
 
 corpus:
-	@printf 'corpus: not implemented yet — corpus integrity check tracked in #36\n' >&2
-	@exit 1
+	go run ./tools/conformance/corpus
 
 check:
 	$(MAKE) build
