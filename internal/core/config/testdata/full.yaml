@@ -1,0 +1,12 @@
+log:
+  level: debug
+  format: json
+watcher:
+  enabled: false
+  debounce:
+    quiet: 100ms
+    max_delay: 2s
+queue:
+  capacity: 8192
+vault:
+  path: /tmp/full-vault

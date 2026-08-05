@@ -1,0 +1,5 @@
+vault:
+  path: /tmp/test-vault
+  nested:
+    - item1
+    item2: missing bracket
