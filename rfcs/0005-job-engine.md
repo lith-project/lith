@@ -166,7 +166,7 @@ Note the asymmetry with parsing: RFC-0002 makes parsing *total*, so a malformed 
 
 On startup the engine does not restore a queue. It computes one:
 
-```
+```text
 work = diff(vault, store)
 ```
 
@@ -305,56 +305,67 @@ None. No implementation exists.
 ## Conformance
 
 ### C-1: Queue is not durable state
+
 **Assertion:** Discarding all in-memory and persisted queue state MUST NOT change the canonical dump produced after recovery. Pending work MUST be derivable from the vault and store alone.
 **Verification:** Integration test — begin indexing the corpus, kill the process at randomized points, restart, allow completion; the canonical dump must equal the dump from an uninterrupted run.
 **Milestone:** M1-A
 
 ### C-2: Idempotency
+
 **Assertion:** Running any job twice MUST produce the same canonical dump as running it once.
 **Verification:** Per-kind test executing each job twice in succession and comparing dumps.
 **Milestone:** M1-B
 
 ### C-3: Concurrency invariance
+
 **Assertion:** The final canonical dump MUST be identical for any worker-pool size and any scheduling order.
 **Verification:** Index the corpus at worker counts 1, 2, 4, 8, and 16 with randomized queue ordering per run; all resulting dumps must be identical. Supports [RFC-0003/C-1](0003-storage-engine.md#c-1-rebuild-determinism).
 **Milestone:** M1-B
 
 ### C-4: Bounded cancellation
+
 **Assertion:** Every job MUST observe cancellation and terminate within the declared bound of **5 seconds** (§3), or within a shorter bound it declares for itself. No job may check cancellation only at completion.
 **Verification:** Test cancelling each job kind mid-execution and asserting termination within its bound, plus a static check that long-running loops carry a cancellation check.
 **Milestone:** M1-A
 
 ### C-5: Retry only non-deterministic failures
+
 **Assertion:** Deterministic failures MUST NOT be retried. Only failures classified non-deterministic MAY be retried, under a capped attempt budget.
 **Verification:** Test injecting one failure of each class and asserting attempt counts — exactly one for deterministic, bounded and capped for non-deterministic.
 **Milestone:** M1-B
 
 ### C-6: Single-writer discipline
+
 **Assertion:** At most one job MAY hold the store write lock at any time. Store-writing work MUST NOT proceed concurrently.
 **Verification:** Instrumented test asserting the lock is never held by two jobs; race detector enabled across the concurrency suite.
 **Milestone:** M1-B
 
 ### C-7: Transaction precondition
+
 **Assertion:** A proposal whose `expected_content_hash` does not match the file's current content MUST be rejected, and the vault MUST remain unmodified.
 **Verification:** Test modifying the target file between proposal construction and application; assert rejection and a byte-identical vault.
 **Milestone:** M1-B
 
 ### C-8: Post-condition validation
+
 **Assertion:** A proposal whose applied result introduces new `Error`-severity diagnostics MUST be rejected before any byte is written to the vault.
 **Verification:** Tests applying proposals that would produce malformed frontmatter, an unterminated code fence, and invalid UTF-8; each must be rejected with the vault byte-identical.
 **Milestone:** M1-B
 
 ### C-9: Multi-file recovery
+
 **Assertion:** After a crash during a multi-file transaction, recovery MUST leave every target either fully applied or fully reverted. A half-applied transaction MUST NOT be indexed.
 **Verification:** Crash-injection test at each labelled point of the journal flow; after recovery, vault contents must match one of the two expected states exactly, and recovery must complete before indexing begins.
 **Milestone:** M1-B
 
 ### C-10: Rejection is inert
+
 **Assertion:** A rejected proposal, for any rejection reason, MUST leave every vault file byte-identical.
 **Verification:** Test enumerating every rejection path, with a SHA-256 manifest of the vault taken before and after; manifests must match. Complements [RFC-0001/C-3](0001-project-vision.md#c-3-single-write-path).
 **Milestone:** M1-B
 
 ### C-11: Bounded queue
+
 **Assertion:** The queue MUST NOT grow without bound. Work exceeding capacity MUST be coalesced by `identity_key` or shed, never accumulated.
 **Verification:** Load test generating events far exceeding queue capacity; assert bounded queue depth and a correct final canonical dump.
 **Milestone:** M1-D
@@ -388,6 +399,7 @@ None. No implementation exists.
 ## References
 
 ### Internal
+
 - [RFC-0001: Project Vision & Strategic Architecture](0001-project-vision.md)
 - [RFC-0002: Domain Model & Vault AST](0002-domain-model.md)
 - [RFC-0003: Storage Engine & State Rebuilds](0003-storage-engine.md)
@@ -397,6 +409,7 @@ None. No implementation exists.
 - [rfcs/README.md](README.md)
 
 ### External
+
 - [Go Concurrency Patterns](https://go.dev/blog/pipelines)
 - [Go context package](https://pkg.go.dev/context)
 - [SQLite Atomic Commit](https://www.sqlite.org/atomiccommit.html)

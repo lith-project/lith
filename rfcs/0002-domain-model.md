@@ -333,51 +333,61 @@ None. No implementation exists.
 ## Conformance
 
 ### C-1: Total parsing
+
 **Assertion:** Parsing MUST NOT panic, abort, or fail for any input. Every input MUST yield a `Note` with diagnostics, or an explicit `Skipped(reason)`.
 **Verification:** Fuzz test over the malformed generator family plus every committed corpus file; any panic or unhandled error fails. Asserted against `EC-ENC-*`, `EC-FM-003`, `EC-FM-010`.
 **Milestone:** M1-B
 
 ### C-2: Byte fidelity
+
 **Assertion:** Reassembling a note's top-level ranges in order, including inter-node gaps, MUST reproduce the original file byte for byte.
 **Verification:** Property test over the whole corpus and over generated vaults — parse, reassemble, compare bytes. Includes all `EC-ENC-*` cases.
 **Milestone:** M1-B
 
 ### C-3: No re-serialization path
+
 **Assertion:** The parser package MUST NOT expose any function that writes a note. All mutation MUST be expressed as byte-range splices.
 **Verification:** Static check over the package's exported surface, plus an import-boundary check that filesystem write primitives are absent from the parser package. Complements [RFC-0001/C-3](0001-project-vision.md#c-3-single-write-path).
 **Milestone:** M1-B
 
 ### C-4: Parse determinism
+
 **Assertion:** Identical bytes MUST produce an identical AST and an identical diagnostic sequence, independent of locale, timezone, environment, filesystem, or processing order.
 **Verification:** Golden tests executed twice per run under differing `LANG`/`TZ` and differing file iteration order; output must match byte for byte.
 **Milestone:** M1-B
 
 ### C-5: Path identity normalization
+
 **Assertion:** Paths differing only by Unicode normal form MUST map to the same `NoteID`. Case MUST NOT be folded into identity.
 **Verification:** Test over `EC-FS-004` and `EC-FS-005` asserting identity equality across NFC/NFD, and identity inequality for case-differing paths on a case-sensitive volume.
 **Milestone:** M1-B
 
 ### C-6: Code region isolation
+
 **Assertion:** Links, embeds, tags, and tasks inside fenced code, indented code, or inline code MUST NOT be recognized. Escaped bracket sequences MUST NOT produce links.
 **Verification:** Golden tests over `EC-LNK-008`, `EC-LNK-009`, `EC-LNK-010`, `EC-CNT-016`, `EC-CNT-010`; each asserts an empty link and tag set for the masked regions.
 **Milestone:** M1-B
 
 ### C-7: Frontmatter failure isolation
+
 **Assertion:** Malformed, duplicated, or unparseable frontmatter MUST NOT prevent the body from parsing, and MUST NOT suppress body links, tags, or tasks.
 **Verification:** Golden tests over `EC-FM-003`, `EC-FM-004`, `EC-FM-010`, `EC-FM-012` asserting a complete body AST alongside the expected diagnostic codes.
 **Milestone:** M1-B
 
 ### C-8: Deterministic link resolution
+
 **Assertion:** Resolution MUST follow the fixed order specified in §6 and MUST return `Ambiguous` with a sorted candidate list rather than selecting a candidate. Identical note sets MUST produce identical outcomes.
 **Verification:** Golden tests over `EC-LNK-011` … `EC-LNK-016`, executed twice per run with shuffled note insertion order; results must match.
 **Milestone:** M1-B
 
 ### C-9: Encoding robustness
+
 **Assertion:** Implementations MUST handle BOM, CRLF, lone CR, mixed line endings, invalid UTF-8, zero-byte files, and NUL-containing files exactly as tabulated in §4.
 **Verification:** Golden tests over `EC-ENC-001` … `EC-ENC-013`, one assertion per row of the encoding table.
 **Milestone:** M1-B
 
 ### C-10: Implicit block identity is not durable
+
 **Assertion:** Offset-derived block identity MUST NOT be persisted as a cross-note reference target. Only anchored blocks are valid reference targets.
 **Verification:** Schema/static check that reference targets carry an explicit anchor, plus a test asserting that editing a note's head does not change any durable block reference within it.
 **Milestone:** M1-B
@@ -413,6 +423,7 @@ None. No implementation exists.
 ## References
 
 ### Internal
+
 - [RFC-0001: Project Vision & Strategic Architecture](0001-project-vision.md)
 - [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 - [docs/glossary.md](../docs/glossary.md)
@@ -420,6 +431,7 @@ None. No implementation exists.
 - [rfcs/README.md](README.md)
 
 ### External
+
 - [Obsidian Flavored Markdown Specification](https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown)
 - [CommonMark Specification](https://spec.commonmark.org/)
 - [Unicode Standard Annex #15 — Normalization Forms](https://unicode.org/reports/tr15/)

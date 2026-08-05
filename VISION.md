@@ -17,6 +17,7 @@ Lith ensures that AI tools interact with connected semantic knowledge rather tha
 ## 2. Who Is It For?
 
 Lith is built for:
+
 * **Knowledge Management Power Users**: Individuals using Obsidian, logseq, or plain Markdown vaults who want AI capabilities that understand the deep interconnections within their notes.
 * **AI Agent Developers & Tool Builders**: Engineers building local AI assistants, CLI utilities, or MCP integrations who need transactional, capability-based context retrieval instead of ad-hoc regex scripts.
 * **Privacy-Conscious Developers & Enterprises**: Organizations and developers requiring local-first semantic understanding that runs entirely on local hardware without sending vault data to third-party indexing services.

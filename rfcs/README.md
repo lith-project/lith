@@ -1,6 +1,6 @@
 # Lith Requests for Comments (RFCs)
 
-The `rfcs/` directory contains all architectural specifications and design documents for **Lith**. 
+The `rfcs/` directory contains all architectural specifications and design documents for **Lith**.
 
 Lith follows an RFC-driven development workflow to ensure that architectural changes are thoroughly designed, reviewed, and aligned with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md) before implementation begins.
 
@@ -8,7 +8,7 @@ Lith follows an RFC-driven development workflow to ensure that architectural cha
 
 ## Engineering Hierarchy
 
-```
+```text
 PROJECT_PRINCIPLES.md
         │  (Immutable Constitution — Amending requires an RFC)
         ▼
@@ -34,7 +34,7 @@ For a full table of all RFCs filtered by status, milestone, and subsystem, see *
 
 ## RFC Lifecycle
 
-```
+```text
 Idea ──> Discussion ──> RFC Draft ──> Pull Request ──> Review ──> Accepted ──> Implementation Issue(s) ──> Implementation PR(s) ──> Released
 ```
 
@@ -72,6 +72,7 @@ This exists so implementation review is mechanical rather than a matter of taste
 ## When an RFC is Required
 
 An RFC is **mandatory** for:
+
 * Amending or modifying [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 * New architectural components or subsystems
 * Storage engine, schema, or indexing model changes
@@ -81,6 +82,7 @@ An RFC is **mandatory** for:
 * Changes to transactional semantics or state rebuild models
 
 An RFC is **NOT required** for:
+
 * Bug fixes
 * Documentation or README updates
 * Unit or integration test additions
@@ -118,7 +120,9 @@ superseded_by: []
 > **`subsystem` is not a capability list.** It records which parts of the engine an RFC touches — `Storage`, `Graph`, `Parsing` — and is a routing aid for reviewers. *Capabilities* are the public operations catalogued in [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md) under `CAP-NNNN` identifiers. The two vocabularies are deliberately separate: most RFCs specify infrastructure and expose no capability at all.
 
 ### Status Values
+
 Architectural status is separate from code implementation state:
+
 * **`Draft`**: Initial proposal being drafted.
 * **`Review`**: Proposal undergoing formal maintainer and community review.
 * **`Accepted`**: Approved architectural design ready for implementation issues.

@@ -1,6 +1,6 @@
 # Lith RFC Index
 
-This document is the official index of all Requests for Comments (RFCs) in **Lith**. 
+This document is the official index of all Requests for Comments (RFCs) in **Lith**.
 
 For RFC lifecycle guidelines, metadata specifications, and contribution workflows, see [README.md](README.md).
 
@@ -23,7 +23,7 @@ For RFC lifecycle guidelines, metadata specifications, and contribution workflow
 
 RFCs are **authored** in dependency order, which is not numeric order:
 
-```
+```text
 0001 → 0002 → 0003 → 0005 → 0004
 ```
 
@@ -38,9 +38,11 @@ Implementation begins only when every M1 RFC is `Accepted`.
 ### By Milestone
 
 #### Milestone M0 (Foundation)
+
 - [RFC-0001: Project Vision & Strategic Architecture](0001-project-vision.md)
 
 #### Milestone M1 (Knowledge Engine)
+
 - [RFC-0002: Domain Model & Vault AST](0002-domain-model.md)
 - [RFC-0003: Storage Engine & State Rebuilds](0003-storage-engine.md)
 - [RFC-0004: Indexing & Link Graph Engine](0004-indexing.md)
@@ -52,7 +54,9 @@ Implementation begins only when every M1 RFC is `Accepted`.
 ### By Status
 
 #### Accepted
+
 - [RFC-0001](0001-project-vision.md), [RFC-0002](0002-domain-model.md), [RFC-0003](0003-storage-engine.md), [RFC-0004](0004-indexing.md), [RFC-0005](0005-job-engine.md)
 
 #### Draft
+
 - [RFC-0006](0006-package-layout.md)

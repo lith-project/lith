@@ -35,7 +35,7 @@ If a test needs a vault, it uses this one. Ad-hoc inline fixtures are permitted 
 
 ## 3. Layout
 
-```
+```text
 tests/vault/
 ├── corpus/                  # committed, deterministic, small
 │   ├── content/             # semantic/content edge cases      EC-CNT-*
@@ -340,13 +340,13 @@ Thresholds are set once a first implementation exists — a threshold invented b
 
 ## 12. Open Questions
 
-- [ ] One golden file per note, or one aggregated file per corpus directory? (Per-note gives readable diffs; aggregated gives fewer files. Leaning per-note.)
-- [ ] Is `.obsidian/` committed inside the corpus, or synthesized at test setup?
-- [ ] Does the corpus carry a second vault root, to pin cross-vault link behaviour before multi-vault work begins?
+* [ ] One golden file per note, or one aggregated file per corpus directory? (Per-note gives readable diffs; aggregated gives fewer files. Leaning per-note.)
+* [ ] Is `.obsidian/` committed inside the corpus, or synthesized at test setup?
+* [ ] Does the corpus carry a second vault root, to pin cross-vault link behaviour before multi-vault work begins?
 
 ## 13. References
 
-- [RFC-0001: Project Vision & Strategic Architecture](../../rfcs/0001-project-vision.md)
-- [PROJECT_PRINCIPLES.md](../../PROJECT_PRINCIPLES.md)
-- [docs/glossary.md](../glossary.md)
-- [ROADMAP.md](../../ROADMAP.md)
+* [RFC-0001: Project Vision & Strategic Architecture](../../rfcs/0001-project-vision.md)
+* [PROJECT_PRINCIPLES.md](../../PROJECT_PRINCIPLES.md)
+* [docs/glossary.md](../glossary.md)
+* [ROADMAP.md](../../ROADMAP.md)

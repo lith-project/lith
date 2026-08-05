@@ -234,7 +234,7 @@ stateDiagram-v2
 
 **Governance.**
 
-```
+```text
 PROJECT_PRINCIPLES.md                    constitution
         ▼
 RFC-0001                                 defines what a capability IS
@@ -269,6 +269,7 @@ Two secondary benefits follow. Tests stay deterministic — no model, no GPU, no
 This RFC proposes adding one tenet to [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md), verbatim:
 
 > ### 9. The Core is Semantically Independent
+>
 > The core engine shall never depend on embeddings, vector databases, or semantic models. These are optional capabilities provided through plugins.
 
 This is stronger than "embeddings are optional": it forbids the core from *growing* the dependency by accretion. Per the constitution's immutability rule and [rfcs/README.md](README.md), the amendment takes effect only when this RFC is `Accepted`; `PROJECT_PRINCIPLES.md` is edited in the same PR that flips the status, not before.
@@ -327,41 +328,49 @@ None. This is the root architectural specification of a project with no implemen
 ## Conformance
 
 ### C-1: Core semantic independence
+
 **Assertion:** Core engine packages MUST NOT depend, directly or transitively, on embedding libraries, vector databases, model runtimes, or remote inference clients.
 **Verification:** CI dependency-boundary check over the resolved import graph of the core packages, evaluated against an explicit allowlist. A new transitive dependency matching the denied set fails the build.
 **Milestone:** M1-A
 
 ### C-2: Rebuild determinism
+
 **Assertion:** Deleting all derived state and performing a full re-index over an unchanged vault MUST produce logically identical derived state.
 **Verification:** Integration test over the committed test vault corpus — index, snapshot a canonicalized dump, delete all derived state, re-index, snapshot again, assert equality. Runs on every CI build.
 **Milestone:** M1-B
 
 ### C-3: Single write path
+
 **Assertion:** No component other than the Transaction Coordinator MAY write to vault files. Plugins MUST NOT be granted vault write access.
 **Verification:** Static check that filesystem write primitives are not referenced outside the transaction package, plus an integration test asserting that a rejected proposal leaves every vault file byte-identical.
 **Milestone:** M1-B
 
 ### C-4: Capability catalog completeness
+
 **Assertion:** Every capability exposed by any interface MUST have a catalog entry with a `CAP-NNNN` identifier and an `owner_rfc`. Interfaces MUST NOT expose operations absent from the catalog.
 **Verification:** Test enumerating the capability registry at runtime and diffing it against [docs/reference/capability-catalog.md](../docs/reference/capability-catalog.md); any symmetric difference fails.
 **Milestone:** M1-C
 
 ### C-5: Interface adapter purity
+
 **Assertion:** Interface adapters (CLI, REST, MCP, SDK) MUST reach the engine only through the capability registry, and MUST NOT import storage, indexing, or parser packages.
 **Verification:** Import-boundary CI check over interface packages against a denied-import set.
 **Milestone:** M1-C
 
 ### C-6: Plugin absence safety
+
 **Assertion:** The engine MUST start, and every `Core` capability MUST pass its conformance tests, with zero plugins loaded. Absence of a plugin MUST NOT surface as an error.
 **Verification:** The default CI test run loads no plugins; a separate run with an empty plugin registry asserts a clean start and a complete Core capability suite.
 **Milestone:** M1-A
 
 ### C-7: Deterministic core search
+
 **Assertion:** Core search MUST be deterministic — identical corpus plus identical query MUST yield an identically ordered result set, with no dependency on a model, an embedding, or floating-point similarity.
 **Verification:** Golden-file test against the committed test vault corpus, executed twice per run in differing process order; results must match the golden byte-for-byte.
 **Milestone:** M1-C
 
 ### C-8: Canonical terminology
+
 **Assertion:** Domain terms used normatively in any RFC MUST be defined in [docs/glossary.md](../docs/glossary.md).
 **Verification:** Documentation lint over `rfcs/*.md` extracting capitalized domain terms and asserting glossary presence; failures block the RFC PR.
 **Milestone:** M1-A — the lint is built with the first CI pipeline. Until it exists, this assertion is enforced by the *Acceptance Checklist* at review time, which is a documented manual procedure rather than an automated one. It is deliberately **not** M0: M0 ships no executable, and an assertion whose verification cannot run at its own milestone is aspirational.
@@ -400,6 +409,7 @@ Implementation begins only when RFC-0001 through RFC-0005 are all `Accepted`.
 ## References
 
 ### Internal
+
 - [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
 - [VISION.md](../VISION.md)
 - [ARCHITECTURE.md](../ARCHITECTURE.md)
@@ -409,6 +419,7 @@ Implementation begins only when RFC-0001 through RFC-0005 are all `Accepted`.
 - [rfcs/README.md](README.md)
 
 ### External
+
 - [Obsidian Flavored Markdown Specification](https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown)
 - [Model Context Protocol Specification](https://modelcontextprotocol.io/)
 - [RFC 2119 — Key words for use in RFCs](https://www.rfc-editor.org/rfc/rfc2119)
