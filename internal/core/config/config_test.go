@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -48,9 +47,6 @@ func TestValidateZeroConfig(t *testing.T) {
 	}
 
 	// Should report missing vault.path
-	if !errors.Is(err, err) {
-		// Just check that we got an error
-	}
 	errStr := err.Error()
 	if !contains(errStr, "vault.path") {
 		t.Errorf("expected error about vault.path, got: %s", errStr)
