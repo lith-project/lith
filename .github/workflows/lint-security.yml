@@ -12,6 +12,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   golangci-lint:
     name: Go Static Analysis (golangci-lint)
@@ -88,9 +91,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Verify Issue Reference
+        env:
+          # Passed as environment variables, never interpolated into the script.
+          # A pull request body is untrusted input: expanding ${{ }} inline puts
+          # its backticks and $(...) through command substitution before bash
+          # sees the assignment, which executes them on the runner.
+          BODY: ${{ github.event.pull_request.body }}
+          TITLE: ${{ github.event.pull_request.title }}
         run: |
-          BODY="${{ github.event.pull_request.body }}"
-          TITLE="${{ github.event.pull_request.title }}"
-          if [[ ! "$BODY" =~ Closes\ #[0-9]+ ]] && [[ ! "$BODY" =~ Fixes\ #[0-9]+ ]] && [[ ! "$BODY" =~ Refs\ #[0-9]+ ]] && [[ ! "$TITLE" =~ #[0-9]+ ]]; then
+          # Escape every '#': one starting a word is a comment, and the line
+          # then ends at '=~' with no right-hand side.
+          if [[ ! "$BODY" =~ Closes\ \#[0-9]+ ]] && [[ ! "$BODY" =~ Fixes\ \#[0-9]+ ]] && [[ ! "$BODY" =~ Refs\ \#[0-9]+ ]] && [[ ! "$TITLE" =~ \#[0-9]+ ]]; then
             echo "::warning::Pull request body does not reference an issue (e.g., 'Closes #15'). Please ensure work is linked to an issue per AGENTS.md §3."
           fi

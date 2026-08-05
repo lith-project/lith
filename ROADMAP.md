@@ -116,7 +116,7 @@ Filesystem → Markdown parser → SQLite metadata. Still no AI.
 **Definition of Done**
 1. Full-text and metadata search return correct, deterministic results — [RFC-0001/C-7](rfcs/0001-project-vision.md#c-7-deterministic-core-search).
 2. Every exposed capability appears in the catalog — [RFC-0001/C-4](rfcs/0001-project-vision.md#c-4-capability-catalog-completeness).
-3. The CLI reaches the engine only through the capability registry — [RFC-0001/C-5](rfcs/0001-project-vision.md#c-5-interface-adapter-purity).
+3. The CLI reaches the engine only through the capability registry — [RFC-0001/C-5](rfcs/0001-project-vision.md#c-5-interface-adapter-purity), enforced mechanically by the boundary checker once `internal/adapter/` and `cmd/lith` exist — [RFC-0006/C-3](rfcs/0006-package-layout.md#c-3-adapter-purity). M1-A deliberately builds neither subject package, so C-3 is carried forward to here.
 4. Query latency on benchmark tier S is measured and recorded as the baseline.
 
 *Candidate epics:* capability registry · full-text index · metadata filters · deterministic ranking · CLI adapter · result formatting
@@ -143,7 +143,7 @@ Change a file; only what changed is re-indexed.
 
 * **M2-A · Graph** — link graph queries, backlinks, orphan and dangling-reference detection, entity resolution
 * **M2-B · Capabilities** — capability surface beyond search; catalog promotion to `Stable`
-* **M2-C · Plugins** — plugin host, loading, lifecycle, sandboxing; first optional capability (semantic search) proves the seam
+* **M2-C · Plugins** — plugin host, loading, lifecycle, sandboxing; first optional capability (semantic search) proves the seam. Plugin purity — [RFC-0006/C-7](rfcs/0006-package-layout.md#c-7-plugin-purity) — is enforced by the boundary checker from here, the milestone that first creates `internal/plugin/`
 
 Embeddings, vector storage, and semantic ranking enter here as plugins — never in the core ([RFC-0001 §4](rfcs/0001-project-vision.md)).
 
