@@ -72,12 +72,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
-          fail: false # Set to true once baseline secrets or false positives are excluded if needed
+          go-version: '1.23.x'
+
+      - name: Run Gitleaks
+        run: |
+          go install github.com/gitleaks/gitleaks/v8@latest
+          "$(go env GOPATH)/bin/gitleaks" detect --source . --redact
 
   pr-metadata:
     name: PR Governance & Convention
