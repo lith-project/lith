@@ -1,10 +1,7 @@
-version: "2"
-
 run:
   timeout: 5m
 
 linters:
-  default: none
   enable:
     - errcheck
     - govet
@@ -15,11 +12,18 @@ linters:
     - revive
     - errorlint
     - bodyclose
+    - gofmt
+    - goimports
   settings:
     errorlint:
       errorf: true
       asserts: true
       comparison: true
+    gofmt:
+      simplify: true
+    goimports:
+      local-prefixes:
+        - github.com/lith-project/lith
     revive:
       rules:
         - name: blank-imports
@@ -37,14 +41,3 @@ linters:
         - name: unreachable-code
         - name: var-declaration
         - name: var-naming
-
-formatters:
-  enable:
-    - gofmt
-    - goimports
-  settings:
-    gofmt:
-      simplify: true
-    goimports:
-      local-prefixes:
-        - github.com/lith-project/lith
