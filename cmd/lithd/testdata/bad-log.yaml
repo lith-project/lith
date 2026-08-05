@@ -1,0 +1,4 @@
+vault:
+  path: /tmp/test-vault
+log:
+  format: xml

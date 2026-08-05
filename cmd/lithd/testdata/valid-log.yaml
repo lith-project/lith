@@ -1,0 +1,5 @@
+vault:
+  path: /tmp/test-vault
+log:
+  format: json
+  level: debug
