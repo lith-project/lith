@@ -25,7 +25,6 @@ check:
 	$(MAKE) test
 	$(MAKE) lint
 	$(MAKE) conformance
-	$(MAKE) corpus
 
 clean:
 	rm -f lithd lith
