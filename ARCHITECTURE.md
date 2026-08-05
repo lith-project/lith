@@ -77,7 +77,7 @@ Full specifications, metadata filters, and lifecycle guidelines are maintained i
 | [0003](rfcs/0003-storage-engine.md) | [Storage Engine & State Rebuilds](rfcs/0003-storage-engine.md) | Accepted | M1 | Storage | Specifies the disposable SQLite schema, the canonical dump defining rebuild determinism, and atomic rebuild. No migrations exist. |
 | [0004](rfcs/0004-indexing.md) | [Indexing & Link Graph Engine](rfcs/0004-indexing.md) | Accepted | M1 | Graph, Indexing | Specifies change observation, the dirty set, incremental non-local link resolution, and link graph materialization. |
 | [0005](rfcs/0005-job-engine.md) | [Background Worker & Job Engine](rfcs/0005-job-engine.md) | Accepted | M1 | Jobs, Transactions | Specifies job lifecycle, scheduling, recovery, and the Transaction Coordinator — the single write path to the vault. |
-| [0006](rfcs/0006-package-layout.md) | [Package Layout & Dependency Boundaries](rfcs/0006-package-layout.md) | Draft | M1 | Core Engine, Architecture | Specifies the module path, the four package classes, and the import-direction rules that make RFC-0001/C-1 and C-5 mechanically checkable. |
+| [0006](rfcs/0006-package-layout.md) | [Package Layout & Dependency Boundaries](rfcs/0006-package-layout.md) | Accepted | M1 | Core Engine, Architecture | Specifies the module path, the four package classes, and the import-direction rules that make RFC-0001/C-1 and C-5 mechanically checkable. |
 
 > [!NOTE]
 > RFCs are **authored** in dependency order — `0001 → 0002 → 0003 → 0005 → 0004` — because RFC-0004 consumes the transaction semantics defined by RFC-0005. Numbering is stable and never reassigned. See [rfcs/index.md](rfcs/index.md).

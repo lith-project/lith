@@ -89,10 +89,13 @@ No parser. No SQLite. No graph. No MCP.
 2. Filesystem events for one vault are detected and logged.
 3. Restart leaves no orphaned state or lock.
 4. Conformance: [RFC-0001/C-1](rfcs/0001-project-vision.md#c-1-core-semantic-independence) and [C-6](rfcs/0001-project-vision.md#c-6-plugin-absence-safety) pass in CI.
+5. Package layout and import boundaries follow the accepted [RFC-0006](rfcs/0006-package-layout.md) — [C-1](rfcs/0006-package-layout.md#c-1-package-classification-is-total) through [C-6](rfcs/0006-package-layout.md#c-6-the-checker-detects-violations) pass in CI.
 
 **Epics** — tracked in [#14](https://github.com/lith-project/lith/issues/14), in build order:
 
 [#15](https://github.com/lith-project/lith/issues/15) config loading · [#16](https://github.com/lith-project/lith/issues/16) structured logging · [#17](https://github.com/lith-project/lith/issues/17) filesystem path identity · [#18](https://github.com/lith-project/lith/issues/18) filesystem watcher · [#19](https://github.com/lith-project/lith/issues/19) debouncer · [#20](https://github.com/lith-project/lith/issues/20) event queue · [#21](https://github.com/lith-project/lith/issues/21) daemon lifecycle & signals
+
+The M1-A epics require the package layout, import-direction rules, and conformance checker of [RFC-0006](rfcs/0006-package-layout.md), which gates the Go module skeleton ([#27](https://github.com/lith-project/lith/issues/27)).
 
 Path identity is its own epic, ahead of the watcher, and was not in the original candidate list. Building the M0 corpus hit Unicode NFC/NFD corruption twice in one sitting — silently, in tooling — and every note identity in M1-B is built on it.
 
