@@ -1,0 +1,93 @@
+name: Linting & Security
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/lint-security.yml'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  golangci-lint:
+    name: Go Static Analysis (golangci-lint)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+
+      - name: Check for go.mod
+        id: check_gomod
+        run: |
+          if [ -f "go.mod" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No go.mod found; skipping golangci-lint until M1-A."
+          fi
+
+      - name: Run golangci-lint
+        if: steps.check_gomod.outputs.exists == 'true'
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.62.2
+          args: --timeout=5m
+
+  vulnerability-scan:
+    name: Go Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+
+      - name: Run govulncheck
+        run: |
+          if [ -f "go.mod" ]; then
+            go install golang.org/x/vuln/cmd/govulncheck@latest
+            govulncheck ./...
+          else
+            echo "::notice::No go.mod found; skipping govulncheck until M1-A."
+          fi
+
+  gitleaks:
+    name: Secret & Credential Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          fail: false # Set to true once baseline secrets or false positives are excluded if needed
+
+  pr-metadata:
+    name: PR Governance & Convention
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Issue Reference
+        run: |
+          BODY="${{ github.event.pull_request.body }}"
+          TITLE="${{ github.event.pull_request.title }}"
+          if [[ ! "$BODY" =~ Closes\ #[0-9]+ ]] && [[ ! "$BODY" =~ Fixes\ #[0-9]+ ]] && [[ ! "$BODY" =~ Refs\ #[0-9]+ ]] && [[ ! "$TITLE" =~ #[0-9]+ ]]; then
+            echo "::warning::Pull request body does not reference an issue (e.g., 'Closes #15'). Please ensure work is linked to an issue per AGENTS.md §3."
+          fi

@@ -1,0 +1,116 @@
+name: Documentation & RFC Validation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.md'
+      - 'rfcs/**'
+      - 'tests/vault/**'
+      - '.github/workflows/docs-rfc.yml'
+      - '.markdownlint.yaml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.md'
+      - 'rfcs/**'
+      - 'tests/vault/**'
+      - '.github/workflows/docs-rfc.yml'
+      - '.markdownlint.yaml'
+  workflow_dispatch:
+
+jobs:
+  markdown-lint:
+    name: Markdown Structure & Syntax Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run markdownlint-cli2
+        run: |
+          npm install -g markdownlint-cli2
+          markdownlint-cli2 "**/*.md" "#.github/**" "#node_modules/**" "#tests/vault/corpus/**"
+
+  relative-links:
+    name: Relative & File Link Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Relative Markdown Links (Lychee Offline)
+        uses: lycheeververse/lychee-action@v2
+        with:
+          args: --offline --no-progress --exclude-loopback --exclude-path 'tests/vault/corpus/**' --base . '**/*.md'
+          fail: true
+
+  rfc-metadata:
+    name: RFC YAML Frontmatter Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Validate RFC Frontmatter Schemas
+        run: |
+          python3 -c '
+          import os, sys, glob
+
+          rfc_dir = "rfcs"
+          if not os.path.exists(rfc_dir):
+              sys.exit(0)
+
+          required_keys = ["rfc:", "title:", "status:", "milestone:"]
+          valid_statuses = ["Draft", "Accepted", "Rejected", "Superseded"]
+          errors = 0
+
+          for path in sorted(glob.glob("rfcs/[0-9][0-9][0-9][0-9]-*.md")):
+              with open(path, "r", encoding="utf-8") as f:
+                  content = f.read()
+              if not content.startswith("---"):
+                  print(f"::error file={path}::Missing YAML frontmatter opening bar block (---)")
+                  errors += 1
+                  continue
+              
+              frontmatter = content.split("---")[1]
+              for rk in required_keys:
+                  if rk not in frontmatter:
+                      print(f"::error file={path}::Missing required YAML key in frontmatter: {rk}")
+                      errors += 1
+              
+              # Check status values
+              for line in frontmatter.splitlines():
+                  if line.strip().startswith("status:"):
+                      val = line.split(":", 1)[1].strip()
+                      if val not in valid_statuses:
+                          print(f"::error file={path}::Invalid status \"{val}\". Must be one of: {valid_statuses}")
+                          errors += 1
+
+          if errors > 0:
+              sys.exit(1)
+          print("All checked RFC frontmatter schemas passed successfully!")
+          '
+
+  vault-corpus-manifest:
+    name: Test Vault Manifest Hash Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Verify Vault Manifest Integrity
+        run: |
+          if [ -x "tools/validate-vault-manifest.sh" ]; then
+            echo "Running test vault manifest validator..."
+            ./tools/validate-vault-manifest.sh
+          elif [ -f "tools/validate-vault-manifest.go" ] || [ -d "tools/vaultmanifest" ]; then
+            go run ./tools/... -check-manifest
+          else
+            echo "::notice::Test vault manifest checker tool not yet implemented. Skipping until M1-B test vault automation."
+          fi

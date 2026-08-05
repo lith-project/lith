@@ -1,0 +1,18 @@
+# Root Markdownlint configuration for Lith documentation and RFCs
+default: true
+
+# MD013 / line-length - Excluded due to detailed prose, long markdown links, and tables in RFCs and docs
+MD013: false
+
+# MD033 / no-inline-html - Allow inline HTML (used for <!-- slide --> or formatting inside tables/RFCs)
+MD033: false
+
+# MD041 / first-line-heading - Excluded because RFCs begin with YAML frontmatter (---) before H1 titles
+MD041: false
+
+# MD024 / no-duplicate-heading - Allow duplicate headings if they are nested under different parent headings
+MD024:
+  siblings_only: true
+
+# MD026 / no-trailing-punctuation - Allow punctuation in headings (useful for interrogative section titles in docs)
+MD026: false

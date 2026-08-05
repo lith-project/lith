@@ -1,0 +1,66 @@
+name: Go CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/go-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/go-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Build & Test Suite
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.x'
+
+      - name: Check Go Module Initialization
+        id: mod
+        shell: bash
+        run: |
+          if [ -f "go.mod" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::go.mod not yet initialized. Skipping build and tests until M1-A module setup."
+          fi
+
+      - name: Download Dependencies
+        if: steps.mod.outputs.ready == 'true'
+        run: go mod download
+
+      - name: Build Core Engine & Binaries
+        if: steps.mod.outputs.ready == 'true'
+        run: go build -v ./...
+
+      - name: Run Tests with Race Detector
+        if: steps.mod.outputs.ready == 'true'
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
+
+      - name: Upload Coverage Report
+        if: steps.mod.outputs.ready == 'true' && matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.txt
+          if-no-files-found: ignore
