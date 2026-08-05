@@ -203,7 +203,7 @@ func TestDepth(t *testing.T) {
 		t.Fatalf("expected depth 2, got %d", q.Depth())
 	}
 
-	q.Pop(context.Background())
+	_, _ = q.Pop(context.Background())
 	if q.Depth() != 1 {
 		t.Fatalf("expected depth 1, got %d", q.Depth())
 	}
