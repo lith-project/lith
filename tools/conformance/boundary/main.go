@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 type goListPackage struct {
@@ -12,9 +13,12 @@ type goListPackage struct {
 	Imports    []string `json:"Imports"`
 }
 
-func main() {
-	modulePrefix := "github.com/lith-project/lith"
+const (
+	modulePrefix      = "github.com/lith-project/lith"
+	denylistRelPath   = "tools/conformance/core-dependency-denylist.txt"
+)
 
+func main() {
 	cmd := exec.Command("go", "list", "-json", "./...")
 	cmd.Stderr = os.Stderr
 	stdout, err := cmd.StdoutPipe()
@@ -48,6 +52,28 @@ func main() {
 	}
 
 	violations := CheckRules(pkgs, modulePrefix)
+
+	// C-4: Core dependency denylist check
+	denylistPath, err := filepath.Abs(denylistRelPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: resolving denylist path: %v\n", err)
+		os.Exit(2)
+	}
+	denylist, err := loadDenylist(denylistPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: loading denylist: %v\n", err)
+		os.Exit(2)
+	}
+
+	graph, err := buildCoreDepGraph(modulePrefix)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: building core dependency graph: %v\n", err)
+		os.Exit(2)
+	}
+
+	denyViolations := checkDenylist(graph, denylist)
+	violations = append(violations, denyViolations...)
+
 	for _, v := range violations {
 		fmt.Fprintf(os.Stderr, "%s: %s %s\n", v.Assertion, v.Package, v.Detail)
 	}
