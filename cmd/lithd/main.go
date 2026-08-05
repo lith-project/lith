@@ -8,6 +8,7 @@ import (
 
 	"github.com/lith-project/lith/internal/core/config"
 	"github.com/lith-project/lith/internal/core/logging"
+	"github.com/lith-project/lith/internal/core/watch"
 )
 
 func main() {
@@ -44,6 +45,18 @@ func run(args []string, stdout, stderr io.Writer) int {
 
 	logger.Info(logging.EventDaemonStarting)
 	logger.Info(logging.EventConfigLoaded, logging.AttrVaultPath, cfg.Vault.Path)
+
+	var w watch.Watcher
+	if cfg.Watcher.Enabled {
+		w, err = watch.NewFSNotify(cfg.Vault.Path, logger)
+		if err != nil {
+			fmt.Fprintf(stderr, "lithd: %v\n", err)
+			return 2
+		}
+	} else {
+		w = watch.NewNoop()
+	}
+	_ = w // watcher not started yet; wired in a later task
 
 	return 0
 }

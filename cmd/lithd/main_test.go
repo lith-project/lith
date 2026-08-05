@@ -56,6 +56,12 @@ func TestRun(t *testing.T) {
 			wantCode:   2,
 			wantStderr: "log.format",
 		},
+		{
+			name:       "noop watcher disabled",
+			args:       []string{"--config", filepath.Join(testdata, "noop-watcher.yaml")},
+			wantCode:   0,
+			wantStderr: "",
+		},
 	}
 
 	for _, tt := range tests {
@@ -113,8 +119,8 @@ func TestRunJSONLogRecords(t *testing.T) {
 		records = append(records, rec)
 	}
 
-	if len(records) != 2 {
-		t.Fatalf("got %d log records, want 2", len(records))
+	if len(records) != 3 {
+		t.Fatalf("got %d log records, want 3", len(records))
 	}
 
 	// Record 1: daemon.starting
@@ -138,5 +144,10 @@ func TestRunJSONLogRecords(t *testing.T) {
 		} else if !filepath.IsAbs(vpStr) {
 			t.Errorf("record 2 vault_path = %v, want absolute path", vp)
 		}
+	}
+
+	// Record 3: vault.watching
+	if msg, ok := records[2]["msg"]; !ok || msg != "vault.watching" {
+		t.Errorf("record 3 msg = %v, want \"vault.watching\"", records[2]["msg"])
 	}
 }
