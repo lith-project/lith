@@ -7,13 +7,14 @@ import (
 	"os"
 
 	"github.com/lith-project/lith/internal/core/config"
+	"github.com/lith-project/lith/internal/core/logging"
 )
 
 func main() {
-	os.Exit(run(os.Args[1:], os.Stderr))
+	os.Exit(run(os.Args[1:], os.Stdout, os.Stderr))
 }
 
-func run(args []string, stderr io.Writer) int {
+func run(args []string, stdout, stderr io.Writer) int {
 	fs := flag.NewFlagSet("lithd", flag.ContinueOnError)
 	fs.SetOutput(stderr)
 
@@ -29,10 +30,20 @@ func run(args []string, stderr io.Writer) int {
 		return 2
 	}
 
-	if _, err := config.Load(*configPath); err != nil {
+	cfg, err := config.Load(*configPath)
+	if err != nil {
 		fmt.Fprintf(stderr, "lithd: %v\n", err)
 		return 2
 	}
+
+	logger, err := logging.New(stderr, cfg.Log)
+	if err != nil {
+		fmt.Fprintf(stderr, "lithd: %v\n", err)
+		return 2
+	}
+
+	logger.Info(logging.EventDaemonStarting)
+	logger.Info(logging.EventConfigLoaded, logging.AttrVaultPath, cfg.Vault.Path)
 
 	return 0
 }
