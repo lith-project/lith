@@ -47,7 +47,7 @@ jobs:
       - name: Check Relative Markdown Links (Lychee Offline)
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --no-progress --exclude-loopback --exclude-path 'tests/vault/corpus/**' --base . '**/*.md'
+          args: --offline --no-progress --exclude-loopback --exclude-path 'tests/vault/corpus/**' --base '${{ github.workspace }}' '**/*.md'
           fail: true
 
   rfc-metadata:
