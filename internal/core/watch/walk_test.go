@@ -42,18 +42,18 @@ func TestAddTreeNestedTempTree(t *testing.T) {
 	}
 
 	// Wait for event with timeout.
-	// On Windows, fsnotify may deliver directory-level events rather than
-	// exact file events, so accept any event whose path contains "test.txt"
-	// or "level3" — the test's point is that a deeply nested file is reachable.
+	// On Windows, fsnotify may deliver directory-level events for ancestor
+	// directories rather than the exact file. Accept any event whose path
+	// is a prefix of the test file (ancestor dir) or equals it.
 	select {
 	case event, ok := <-watcher.Events:
 		if !ok {
 			t.Fatal("watcher.Events channel closed")
 		}
 		if event.Name != testFile &&
-			!strings.Contains(event.Name, "test.txt") &&
-			!strings.Contains(event.Name, "level3") {
-			t.Errorf("expected event for %s or containing test.txt/level3, got %s", testFile, event.Name)
+			!strings.HasPrefix(testFile, event.Name+string(filepath.Separator)) &&
+			!strings.Contains(event.Name, "test.txt") {
+			t.Errorf("expected event for %s or ancestor, got %s", testFile, event.Name)
 		}
 	case err, ok := <-watcher.Errors:
 		if !ok {
