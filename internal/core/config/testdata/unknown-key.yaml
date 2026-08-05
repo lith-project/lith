@@ -1,0 +1,3 @@
+vault:
+  path: /tmp/test-vault
+unknown_key: value
