@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 )
@@ -176,6 +177,10 @@ func TestLoadFullConfig(t *testing.T) {
 }
 
 func TestLoadFilePermissionError(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("windows: file permissions not enforced for file owner")
+	}
+
 	// Create a temp file with no read permissions
 	tmpDir := t.TempDir()
 	unreadable := filepath.Join(tmpDir, "unreadable.yaml")

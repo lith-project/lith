@@ -20,7 +20,7 @@ func Load(path string) (*Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return nil, fmt.Errorf("config: %w: %s", ErrNotFound, err)
+			return nil, fmt.Errorf("config: %w: %w", ErrNotFound, err)
 		}
 		return nil, fmt.Errorf("config: %w", err)
 	}
