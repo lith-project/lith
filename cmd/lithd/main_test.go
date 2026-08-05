@@ -409,6 +409,35 @@ func TestRunShutdownBeginSignalName(t *testing.T) {
 	}
 }
 
+// TestRunShutdownBeginPrecedesReturn verifies that run does not return until
+// the shutdown.begin record has actually been written. main() ends in
+// os.Exit, which does not wait for goroutines, so a record still queued in
+// the logging goroutine when run returns is lost from the process output
+// entirely. The assertion is deliberately made without polling: waiting for
+// the record to appear would re-admit the very race being guarded against.
+func TestRunShutdownBeginPrecedesReturn(t *testing.T) {
+	newTestEnv(t)
+
+	sigNameCh := make(chan string, 1)
+	ctx, cancel := context.WithCancel(context.Background())
+	ctx = context.WithValue(ctx, signalNameKey{}, sigNameCh)
+	defer cancel()
+
+	var stdout, stderr lockedBuffer
+	result := startRun(ctx, t, []string{"--config", testdataPath(t, "noop-watcher.yaml")}, &stdout, &stderr)
+
+	waitForOutput(t, &stderr, "daemon.started")
+
+	sigNameCh <- "terminated"
+	cancel()
+	waitForExit(t, result, 0)
+
+	// run has returned; the record must already be there.
+	if out := stderr.String(); !strings.Contains(out, "msg=shutdown.begin") {
+		t.Errorf("shutdown.begin not logged by the time run returned:\n%s", out)
+	}
+}
+
 // TestRunDebounceOverride verifies that overriding debounce bounds in config
 // changes the effective bounds logged at startup. This proves the composition
 // root reads config and passes bounds explicitly.
