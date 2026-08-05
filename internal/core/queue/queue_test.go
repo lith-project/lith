@@ -2,6 +2,7 @@ package queue
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"sync"
 	"testing"
@@ -230,19 +231,19 @@ func TestConcurrent_ProducersAndConsumers(t *testing.T) {
 	var pushedCount int64
 	var mu sync.Mutex
 
-	// Producers.
+	// Producers — each uses a unique path to avoid coalescing.
 	for i := range numProducers {
 		wg.Add(1)
 		go func(prodID int) {
 			defer wg.Done()
 			localCount := 0
 			for j := range eventsPerProd {
+				// Unique path: producer ID * eventsPerProd + sequence number.
+				seq := prodID*eventsPerProd + j
 				e := watch.Event{
-					Path: makePath("concurrent/test.md"),
+					Path: makePath(fmt.Sprintf("evt_%d.md", seq)),
 					Op:   watch.OpWrite,
 				}
-				_ = prodID
-				_ = j
 				if q.Push(e) {
 					localCount++
 				}
