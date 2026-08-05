@@ -1,0 +1,9 @@
+vault:
+  path: /tmp/test-vault
+log:
+  format: json
+  level: debug
+watcher:
+  debounce:
+    quiet: 500ms
+    max_delay: 10s

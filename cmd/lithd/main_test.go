@@ -119,8 +119,8 @@ func TestRunJSONLogRecords(t *testing.T) {
 		records = append(records, rec)
 	}
 
-	if len(records) != 3 {
-		t.Fatalf("got %d log records, want 3", len(records))
+	if len(records) != 4 {
+		t.Fatalf("got %d log records, want 4", len(records))
 	}
 
 	// Record 1: daemon.starting
@@ -149,5 +149,66 @@ func TestRunJSONLogRecords(t *testing.T) {
 	// Record 3: vault.watching
 	if msg, ok := records[2]["msg"]; !ok || msg != "vault.watching" {
 		t.Errorf("record 3 msg = %v, want \"vault.watching\"", records[2]["msg"])
+	}
+
+	// Record 4: debounce.bounds with quiet and max_delay
+	if msg, ok := records[3]["msg"]; !ok || msg != "debounce.bounds" {
+		t.Errorf("record 4 msg = %v, want \"debounce.bounds\"", records[3]["msg"])
+	}
+	if quiet, ok := records[3]["quiet"]; !ok || quiet != "200ms" {
+		t.Errorf("record 4 quiet = %v, want \"200ms\"", records[3]["quiet"])
+	}
+	if maxDelay, ok := records[3]["max_delay"]; !ok || maxDelay != "5s" {
+		t.Errorf("record 4 max_delay = %v, want \"5s\"", records[3]["max_delay"])
+	}
+}
+
+// TestRunDebounceOverride verifies that overriding debounce bounds in config
+// changes the effective bounds logged at startup. This proves the composition
+// root reads config and passes bounds explicitly.
+func TestRunDebounceOverride(t *testing.T) {
+	_, thisFile, _, _ := runtime.Caller(0)
+	testdata := filepath.Join(filepath.Dir(thisFile), "testdata")
+
+	var stdout, stderr bytes.Buffer
+	got := run([]string{"--config", filepath.Join(testdata, "override-debounce.yaml")}, &stdout, &stderr)
+
+	if got != 0 {
+		t.Fatalf("run() = %d, want 0", got)
+	}
+
+	// Parse JSON log lines from stderr
+	lines := bytes.Split(stderr.Bytes(), []byte("\n"))
+	var records []map[string]interface{}
+	for _, line := range lines {
+		line = bytes.TrimSpace(line)
+		if len(line) == 0 {
+			continue
+		}
+		var rec map[string]interface{}
+		if err := json.Unmarshal(line, &rec); err != nil {
+			t.Fatalf("failed to parse JSON log line: %v\nline: %s", err, line)
+		}
+		records = append(records, rec)
+	}
+
+	// Find the debounce.bounds record
+	var boundsRec map[string]interface{}
+	for _, rec := range records {
+		if msg, ok := rec["msg"]; ok && msg == "debounce.bounds" {
+			boundsRec = rec
+			break
+		}
+	}
+	if boundsRec == nil {
+		t.Fatalf("no debounce.bounds log record found in %d records", len(records))
+	}
+
+	// Verify overridden bounds: quiet=500ms, max_delay=10s
+	if quiet, ok := boundsRec["quiet"]; !ok || quiet != "500ms" {
+		t.Errorf("debounce.bounds quiet = %v, want \"500ms\"", boundsRec["quiet"])
+	}
+	if maxDelay, ok := boundsRec["max_delay"]; !ok || maxDelay != "10s" {
+		t.Errorf("debounce.bounds max_delay = %v, want \"10s\"", boundsRec["max_delay"])
 	}
 }
