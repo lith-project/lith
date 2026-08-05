@@ -76,23 +76,50 @@ GitHub Milestone   M1-A · Lifecycle
    gh issue edit <N> --add-label agent:wip --add-assignee @me
    ```
 
-3. Branch per [CONTRIBUTING.md](CONTRIBUTING.md#3-submitting-pull-requests) —
+3. Branch from `main` per [CONTRIBUTING.md](CONTRIBUTING.md#3-submitting-pull-requests) —
    `feature/<N>-<slug>`, e.g. `feature/15-config-loading`.
 4. Read the issue body in full. **Scope, Non-Goals, Definition of Done, Dependencies,
    and Principles Check are the contract**, and every RFC the issue links is required
    reading before the first line of code.
 5. Implement against the Definition of Done. The Non-Goals list is binding: an issue
    that says "no hot-reload" means the PR does not add hot-reload, however small the diff.
-6. Open a PR referencing `Closes #<N>`.
+6. Open a PR **against `main`** referencing `Closes #<N>`.
 
 ### Rules
 
 - **One claim at a time.** Release a claim you are not actively working
   (`gh issue edit <N> --remove-label agent:wip --remove-assignee @me`).
+- **`main` is the only long-lived branch.** Cut `feature/<N>-<slug>` from it and target
+  it. A pull request merged into any other branch does not close its issue — GitHub
+  honours `Closes #<N>` only on the default branch — and it is not seen by the
+  workflows, which are keyed to `main`. Both failures are silent.
+- **A merged pull request is not a finished task.** Confirm the issue is closed and
+  `agent:wip` is gone before claiming the next one. A claimed issue whose work has
+  already landed blocks every task behind it, and `tools/next-task.sh` reports the
+  queue as empty rather than as stuck.
 - **Never work an issue with an open blocker.** If the dependency looks wrong, argue it
   on the issue and let it be re-wired. Do not route around the graph.
 - **Never invent scope.** Work not covered by an open issue needs an issue first, and
   architectural work needs an RFC (§2).
+
+### Working in parallel
+
+More than one agent can work at once. What limits it is the `blocked_by` graph, not a
+rule — `tools/next-task.sh --all` lists every actionable task, and two agents holding
+two claims from that list is the intended shape.
+
+Two constraints decide whether tasks are genuinely concurrent, and both are visible in
+the issue body:
+
+- **Files.** Tasks that name disjoint paths in their Files table can run together.
+  Tasks that both modify `cmd/lithd/main.go` — the wiring tasks at the end of each
+  epic — cannot, and are chained for that reason.
+- **Contract.** A task that consumes an exported signature waits for the task that
+  defines it. A task that merely runs alongside it does not.
+
+Encode both in `blocked_by` when adding work. A chain that serialises tasks touching
+different packages is a bug in the plan: it idles agents and hides which dependencies
+are real.
 
 ### Adding work
 
