@@ -30,34 +30,13 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23.x'
+          go-version-file: go.mod
 
       - name: Verify Conformance Checker & Assertions (C-1 through C-6)
         run: |
           echo "Checking for tools/conformance implementation (Milestone M1-A)..."
-          if [ -f "go.mod" ] && [ -d "tools/conformance" ]; then
-            echo "Running conformance self-tests against fixture trees (RFC-0006/C-6)..."
-            go test -v ./tools/conformance/...
+          echo "Running conformance self-tests against fixture trees (RFC-0006/C-6)..."
+          go test -v ./tools/conformance/...
 
-            echo "Enforcing package classification, import boundaries, and core dependency denylist (C-1 through C-5)..."
-            make conformance
-          else
-            echo "::notice::go.mod or tools/conformance not found. Skipping mechanical boundary enforcement until Milestone M1-A lands."
-          fi
-
-      - name: Fallback Core Denylist Check
-        run: |
-          if [ -f "go.mod" ] && [ -f "tools/conformance/core-dependency-denylist.txt" ]; then
-            echo "Checking core package transitive dependencies against denylist..."
-            CORE_DEPS=$(go list -deps ./internal/core/... 2>/dev/null || true)
-            while read -r prefix || [ -n "$prefix" ]; do
-              # Skip comments and empty lines
-              if [[ "$prefix" =~ ^#.*$ ]] || [[ -z "$prefix" ]]; then
-                continue
-              fi
-              if echo "$CORE_DEPS" | grep -q "^${prefix}"; then
-                echo "::error::Core semantic independence violation (RFC-0001/C-1): internal/core transitively imported forbidden module: $prefix"
-                exit 1
-              fi
-            done < tools/conformance/core-dependency-denylist.txt
-          fi
+          echo "Enforcing package classification, import boundaries, and core dependency denylist (C-1 through C-5)..."
+          make conformance
