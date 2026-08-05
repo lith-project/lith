@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -14,7 +15,11 @@ import (
 func TestFixtures(t *testing.T) {
 	// Build the checker binary once into a temp directory.
 	binDir := t.TempDir()
-	binPath := filepath.Join(binDir, "boundary")
+	binName := "boundary"
+	if runtime.GOOS == "windows" {
+		binName += ".exe"
+	}
+	binPath := filepath.Join(binDir, binName)
 
 	build := exec.Command("go", "build", "-o", binPath, ".")
 	// CWD is already the boundary package dir (tools/conformance/boundary/) when go test runs.
