@@ -332,51 +332,61 @@ None, and none will ever exist. Schema evolution is expressed as a version bump 
 ## Conformance
 
 ### C-1: Rebuild determinism
+
 **Assertion:** For an unchanged vault, the canonical dump after a full rebuild MUST be identical to the canonical dump before it, and identical to the dump produced by incremental indexing of the same vault.
 **Verification:** Integration test over the test vault corpus — index, dump, delete store, rebuild, dump, compare SHA-256; then a third comparison against an incrementally built store. Runs on every CI build. Refines [RFC-0001/C-2](0001-project-vision.md#c-2-rebuild-determinism).
 **Milestone:** M1-B
 
 ### C-2: Total column classification
+
 **Assertion:** Every column in the schema MUST be classified `durable` or `volatile`. An unclassified column MUST fail the build.
 **Verification:** CI check comparing the schema's column set against the classification manifest; any symmetric difference fails.
 **Milestone:** M1-B
 
 ### C-3: Volatile independence
+
 **Assertion:** No query answer MAY depend on a volatile column.
 **Verification:** Test perturbing every volatile value — timestamps shifted, builder version altered, rows reinserted in shuffled order — then re-running the full query suite; results must be identical.
 **Milestone:** M1-B
 
 ### C-4: No migration path
+
 **Assertion:** The storage layer MUST NOT contain schema migration logic. A `schema_version` mismatch in either direction MUST trigger a full rebuild.
 **Verification:** Static check that no `ALTER TABLE` or migration construct exists in the storage package, plus a test opening stores stamped with older and newer versions and asserting a rebuild in both cases.
 **Milestone:** M1-B
 
 ### C-5: Atomic rebuild
+
 **Assertion:** A rebuild MUST NOT mutate the live store. A crash at any point MUST leave either the complete previous store or the complete new store, never a mixture, and never an unreadable store.
 **Verification:** Crash-injection test at each labelled point of the rebuild flow; after each, the store opens and its canonical dump matches one of the two expected dumps exactly.
 **Milestone:** M1-B
 
 ### C-6: Vault isolation
+
 **Assertion:** The storage layer MUST NOT create or write any file inside the vault root.
 **Verification:** Integration test running a full index and rebuild against the corpus with the vault directory watched; any created or modified path under the vault root fails the test. Complements [C-10](#c-10-no-vault-write-path).
 **Milestone:** M1-A
 
 ### C-7: Content-hash authority
+
 **Assertion:** Change detection MUST treat the content hash as authoritative. `mtime` and size MAY be used as hints only, and MUST NOT be sufficient to conclude a file is unchanged.
 **Verification:** `EC-DYN-002` scenario — identical `mtime` and size, changed content — must be detected and re-indexed.
 **Milestone:** M1-B
 
 ### C-8: Total ordering
+
 **Assertion:** Every persisted ordering and every query result ordering MUST be total, terminating in `note_id`. Ordering by rowid, insertion order, or an unstable score alone is prohibited.
 **Verification:** Static check for rowid-based ordering in the storage and query packages, plus golden tests executed with shuffled insertion order requiring identical result sequences. Supports [RFC-0001/C-7](0001-project-vision.md#c-7-deterministic-core-search).
 **Milestone:** M1-C
 
 ### C-9: Batch atomicity
+
 **Assertion:** A change batch MUST commit fully or not at all. A crash mid-batch MUST leave the prior consistent state.
 **Verification:** Crash-injection test during a multi-note batch; after recovery the canonical dump must equal the pre-batch dump exactly.
 **Milestone:** M1-B
 
 ### C-10: No vault write path
+
 **Assertion:** The storage package MUST NOT reference filesystem write primitives targeting the vault, and MUST expose no API that writes vault content.
 **Verification:** Static check over the storage package's exported surface and import graph. Complements [RFC-0001/C-3](0001-project-vision.md#c-3-single-write-path) and [RFC-0002/C-3](0002-domain-model.md#c-3-no-re-serialization-path).
 **Milestone:** M1-B
@@ -411,6 +421,7 @@ None, and none will ever exist. Schema evolution is expressed as a version bump 
 ## References
 
 ### Internal
+
 - [RFC-0001: Project Vision & Strategic Architecture](0001-project-vision.md)
 - [RFC-0002: Domain Model & Vault AST](0002-domain-model.md)
 - [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md)
@@ -419,6 +430,7 @@ None, and none will ever exist. Schema evolution is expressed as a version bump 
 - [rfcs/README.md](README.md)
 
 ### External
+
 - [SQLite Documentation](https://www.sqlite.org/docs.html)
 - [SQLite Write-Ahead Logging](https://www.sqlite.org/wal.html)
 - [SQLite FTS5](https://www.sqlite.org/fts5.html)

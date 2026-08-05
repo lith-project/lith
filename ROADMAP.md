@@ -8,7 +8,7 @@ This document outlines the strategic, milestone-driven roadmap for **Lith**. Dev
 
 These are different things and are tracked differently:
 
-```
+```text
 Milestone  →  an outcome that is either reached or not reached
 Epic       →  a collection of implementation work required to reach it
 Issue      →  a discrete task inside an epic
@@ -22,7 +22,7 @@ Sub-milestones use **letters**, not decimals (`M1-B`, not `M1.1`), so a phase ca
 
 ## Milestone Map
 
-```
+```text
 M0  Project Foundation      Governance, principles, RFC system, engineering workflow
 M1  Knowledge Engine        A. Lifecycle   B. Parse & Store   C. Query   D. Incremental Indexing
 M2  Semantic Platform       A. Graph       B. Capabilities    C. Plugins
@@ -39,6 +39,7 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 **Objective**: Establish governance, the RFC process, engineering workflow, and the architectural foundation that makes implementation almost inevitable.
 
 **Deliverables**
+
 - [x] Repository housekeeping & Apache 2.0 licensing
 - [x] Immutable project principles ([PROJECT_PRINCIPLES.md](PROJECT_PRINCIPLES.md))
 - [x] RFC framework, index, template, and lifecycle ([rfcs/README.md](rfcs/README.md))
@@ -58,6 +59,7 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 > **On the epic breakout.** This was originally scoped as "epics and issues broken out from *each* accepted RFC". It is deliberately narrowed to *the next milestone to begin*, and repeated at the start of each subsequent milestone. Writing M1-D's issues today means writing them before M1-A, M1-B, and M1-C have taught us anything — they would be rewritten, and in the meantime they would look like decisions rather than guesses. The RFCs are the durable artefact; issues are the disposable plan for the work immediately in front of us.
 
 **Definition of Done**
+
 1. RFC-0001 through RFC-0005 are all `Accepted`.
 2. Every conformance assertion across those RFCs has a verification method and an owning milestone.
 3. The capability catalog exists, and every capability **scheduled for M1** names an owning RFC. Capabilities beyond M1 may be catalogued without one — the catalog is a roadmap, and narrowing it to what is already specified would reduce it to a table of contents.
@@ -75,16 +77,17 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 
 Deliberately boring. Proves the service lifecycle and nothing else.
 
-* Parse configuration
-* Start the daemon
-* Watch one vault
-* Detect filesystem events
-* Log them
-* Exit cleanly
+- Parse configuration
+- Start the daemon
+- Watch one vault
+- Detect filesystem events
+- Log them
+- Exit cleanly
 
 No parser. No SQLite. No graph. No MCP.
 
 **Definition of Done**
+
 1. Daemon starts from a config file and exits cleanly on signal.
 2. Filesystem events for one vault are detected and logged.
 3. Restart leaves no orphaned state or lock.
@@ -101,6 +104,7 @@ Path identity is its own epic, ahead of the watcher, and was not in the original
 Filesystem → Markdown parser → SQLite metadata. Still no AI.
 
 **Definition of Done**
+
 1. Per-note parse goldens are generated for the committed corpus and reviewed as a diff — carried over from M0, where they were deliberately not hand-written ([tests/vault/README.md](tests/vault/README.md)).
 2. Every note in the test vault corpus parses to its golden result.
 3. A full index of the corpus completes with no unhandled error.
@@ -114,6 +118,7 @@ Filesystem → Markdown parser → SQLite metadata. Still no AI.
 `lith search ceph` returns correct results against an indexed vault. If this works, the architectural core is proven.
 
 **Definition of Done**
+
 1. Full-text and metadata search return correct, deterministic results — [RFC-0001/C-7](rfcs/0001-project-vision.md#c-7-deterministic-core-search).
 2. Every exposed capability appears in the catalog — [RFC-0001/C-4](rfcs/0001-project-vision.md#c-4-capability-catalog-completeness).
 3. The CLI reaches the engine only through the capability registry — [RFC-0001/C-5](rfcs/0001-project-vision.md#c-5-interface-adapter-purity), enforced mechanically by the boundary checker once `internal/adapter/` and `cmd/lith` exist — [RFC-0006/C-3](rfcs/0006-package-layout.md#c-3-adapter-purity). M1-A deliberately builds neither subject package, so C-3 is carried forward to here.
@@ -126,6 +131,7 @@ Filesystem → Markdown parser → SQLite metadata. Still no AI.
 Change a file; only what changed is re-indexed.
 
 **Definition of Done**
+
 1. Incremental index state is identical to a full re-index of the same vault.
 2. `EC-DYN-*` scenarios pass, including identical `mtime` + size with changed content.
 3. A missed or dropped event is recovered by the reconciliation scan.
@@ -141,9 +147,9 @@ Change a file; only what changed is re-indexed.
 
 **Objective**: Extend understanding beyond a single note, and open the plugin seam.
 
-* **M2-A · Graph** — link graph queries, backlinks, orphan and dangling-reference detection, entity resolution
-* **M2-B · Capabilities** — capability surface beyond search; catalog promotion to `Stable`
-* **M2-C · Plugins** — plugin host, loading, lifecycle, sandboxing; first optional capability (semantic search) proves the seam. Plugin purity — [RFC-0006/C-7](rfcs/0006-package-layout.md#c-7-plugin-purity) — is enforced by the boundary checker from here, the milestone that first creates `internal/plugin/`
+- **M2-A · Graph** — link graph queries, backlinks, orphan and dangling-reference detection, entity resolution
+- **M2-B · Capabilities** — capability surface beyond search; catalog promotion to `Stable`
+- **M2-C · Plugins** — plugin host, loading, lifecycle, sandboxing; first optional capability (semantic search) proves the seam. Plugin purity — [RFC-0006/C-7](rfcs/0006-package-layout.md#c-7-plugin-purity) — is enforced by the boundary checker from here, the milestone that first creates `internal/plugin/`
 
 Embeddings, vector storage, and semantic ranking enter here as plugins — never in the core ([RFC-0001 §4](rfcs/0001-project-vision.md)).
 
@@ -153,10 +159,10 @@ Embeddings, vector storage, and semantic ranking enter here as plugins — never
 
 **Objective**: Expose the engine through peer adapters. Each is an adapter over the same capability registry; none is privileged.
 
-* **M3-A · CLI** — full command surface
-* **M3-B · REST** — local HTTP API
-* **M3-C · MCP** — Model Context Protocol server
-* **M3-D · SDK** — native Go SDK for embedded use
+- **M3-A · CLI** — full command surface
+- **M3-B · REST** — local HTTP API
+- **M3-C · MCP** — Model Context Protocol server
+- **M3-D · SDK** — native Go SDK for embedded use
 
 ---
 
@@ -164,10 +170,10 @@ Embeddings, vector storage, and semantic ranking enter here as plugins — never
 
 **Objective**: Proactive knowledge maintenance and safe agent-driven change.
 
-* **M4-A · Planner** — proactive analysis, orphan detection, continuous synthesis
-* **M4-B · Jobs** — long-running and scheduled operations
-* **M4-C · Transactions** — agent-proposed change with validation and approval
-* **M4-D · Refactoring Engine** — safe semantic modification of vault content
+- **M4-A · Planner** — proactive analysis, orphan detection, continuous synthesis
+- **M4-B · Jobs** — long-running and scheduled operations
+- **M4-C · Transactions** — agent-proposed change with validation and approval
+- **M4-D · Refactoring Engine** — safe semantic modification of vault content
 
 ---
 

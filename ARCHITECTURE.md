@@ -8,7 +8,7 @@ For executive vision, see [VISION.md](VISION.md). For constitutional principles,
 
 ## Strategic Vision
 
-Lith is a local-first semantic knowledge engine for Markdown vaults and knowledge bases. 
+Lith is a local-first semantic knowledge engine for Markdown vaults and knowledge bases.
 
 It continuously indexes, structures, and exposes vault knowledge through high-level domain capabilities, ensuring that AI agents and tools interact with connected semantic context rather than unindexed raw text.
 
@@ -16,7 +16,7 @@ It continuously indexes, structures, and exposes vault knowledge through high-le
 
 ## Engineering Hierarchy
 
-```
+```text
 VISION.md              (Executive Vision & Scope)
         │
         ▼
@@ -60,6 +60,7 @@ Code
 ## Deployment Models
 
 Lith is designed to run in multiple deployment modes:
+
 * **Embedded Engine**: Integrated directly into Go applications or CLI binaries as a library.
 * **Local Background Daemon**: Running locally alongside markdown editors (such as Obsidian) to maintain live indexes.
 * **Sidecar Container / Process**: Operating alongside AI agent runners in isolated local or server environments.

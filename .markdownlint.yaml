@@ -16,3 +16,20 @@ MD024:
 
 # MD026 / no-trailing-punctuation - Allow punctuation in headings (useful for interrogative section titles in docs)
 MD026: false
+
+# MD025 / single-title - Every RFC carries YAML frontmatter with a `title:` and then opens
+# with `# RFC-000X: …`. Markdownlint counts the frontmatter title as the document's first
+# H1 and reports the real heading as a second one. Clearing the pattern stops frontmatter
+# being read as a heading; the rule still enforces one H1 per document.
+MD025:
+  front_matter_title: ""
+
+# MD004 / ul-style - A document must not mix unordered list markers. Which marker it uses
+# is left to the document rather than fixed repository-wide.
+MD004:
+  style: consistent
+
+# MD036 / no-emphasis-as-heading - `**Definition of Done**` and `**Deliverables**` introduce
+# blocks in ROADMAP.md and the RFCs without belonging in the table of contents. Promoting
+# them to real headings would put every milestone's boilerplate into the document outline.
+MD036: false

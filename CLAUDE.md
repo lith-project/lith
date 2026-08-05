@@ -28,14 +28,15 @@ This document provides context, conventions, and operational rules for AI assist
 ## Go Development & Conventions (Post-M0 Implementation)
 
 When Go codebase development begins:
-* **Tooling Commands**:
+
+- **Tooling Commands**:
   - Build: `go build ./...`
   - Test: `go test -v ./...`
   - Lint: `golangci-lint run`
   - Format: `gofmt -s -w .` / `goimports -w .`
-* **Error Handling**: Always return explicit, wrapped errors (`fmt.Errorf("failed to parse file %s: %w", path, err)`).
-* **Concurrency**: Use context cancellation (`context.Context`) for all long-running or worker pool operations.
-* **Testing**: Write table-driven unit tests. Keep mock interfaces small and localized.
+- **Error Handling**: Always return explicit, wrapped errors (`fmt.Errorf("failed to parse file %s: %w", path, err)`).
+- **Concurrency**: Use context cancellation (`context.Context`) for all long-running or worker pool operations.
+- **Testing**: Write table-driven unit tests. Keep mock interfaces small and localized.
 
 ---
 

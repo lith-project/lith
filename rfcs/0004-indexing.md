@@ -256,51 +256,61 @@ None. No implementation exists.
 ## Conformance
 
 ### C-1: Convergence
+
 **Assertion:** After any sequence of filesystem operations, once quiescent, the incrementally maintained canonical dump MUST equal the dump produced by a full rebuild of the same vault.
 **Verification:** Randomized operation-sequence test over the corpus — create, modify, delete, rename, directory rename, atomic save — then quiesce, dump, full rebuild, dump, compare. Seeded and reproducible. Extends [RFC-0003/C-1](0003-storage-engine.md#c-1-rebuild-determinism).
 **Milestone:** M1-D
 
 ### C-2: Watcher independence
+
 **Assertion:** With the filesystem watcher disabled, the system MUST still converge to the same canonical dump. No index state may be reachable only via the watcher path.
 **Verification:** The full convergence suite executed twice — watcher enabled and watcher disabled — requiring identical dumps.
 **Milestone:** M1-D
 
 ### C-3: No stale resolutions
+
 **Assertion:** After any note is added, removed, renamed, or has its alias set changed, all affected resolutions MUST be recomputed. No resolution outcome may differ from a full rebuild.
 **Verification:** Targeted tests for each fan-out case — broken becoming resolved, resolved becoming ambiguous, alias added and removed — each comparing resolution rows against a full rebuild. Covers `EC-LNK-011`, `EC-LNK-013`, and `EC-LNK-014`. `EC-LNK-012` is excluded deliberately: circular links are a traversal concern, and adding or removing a note does not change whether a cycle resolves.
 **Milestone:** M1-D
 
 ### C-4: Scan hashes every file
+
 **Assertion:** A reconciliation scan MUST compute the content hash of every candidate file. Size and modification time MAY order work but MUST NOT be sufficient to conclude a file is unchanged.
 **Verification:** `EC-DYN-002` — identical size and modification time, changed content — must be detected by scan alone with the watcher disabled. Static check that no scan path skips hashing based on a `stat` comparison.
 **Milestone:** M1-D
 
 ### C-5: Bounded debounce
+
 **Assertion:** Debouncing MUST have a maximum delay — **5 seconds** for M1 (§2). A continuously modified file MUST be indexed within that bound rather than deferred indefinitely.
 **Verification:** Test writing to a file continuously for longer than the bound and asserting an index update occurs within it.
 **Milestone:** M1-D
 
 ### C-6: Directory rename invalidation
+
 **Assertion:** A directory rename MUST invalidate every note beneath it, whether or not per-child events are delivered.
 **Verification:** `EC-DYN-006` — rename a populated directory, quiesce, compare against a full rebuild.
 **Milestone:** M1-D
 
 ### C-7: Watcher gap recovery
+
 **Assertion:** A watcher gap — overflow, error, platform limit, or unsupported filesystem — MUST force a reconciliation scan and MUST emit a diagnostic.
 **Verification:** Fault-injection test simulating overflow and watcher error; assert a scan is enqueued, the diagnostic is emitted, and the final dump matches a full rebuild.
 **Milestone:** M1-D
 
 ### C-8: Symlink containment
+
 **Assertion:** Indexing MUST NOT traverse a symlink whose target lies outside the vault root, and MUST NOT loop on symlink cycles.
 **Verification:** `EC-FS-013`, `EC-FS-014`, `EC-FS-015` plus a generated symlink cycle; assert no path outside the vault root is read and that the walk terminates.
 **Milestone:** M1-B
 
 ### C-9: Graph is derived
+
 **Assertion:** Edges and backlinks MUST be derivable from resolution rows alone. Materialized backlinks MUST agree with a direct scan of edges.
 **Verification:** Test comparing materialized backlinks against those computed by scanning edges, over the corpus and over a generated vault.
 **Milestone:** M1-D
 
 ### C-10: Atomic-save handling
+
 **Assertion:** An atomic-save pattern — write temp, rename over target — MUST be indexed as a modification of the target and MUST NOT produce a deletion, even transiently in committed state.
 **Verification:** `EC-DYN-005` — perform atomic saves while querying; assert the note is never absent from committed state and that the final dump matches a full rebuild.
 **Milestone:** M1-D
@@ -334,6 +344,7 @@ None. No implementation exists.
 ## References
 
 ### Internal
+
 - [RFC-0001: Project Vision & Strategic Architecture](0001-project-vision.md)
 - [RFC-0002: Domain Model & Vault AST](0002-domain-model.md)
 - [RFC-0003: Storage Engine & State Rebuilds](0003-storage-engine.md)
@@ -343,6 +354,7 @@ None. No implementation exists.
 - [docs/testing/test-vault-spec.md](../docs/testing/test-vault-spec.md)
 
 ### External
+
 - [Obsidian Internal Links](https://help.obsidian.md/Editing+and+formatting/Internal+links)
 - [fsnotify](https://github.com/fsnotify/fsnotify)
 - [RFC 2119 — Key words for use in RFCs](https://www.rfc-editor.org/rfc/rfc2119)
