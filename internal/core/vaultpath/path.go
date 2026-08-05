@@ -26,9 +26,16 @@ func New(vaultRoot, absPath string) (Path, error) {
 	rootClean := path.Clean(rootFwd)
 	pathClean := path.Clean(pathFwd)
 
-	rel, err := filepath.Rel(rootClean, pathClean)
-	if err != nil {
-		return Path{}, fmt.Errorf("vaultpath: %w", ErrOutsideVault)
+	// Compute relative path using forward-slash-normalized, cleaned strings.
+	// filepath.Rel is not safe here: on Windows it uses backslash semantics and
+	// mishandles forward-slash-absolute paths like "/vault".
+	var rel string
+	if pathClean == rootClean {
+		rel = "."
+	} else if strings.HasPrefix(pathClean, rootClean+"/") {
+		rel = pathClean[len(rootClean)+1:]
+	} else {
+		rel = ".."
 	}
 
 	// filepath.Rel returns OS-native separators; the identity must always be
