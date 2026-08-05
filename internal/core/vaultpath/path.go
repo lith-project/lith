@@ -46,7 +46,7 @@ func New(vaultRoot, absPath string) (Path, error) {
 	}
 
 	return Path{
-		id:  rel,
+		id:  normalizeID(rel),
 		raw: absPath,
 	}, nil
 }
