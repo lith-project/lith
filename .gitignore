@@ -30,3 +30,7 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Lith build artifacts (composition-root binaries)
+/lithd
+/lith
