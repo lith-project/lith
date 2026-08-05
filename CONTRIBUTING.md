@@ -26,7 +26,7 @@ If you have an architectural idea or major feature proposal:
 * Provide clear reproduction steps and context.
 
 ### 3. Submitting Pull Requests
-1. Fork the repository and create a descriptive branch name (e.g., `feature/link-graph` or `fix/parser-edge-case`).
+1. Fork the repository and create a descriptive branch name (e.g., `feature/link-graph` or `fix/parser-edge-case`). Cut it from `main` and target `main` — it is the only long-lived branch, and the CI workflows and issue auto-closing are both keyed to it.
 2. Keep commits concise and logical. Write descriptive commit messages.
 3. Ensure all tests and static analysis pass before requesting review.
 4. Ensure your PR description references any relevant GitHub Issue / RFC numbers.
