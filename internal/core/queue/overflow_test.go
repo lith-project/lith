@@ -336,8 +336,8 @@ func TestCoalesceByPath_ShedNewPath_EmitsLog(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	q.Push(makeEvent("a.md", watch.OpWrite))     // fills queue
-	q.Push(makeEvent("b.md", watch.OpWrite))     // different path at capacity — shed
+	q.Push(makeEvent("a.md", watch.OpWrite)) // fills queue
+	q.Push(makeEvent("b.md", watch.OpWrite)) // different path at capacity — shed
 
 	// Wait for flush.
 	q.limiter.waitFlush()
@@ -435,7 +435,7 @@ func TestShedLog_RateLimited(t *testing.T) {
 	numLines := 0
 	for dec.More() {
 		numLines++
-		dec.Decode(&struct{}{})
+		_ = dec.Decode(&struct{}{})
 	}
 	if numLines != 1 {
 		t.Errorf("expected 1 log line, got %d", numLines)
@@ -471,9 +471,9 @@ func TestConcurrent_Push_Pop(t *testing.T) {
 			defer wg.Done()
 			local := 0
 			for j := range eventsPer {
-			// Unique path: producer ID * eventsPer + sequence number.
-			seq := prodID*eventsPer + j
-			name := fmt.Sprintf("evt_%d.md", seq)
+				// Unique path: producer ID * eventsPer + sequence number.
+				seq := prodID*eventsPer + j
+				name := fmt.Sprintf("evt_%d.md", seq)
 				if q.Push(makeEvent(name, watch.OpWrite)) {
 					local++
 				}

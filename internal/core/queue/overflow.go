@@ -97,17 +97,3 @@ func (r *rateLimiter) waitFlush() {
 		<-done
 	}
 }
-
-// reset stops the timer and returns the accumulated count. Used in tests.
-func (r *rateLimiter) reset() int {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-
-	if r.timer != nil {
-		r.timer.Stop()
-		r.timer = nil
-	}
-	count := r.count
-	r.count = 0
-	return count
-}
