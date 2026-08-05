@@ -13,6 +13,7 @@ func TestEventUniqueness(t *testing.T) {
 		EventDaemonStarting, EventDaemonStarted, EventConfigLoaded,
 		EventVaultWatching, EventFileChanged, EventWatcherGap,
 		EventShutdownBegin, EventShutdownDone, EventError,
+		EventQueueOverflow,
 	}
 	seen := make(map[string]string) // value → first constant name
 	for _, v := range events {
@@ -25,6 +26,7 @@ func TestEventUniqueness(t *testing.T) {
 	attrs := []string{
 		AttrVaultPath, AttrPath, AttrOp, AttrCode,
 		AttrCause, AttrSignal, AttrDuration, AttrCount,
+		AttrPolicy,
 	}
 	seen = make(map[string]string)
 	for _, v := range attrs {
@@ -46,6 +48,7 @@ func TestEventFieldNames(t *testing.T) {
 		EventShutdownBegin:  AttrCause,
 		EventShutdownDone:   AttrDuration,
 		EventError:          AttrCode,
+		EventQueueOverflow:  AttrPath,
 	}
 
 	for event, attrKey := range events {

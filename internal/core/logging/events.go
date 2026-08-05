@@ -11,6 +11,7 @@ const (
 	EventShutdownBegin  = "shutdown.begin"
 	EventShutdownDone   = "shutdown.done"
 	EventError          = "error"
+	EventQueueOverflow  = "queue.overflow"
 )
 
 // Attribute keys. Every event uses these names and no synonyms.
@@ -23,4 +24,5 @@ const (
 	AttrSignal    = "signal"
 	AttrDuration  = "duration_ms"
 	AttrCount     = "count"
+	AttrPolicy    = "policy"
 )
