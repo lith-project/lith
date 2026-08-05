@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -21,7 +22,9 @@ func loadDenylist(path string) ([]denylistEntry, error) {
 	if err != nil {
 		return nil, fmt.Errorf("opening denylist: %w", err)
 	}
-	defer f.Close()
+	// Close error is intentionally ignored: the scanner reports read errors
+	// and the file is opened read-only.
+	defer func() { _ = f.Close() }()
 
 	var entries []denylistEntry
 	scanner := bufio.NewScanner(f)
@@ -51,7 +54,7 @@ type depGraphPkg struct {
 
 // goListDepPkg mirrors the JSON structure emitted by "go list -deps -json".
 type goListDepPkg struct {
-	ImportPath string `json:"ImportPath"`
+	ImportPath string   `json:"ImportPath"`
 	Imports    []string `json:"Imports"`
 	Module     *struct {
 		Path string `json:"Path"`
@@ -97,7 +100,8 @@ func buildCoreDepGraph(modulePrefix string) (*coreDepGraph, error) {
 
 	if err := cmd.Wait(); err != nil {
 		// "no Go files" or "no packages" is not an error — just no core to check.
-		if exitErr, ok := err.(*exec.ExitError); ok && exitErr.ExitCode() != 0 {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) && exitErr.ExitCode() != 0 {
 			return graph, nil
 		}
 		return nil, fmt.Errorf("go list failed: %w", err)

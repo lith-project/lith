@@ -14,8 +14,8 @@ type goListPackage struct {
 }
 
 const (
-	modulePrefix      = "github.com/lith-project/lith"
-	denylistRelPath   = "tools/conformance/core-dependency-denylist.txt"
+	modulePrefix    = "github.com/lith-project/lith"
+	denylistRelPath = "tools/conformance/core-dependency-denylist.txt"
 )
 
 func main() {
@@ -40,10 +40,7 @@ func main() {
 			fmt.Fprintf(os.Stderr, "error: decoding go list output: %v\n", err)
 			os.Exit(2)
 		}
-		pkgs = append(pkgs, PackageInfo{
-			ImportPath: p.ImportPath,
-			Imports:    p.Imports,
-		})
+		pkgs = append(pkgs, PackageInfo(p))
 	}
 
 	if err := cmd.Wait(); err != nil {
