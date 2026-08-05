@@ -33,6 +33,7 @@ jobs:
         with:
           version: v1.62.2
           args: --timeout=5m
+          install-mode: goinstall
 
   vulnerability-scan:
     name: Go Dependency Vulnerability Scan
