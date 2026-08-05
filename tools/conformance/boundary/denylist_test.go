@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -240,12 +241,19 @@ func TestTraceChainNoPath(t *testing.T) {
 	}
 }
 
-func TestBuildCoreDepGraphNoCorePkgs(t *testing.T) {
+func TestBuildCoreDepGraph(t *testing.T) {
 	graph, err := buildCoreDepGraph("github.com/lith-project/lith")
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
-	if len(graph.packages) != 0 {
-		t.Errorf("expected empty graph, got %d packages", len(graph.packages))
+	if len(graph.packages) == 0 {
+		t.Error("expected core dependency graph to be non-empty once internal/core/ has packages")
+	}
+	// Every resolved package that lives in the main module must be under
+	// internal/core/ (the graph is scoped to ./internal/core/...).
+	for path := range graph.packages {
+		if strings.HasPrefix(path, "github.com/lith-project/lith/") && !isCorePackage(path) {
+			t.Errorf("graph contains non-core main-module package %q", path)
+		}
 	}
 }
