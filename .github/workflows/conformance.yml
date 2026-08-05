@@ -40,7 +40,7 @@ jobs:
             go test -v ./tools/conformance/...
 
             echo "Enforcing package classification, import boundaries, and core dependency denylist (C-1 through C-5)..."
-            go run ./tools/conformance -check ./...
+            make conformance
           else
             echo "::notice::go.mod or tools/conformance not found. Skipping mechanical boundary enforcement until Milestone M1-A lands."
           fi
