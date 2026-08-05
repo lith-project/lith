@@ -5,8 +5,10 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/fsnotify/fsnotify"
+
 	"github.com/lith-project/lith/internal/core/logging"
 )
 
@@ -167,7 +169,7 @@ func containsPath(vaultRoot, target string) bool {
 
 	// Check if target starts with root + separator to avoid /vault-evil
 	// matching /vault.
-	return filepath.HasPrefix(cleanTarget, cleanRoot+string(filepath.Separator))
+	return strings.HasPrefix(cleanTarget, cleanRoot+string(filepath.Separator))
 }
 
 // readDir reads directory entries, returning an error if the directory
