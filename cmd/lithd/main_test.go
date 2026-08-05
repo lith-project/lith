@@ -56,7 +56,7 @@ func testdataPath(t *testing.T, name string) string {
 }
 
 // startRun invokes run in a goroutine; the returned channel receives the exit code.
-func startRun(t *testing.T, ctx context.Context, args []string, stdout, stderr io.Writer) <-chan int {
+func startRun(ctx context.Context, t *testing.T, args []string, stdout, stderr io.Writer) <-chan int {
 	t.Helper()
 	result := make(chan int, 1)
 	go func() { result <- run(ctx, args, stdout, stderr) }()
@@ -186,7 +186,7 @@ func TestRunNoopWatcherCancellation(t *testing.T) {
 	defer cancel()
 
 	var stdout, stderr lockedBuffer
-	result := startRun(t, ctx, []string{"--config", testdataPath(t, "noop-watcher.yaml")}, &stdout, &stderr)
+	result := startRun(ctx, t, []string{"--config", testdataPath(t, "noop-watcher.yaml")}, &stdout, &stderr)
 
 	waitForOutput(t, &stderr, "daemon.started")
 	cancel()
@@ -206,7 +206,7 @@ func TestRunWatcherEnabled(t *testing.T) {
 	defer cancel()
 
 	var stdout, stderr lockedBuffer
-	result := startRun(t, ctx, []string{"--config", testdataPath(t, "valid-log.yaml")}, &stdout, &stderr)
+	result := startRun(ctx, t, []string{"--config", testdataPath(t, "valid-log.yaml")}, &stdout, &stderr)
 
 	waitForOutput(t, &stderr, "daemon.started")
 	cancel()
@@ -224,7 +224,7 @@ func TestRunJSONLogRecords(t *testing.T) {
 	defer cancel()
 
 	var stdout, stderr lockedBuffer
-	result := startRun(t, ctx, []string{"--config", testdataPath(t, "valid-log.yaml")}, &stdout, &stderr)
+	result := startRun(ctx, t, []string{"--config", testdataPath(t, "valid-log.yaml")}, &stdout, &stderr)
 
 	waitForOutput(t, &stderr, "daemon.started")
 	cancel()
@@ -387,7 +387,7 @@ func TestRunShutdownBeginSignalName(t *testing.T) {
 	defer cancel()
 
 	var stdout, stderr lockedBuffer
-	result := startRun(t, ctx, []string{"--config", testdataPath(t, "noop-watcher.yaml")}, &stdout, &stderr)
+	result := startRun(ctx, t, []string{"--config", testdataPath(t, "noop-watcher.yaml")}, &stdout, &stderr)
 
 	waitForOutput(t, &stderr, "daemon.started")
 
@@ -418,7 +418,7 @@ func TestRunDebounceOverride(t *testing.T) {
 	defer cancel()
 
 	var stdout, stderr lockedBuffer
-	result := startRun(t, ctx, []string{"--config", testdataPath(t, "override-debounce.yaml")}, &stdout, &stderr)
+	result := startRun(ctx, t, []string{"--config", testdataPath(t, "override-debounce.yaml")}, &stdout, &stderr)
 
 	waitForOutput(t, &stderr, "daemon.started")
 	cancel()

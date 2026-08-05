@@ -97,7 +97,7 @@ func run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintf(stderr, "lithd: %v\n", err)
 		return 1
 	}
-	defer lock.Release()
+	defer func() { _ = lock.Release() }()
 
 	// Watcher: FSNotify or Noop.
 	var w watch.Watcher
