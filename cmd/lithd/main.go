@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/lith-project/lith/internal/core/config"
+	"github.com/lith-project/lith/internal/core/debounce"
 	"github.com/lith-project/lith/internal/core/logging"
 	"github.com/lith-project/lith/internal/core/watch"
 )
@@ -56,7 +57,31 @@ func run(args []string, stdout, stderr io.Writer) int {
 	} else {
 		w = watch.NewNoop()
 	}
-	_ = w // watcher not started yet; wired in a later task
+
+	// Create debouncer with config-derived bounds.
+	settled := make(chan watch.Event, 64)
+	db, err := debounce.New(
+		cfg.Watcher.Debounce.Quiet,
+		cfg.Watcher.Debounce.MaxDelay,
+		settled,
+	)
+	if err != nil {
+		fmt.Fprintf(stderr, "lithd: %v\n", err)
+		return 2
+	}
+
+	logger.Info("debounce.bounds", "quiet", cfg.Watcher.Debounce.Quiet.String(), "max_delay", cfg.Watcher.Debounce.MaxDelay.String())
+
+	// Drain settled events and log each one. The watcher and debouncer
+	// are not started here — the daemon loop will wire them in a later
+	// task. The goroutine blocks on <-settled until the channel is closed.
+	_ = w  // will be started in the daemon loop task
+	_ = db // will be started in the daemon loop task
+	go func() {
+		for ev := range settled {
+			logger.Info(logging.EventFileChanged, logging.AttrPath, ev.Path.Raw())
+		}
+	}()
 
 	return 0
 }
