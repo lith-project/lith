@@ -1,0 +1,44 @@
+# Core dependency denylist — RFC-0006/C-4
+# One Go module path prefix per line. Blank lines and # comments ignored.
+# Match is path-prefix on the resolved module path (not substring).
+# An entry "github.com/foo/" matches "github.com/foo/bar" but not "github.com/notfoo/bar".
+#
+# This list is deliberately conservative. An incomplete list is expected
+# and is stated as a residual risk in RFC-0006. To add an entry,
+# open an RFC amendment — no inline suppression is supported.
+
+# --- Vector databases ---
+github.com/pinecone-io/
+github.com/weaviate/
+github.com/milvus-io/
+github.com/qdrant/
+github.com/chroma-core/
+github.com/lancedb/
+github.com/vespa-engine/
+github.com/elastic/
+
+# --- Embedding clients ---
+github.com/sashabaranov/
+github.com/cohere-ai/
+github.com/henomis/
+github.com/weaviate/weaviate-go-client/
+
+# --- Local model runtimes ---
+github.com/ggerganov/
+github.com/jmorganca/
+github.com/ollama/
+github.com/go-skynet/
+github.com/mudler/
+
+# --- Inference SDKs ---
+github.com/microsoft/onnxruntime
+github.com/openvinotoolkit/
+github.com/triton-inference-server/
+github.com/NVIDIA/
+
+# --- ML frameworks ---
+github.com/tensorflow/
+github.com/pytorch/
+github.com/huggingface/
+github.com/google/generative-ai-go
+github.com/anthropic-sdk/

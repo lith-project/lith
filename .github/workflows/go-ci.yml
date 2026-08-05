@@ -55,12 +55,12 @@ jobs:
 
       - name: Run Tests with Race Detector
         if: steps.mod.outputs.ready == 'true'
-        run: go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
+        run: go test -race -coverprofile="$RUNNER_TEMP/coverage.txt" -covermode=atomic ./...
 
       - name: Upload Coverage Report
         if: steps.mod.outputs.ready == 'true' && matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coverage.txt
+          path: ${{ runner.temp }}/coverage.txt
           if-no-files-found: ignore
