@@ -1,0 +1,77 @@
+version: 2
+
+project_name: lith
+
+builds:
+  - id: lithd
+    main: ./cmd/lithd
+    binary: lithd
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - '-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}'
+
+archives:
+  - id: lithd
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE*
+
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
+
+snapshot:
+  version_template: '{{ incpatch .Version }}-next'
+
+changelog:
+  use: github
+  sort: desc
+  filters:
+    include:
+      - '^feat:'
+      - '^fix:'
+      - '^perf:'
+      - '^refactor:'
+      - '^docs:'
+      - '^build:'
+      - '^ci:'
+      - '^chore:'
+    exclude:
+      - '^test:'
+      - 'merge conflict'
+      - 'Merge pull request'
+      - 'Merge branch'
+  groups:
+    - title: Features
+      regexp: '^feat:'
+    - title: 'Bug fixes'
+      regexp: '^fix:'
+    - title: Performance
+      regexp: '^perf:'
+    - title: Maintenance
+      regexp: '^(refactor|docs|build|ci|chore):'
+    - title: Other
+      order: 999
+
+release:
+  github:
+    owner: lith-project
+    name: lith
+  draft: true
+  prerelease: auto
+  name_template: '{{ .Tag }}'
