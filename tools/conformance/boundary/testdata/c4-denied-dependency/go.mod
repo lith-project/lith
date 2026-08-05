@@ -1,6 +1,6 @@
 module github.com/lith-project/lith
 
-go 1.26.5
+go 1.23
 
 require github.com/pinecone-io/go-pinecone v0.0.0
 
