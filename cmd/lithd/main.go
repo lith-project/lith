@@ -130,7 +130,12 @@ func run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 
 	// Log signal-driven shutdown with the signal name. daemon.Run is
 	// signal-agnostic; the name is published through the context by main().
+	// shutdownLogged is closed once the record has been written so run() can
+	// wait for it before returning: main() ends in os.Exit, which does not
+	// wait for goroutines, and a fast shutdown otherwise drops the record.
+	shutdownLogged := make(chan struct{})
 	go func() {
+		defer close(shutdownLogged)
 		<-ctx.Done()
 		sigName := "signal"
 		if ch, ok := ctx.Value(signalNameKey{}).(chan string); ok {
@@ -172,8 +177,18 @@ func run(ctx context.Context, args []string, stdout, stderr io.Writer) int {
 
 	logger.Info(logging.EventDaemonStarted)
 
-	if err := daemon.Run(ctx, components, logger); err != nil {
-		fmt.Fprintf(stderr, "lithd: %v\n", err)
+	runErr := daemon.Run(ctx, components, logger)
+
+	// Wait for the shutdown.begin record to reach the log before returning
+	// into os.Exit. Only when the context was actually cancelled: on the
+	// component-error path the goroutine is still parked on ctx.Done() and
+	// would never close the channel.
+	if ctx.Err() != nil {
+		<-shutdownLogged
+	}
+
+	if runErr != nil {
+		fmt.Fprintf(stderr, "lithd: %v\n", runErr)
 		return 1
 	}
 	return 0

@@ -180,6 +180,9 @@ func TestLoadFilePermissionError(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("windows: file permissions not enforced for file owner")
 	}
+	if os.Geteuid() == 0 {
+		t.Skip("root: mode bits do not deny read, so the error cannot be provoked")
+	}
 
 	// Create a temp file with no read permissions
 	tmpDir := t.TempDir()
