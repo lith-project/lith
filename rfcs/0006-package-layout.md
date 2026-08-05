@@ -175,6 +175,8 @@ None. No Go code exists in the repository.
 **Verification:** CI static check over the direct imports of every package under `internal/adapter/...` and `cmd/lith`; each import whose path begins `github.com/lith-project/lith/internal/core/` MUST equal `github.com/lith-project/lith/internal/core/capability`. This is the mechanical form of [RFC-0001/C-5](0001-project-vision.md#c-5-interface-adapter-purity). Transitive Core Package dependencies reached through the Capability Registry are permitted.
 **Milestone:** M1-C
 
+This assertion is first enforced in M1-C, when both the Capability Registry and `cmd/lith` exist; M1-A creates neither subject package.
+
 ### C-4: Core dependency denylist
 **State:** Active
 **Assertion:** The transitive module dependency graph of every Core Package MUST NOT contain any module path matching a prefix in `tools/conformance/core-dependency-denylist.txt`.
