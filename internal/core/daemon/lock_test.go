@@ -28,12 +28,12 @@ func TestLockPathOutsideVault(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Acquire failed: %v", err)
 	}
-	defer lock.Release()
+	defer func() { _ = lock.Release() }()
 
 	lockPath := lock.Path()
 	vaultAbs := filepath.Clean(vaultRoot)
 
-	if lockPath == vaultAbs || filepath.HasPrefix(lockPath, vaultAbs+string(filepath.Separator)) {
+	if lockPath == vaultAbs || strings.HasPrefix(lockPath, vaultAbs+string(filepath.Separator)) {
 		t.Errorf("lock path %q is inside vault root %q", lockPath, vaultRoot)
 	}
 }
@@ -50,7 +50,7 @@ func TestAcquireTwiceReturnsErrLocked(t *testing.T) {
 	if err != nil {
 		t.Fatalf("first Acquire failed: %v", err)
 	}
-	defer lock1.Release()
+	defer func() { _ = lock1.Release() }()
 
 	// Second acquire on the same path should see our live PID and reject.
 	_, err = Acquire(vaultRoot, lockPath, log)
@@ -83,7 +83,7 @@ func TestDeadPIDReclaimed(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Acquire should reclaim dead PID, got: %v", err)
 	}
-	defer lock.Release()
+	defer func() { _ = lock.Release() }()
 
 	// Verify warn log
 	logOutput := buf.String()
@@ -106,7 +106,7 @@ func TestEmptyLockReclaimed(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Acquire should reclaim empty lock, got: %v", err)
 	}
-	defer lock.Release()
+	defer func() { _ = lock.Release() }()
 
 	logOutput := buf.String()
 	if !strings.Contains(logOutput, "empty lock file, reclaiming") {
@@ -128,7 +128,7 @@ func TestCorruptLockReclaimed(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Acquire should reclaim corrupt lock, got: %v", err)
 	}
-	defer lock.Release()
+	defer func() { _ = lock.Release() }()
 
 	logOutput := buf.String()
 	if !strings.Contains(logOutput, "corrupt lock file, reclaiming") {
