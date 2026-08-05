@@ -95,7 +95,7 @@ func TestNewDebugSuppressed(t *testing.T) {
 
 func TestNewAllLevels(t *testing.T) {
 	levels := []struct {
-		level    string
+		level     string
 		slogLevel string
 	}{
 		{"debug", "debug"},
@@ -152,11 +152,11 @@ func TestNoPackageLevelState(t *testing.T) {
 	// Verify that the logging package has no exported global variables
 	// We check the package by ensuring we can't access any global variables
 	// through reflection on the package type
-	
+
 	// This test ensures the package doesn't have any exported global variables
 	// by checking that the package only contains functions and types
 	pkgType := reflect.TypeOf((*interface{})(nil)).Elem()
-	
+
 	// The logging package should only export the New function
 	// and no global variables
 	if pkgType.Kind() != reflect.Interface {
