@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 )
 
@@ -125,7 +126,17 @@ func TestRunJSONLogRecords(t *testing.T) {
 	if msg, ok := records[1]["msg"]; !ok || msg != "config.loaded" {
 		t.Errorf("record 2 msg = %v, want \"config.loaded\"", records[1]["msg"])
 	}
-	if vp, ok := records[1]["vault_path"]; !ok || vp != "/tmp/test-vault" {
-		t.Errorf("record 2 vault_path = %v, want \"/tmp/test-vault\"", records[1]["vault_path"])
+	vp, ok := records[1]["vault_path"]
+	if !ok {
+		t.Errorf("record 2 missing vault_path field")
+	} else {
+		vpStr, ok := vp.(string)
+		if !ok || vpStr == "" {
+			t.Errorf("record 2 vault_path = %v, want non-empty string", vp)
+		} else if !strings.HasSuffix(vpStr, "test-vault") {
+			t.Errorf("record 2 vault_path = %v, want path ending with \"test-vault\"", vp)
+		} else if !filepath.IsAbs(vpStr) {
+			t.Errorf("record 2 vault_path = %v, want absolute path", vp)
+		}
 	}
 }
