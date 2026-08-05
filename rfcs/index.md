@@ -29,7 +29,7 @@ RFCs are **authored** in dependency order, which is not numeric order:
 
 RFC-0004 (incremental indexing) consumes the transaction semantics defined by RFC-0005, so RFC-0005 is specified first. Numbering is stable and never reassigned.
 
-Implementation begins only when all five are `Accepted`.
+Implementation begins only when all required M1 RFCs are `Accepted`.
 
 ---
 
