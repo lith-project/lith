@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -62,7 +63,9 @@ func TestFixtures(t *testing.T) {
 				t.Fatalf("writing denylist copy: %v", err)
 			}
 			t.Cleanup(func() {
-				os.RemoveAll(filepath.Join(fixtureDir, "tools"))
+				if err := os.RemoveAll(filepath.Join(fixtureDir, "tools")); err != nil {
+					t.Errorf("cleaning up fixture denylist: %v", err)
+				}
 			})
 
 			// Run the checker binary with CWD = fixture directory.
@@ -72,7 +75,8 @@ func TestFixtures(t *testing.T) {
 
 			actualExit := 0
 			if err != nil {
-				if exitErr, ok := err.(*exec.ExitError); ok {
+				var exitErr *exec.ExitError
+				if errors.As(err, &exitErr) {
 					actualExit = exitErr.ExitCode()
 				} else {
 					t.Fatalf("unexpected error running checker: %v", err)
