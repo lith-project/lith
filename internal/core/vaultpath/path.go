@@ -31,6 +31,9 @@ func New(vaultRoot, absPath string) (Path, error) {
 		return Path{}, fmt.Errorf("vaultpath: %w", ErrOutsideVault)
 	}
 
+	// filepath.Rel returns OS-native separators; the identity must always be
+	// forward-slash separated, and the escape check needs that canonical form.
+	rel = filepath.ToSlash(rel)
 	if rel == ".." || strings.HasPrefix(rel, "../") || rel == "." {
 		return Path{}, fmt.Errorf("vaultpath: %w", ErrOutsideVault)
 	}
