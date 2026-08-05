@@ -1,7 +1,7 @@
 ---
 rfc: "0006"
 title: "Package Layout & Dependency Boundaries"
-status: Draft
+status: Accepted
 milestone: M1
 authors:
   - Lith Maintainers <maintainers@lith.dev>
@@ -231,7 +231,7 @@ This assertion is first enforced in M1-C, when both the Capability Registry and 
 * [x] No conflict with [PROJECT_PRINCIPLES.md](../PROJECT_PRINCIPLES.md); any proposed amendment is stated verbatim in this RFC
 * [x] **N/A** — this RFC names no capability. It names the *package* that will host the Capability Registry, which is not a capability instance.
 * [x] [rfcs/index.md](index.md) and [ARCHITECTURE.md](../ARCHITECTURE.md) rows updated
-* [ ] Reviewed and approved by maintainers
+* [x] Reviewed and approved by maintainers
 
 ## References
 
