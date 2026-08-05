@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"testing"
@@ -68,6 +69,9 @@ func TestAcquireTwiceReturnsErrLocked(t *testing.T) {
 
 // TestDeadPIDReclaimed verifies that a lock file with a dead PID is reclaimed.
 func TestDeadPIDReclaimed(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Windows has no signal-0 liveness probe; stale-lock reclaim is deferred (issue #61 Non-Goals)")
+	}
 	vaultRoot := t.TempDir()
 	log, buf := testLogger(t)
 
