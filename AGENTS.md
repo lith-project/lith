@@ -133,3 +133,70 @@ narrative and the milestone Definitions of Done.
 
 - Provide concise, structured pull request descriptions referencing corresponding issues or RFCs.
 - Always use repository-relative links (`VISION.md`, `PROJECT_PRINCIPLES.md`, `rfcs/index.md`) when referring to project documents.
+
+
+<claude-mem-context>
+# Memory Context
+
+# [lith] recent context, 2026-08-06 4:01am GMT+2
+
+Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision
+Format: ID TIME TYPE TITLE
+Fetch details: get_observations([IDs]) | Search: mem-search skill
+
+Stats: 50 obs (17,603t read) | 0t work
+
+### Aug 4, 2026
+S36 RFC conformance gate review response committed and pushed (Aug 4 at 6:37 PM)
+969 6:56p 🔵 RFC-0002 subsystem field rename completed with acceptance rationale
+970 6:57p 🔵 Memory agent observation session persistence established
+971 " 🔵 Memory agent observation session continuation after interruption
+972 " 🔵 Memory agent observation cycle continues with minimal context
+973 6:58p ✅ RFC-0003 audited and RFC-0005 updated with subsystem rename and cancellation bound
+974 " 🔵 Memory agent observation session continued with minimal context
+975 " 🔵 Memory agent observation session reached eleventh interruption cycle
+976 6:59p ✅ RFC-0004 updated with subsystem rename and debounce bounds specification
+977 " ✅ RFC-0004 acceptance checklist completed and index column headers renamed to Subsystems
+978 7:00p 🔵 Memory agent observation session resumed with no new technical work
+979 " 🔵 Memory agent observation session continued after thirteenth interruption
+980 7:09p ✅ RFC-0002/0003/0004/0005 reviews completed with cross-stack fixes identified
+981 " 🔵 RFC review timing and commit references verified
+982 7:10p ✅ All four lith RFC reviews completed and approved
+983 " ✅ All four lith RFC reviews completed and approved
+984 7:14p ⚖️ Schema refinements to RESOLUTION, DIAGNOSTIC, and META tables in RFC-0003
+985 7:16p ✅ Revised reverse index staleness risk explanation in RFC-0004
+986 7:17p ✅ Resolved RFC-0004 contradictions and clarified test scope
+987 7:27p ✅ RFC-0005 Job Engine specification approved with cross-stack terminology fixes
+988 7:32p ✅ RFC acceptance branch created for architecture stack
+989 7:33p ✅ M0 architecture RFC stack accepted
+990 7:34p ✅ ROADMAP.md updated to reflect RFC acceptance completion
+991 7:35p ✅ M0 architecture RFC acceptance committed and pushed
+992 7:37p 🟣 M0 architecture RFCs accepted and merged
+993 " 🔵 Test vault specification defines deterministic corpus infrastructure
+994 7:40p ✅ Corpus .gitattributes prevents line ending normalization
+995 7:45p ✅ Regression directory placeholder created
+996 7:47p ✅ Generator and benchmark placeholders established
+997 7:53p 🔵 APFS Unicode normalization collision requires separate directories
+998 7:55p ⚖️ Lith project shifts from repository building to architecture-first development with RFC process
+999 7:57p ⚖️ Lith project adopts architecture-first development model with three-track RFC process
+1000 " 🔵 Unicode normalization test corpus generation requires programmatic NFC/NFD computation to avoid authoring pipeline silent normalization
+1001 7:58p ⚖️ Lith project adopts architecture-first development with RFC-driven workflow before any implementation
+1002 8:06p 🔵 Git core.precomposeunicode silently rewrites NFD paths to NFC at commit time on macOS/APFS, making committed NFD test files impossible
+1003 11:26p 🟣 GitHub issue dependency automation tool added
+1004 11:32p ✅ Epic issue type created at organization level
+1005 " ✅ GitHub issue types migrated from Feature to Epic
+1006 11:36p 🔵 M1-A milestone epic structure reviewed
+1007 11:53p ⚖️ Evaluated project management strategies for multi-agent task coordination
+1008 11:54p ⚖️ Evaluated GitHub Projects for multi-agent task coordination
+1009 11:55p 🟣 Config system tasks written for lith Go project
+1010 11:56p 🟣 Logging system tasks written for lith Go project
+1011 11:57p 🟣 Path identity system tasks written for lith vault management
+1012 11:58p 🟣 File watcher and debouncer system tasks written for lith indexing
+1013 11:59p 🟣 Event queue and daemon lifecycle tasks written for lith
+### Aug 5, 2026
+1014 2:07a 🔵 GitHub issue graph investigation for RFC-0006 decomposition
+1015 2:10a 🔵 GitHub Actions workflows configuration reviewed for lith project
+1016 3:16a 🔵 GitHub workflow prevents claiming blocked issues
+1017 3:23a 🔵 GitHub workflow correctly prevents blocked task assignment
+1018 7:36a ✅ Scoped workflow files staged in isolated worktree
+</claude-mem-context>

@@ -67,13 +67,18 @@ M0 is organizational maturity. M1 onward is product capability. The boundary bet
 
 > No Go code is written until this milestone is done. That is the point of it.
 
+> **Completion verified 2026-08-06.** [PR #22](https://github.com/lith-project/lith/pull/22)
+> closed M0 after all four Definition of Done items were evidenced. The accepted
+> RFC index, capability catalog, and corpus remain present on `main`, and the
+> corpus-integrity check still passes.
+
 ---
 
 ## M1: Knowledge Engine 🚧 *(Current)*
 
 **Objective**: Prove the architectural core — observe a vault, understand it, store it, query it.
 
-### M1-A · Lifecycle
+### M1-A · Lifecycle ✅ *(Complete)*
 
 Deliberately boring. Proves the service lifecycle and nothing else.
 
@@ -95,11 +100,23 @@ No parser. No SQLite. No graph. No MCP.
 
 **Epics** — tracked in [#14](https://github.com/lith-project/lith/issues/14), in build order:
 
-[#15](https://github.com/lith-project/lith/issues/15) config loading · [#16](https://github.com/lith-project/lith/issues/16) structured logging · [#17](https://github.com/lith-project/lith/issues/17) filesystem path identity · [#18](https://github.com/lith-project/lith/issues/18) filesystem watcher · [#19](https://github.com/lith-project/lith/issues/19) debouncer · [#20](https://github.com/lith-project/lith/issues/20) event queue · [#21](https://github.com/lith-project/lith/issues/21) daemon lifecycle & signals
+[#23](https://github.com/lith-project/lith/issues/23) Go project bootstrap · [#24](https://github.com/lith-project/lith/issues/24) CI pipeline · [#25](https://github.com/lith-project/lith/issues/25) corpus test harness · [#15](https://github.com/lith-project/lith/issues/15) config loading · [#16](https://github.com/lith-project/lith/issues/16) structured logging · [#17](https://github.com/lith-project/lith/issues/17) filesystem path identity · [#18](https://github.com/lith-project/lith/issues/18) filesystem watcher · [#19](https://github.com/lith-project/lith/issues/19) debouncer · [#20](https://github.com/lith-project/lith/issues/20) event queue · [#21](https://github.com/lith-project/lith/issues/21) daemon lifecycle & signals
 
 Path identity is its own epic, ahead of the watcher, and was not in the original candidate list. Building the M0 corpus hit Unicode NFC/NFD corruption twice in one sitting — silently, in tooling — and every note identity in M1-B is built on it.
 
-### M1-B · Parse & Store
+**Completion evidence** — verified 2026-08-06:
+
+- All 37 implementation leaves, [#27](https://github.com/lith-project/lith/issues/27) through [#63](https://github.com/lith-project/lith/issues/63), are closed.
+- [PR #109](https://github.com/lith-project/lith/pull/109) proves the lifecycle through the real `lithd` binary; [PR #110](https://github.com/lith-project/lith/pull/110) removes the shutdown-log race found during the milestone audit.
+- Go CI, lint/security, and architectural-conformance workflows passed on both PR heads. A fresh `origin/main` archive also passes build, tests with the race detector, conformance, and corpus integrity locally.
+
+> **Transition cleanup.** The product milestone is complete by its Definition of
+> Done, but GitHub metadata has not caught up: tracker [#14](https://github.com/lith-project/lith/issues/14)
+> and epics #15–#21 and #23–#25 remain open, while closed leaves #27–#36 and #63
+> retain stale `agent:wip` claims. Close the completed trackers and clear those
+> claims before enabling M1-B task selection.
+
+### M1-B · Parse & Store 🚧 *(Next)*
 
 Filesystem → Markdown parser → SQLite metadata. Still no AI.
 
@@ -112,6 +129,17 @@ Filesystem → Markdown parser → SQLite metadata. Still no AI.
 5. No component outside the transaction coordinator writes to the vault — [RFC-0001/C-3](rfcs/0001-project-vision.md#c-3-single-write-path).
 
 *Candidate epics:* markdown parser · frontmatter extraction · AST & domain model · block addressing · parse goldens · SQLite schema · transactional persistence · full rebuild
+
+**Next development steps**
+
+1. Complete the M1-A transition cleanup above, then create the M1-B GitHub milestone and tracker. No M1-B issues exist yet as of 2026-08-06.
+2. Break the candidate epics into claimable leaf tasks. Encode file overlap and exported-contract dependencies in `blocked_by`; the GitHub graph, not this prose, determines concurrency and build order.
+3. Establish the RFC-0002 domain model and parser path, then generate and review per-note goldens from the committed corpus.
+4. Implement the RFC-0003 SQLite schema, canonical dump, transactional persistence, and full rebuild against those reviewed parse results.
+5. Finish with a real-daemon corpus index and destructive-rebuild scenario proving logical identity, vault isolation, and the single-write-path constraint.
+
+This is the milestone entry sequence, not a substitute task list. Once the issue
+graph exists, `tools/next-task.sh M1-B` is the only source for claimable work.
 
 ### M1-C · Query
 
