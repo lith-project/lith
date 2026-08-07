@@ -237,7 +237,7 @@ func TestOpen_readOnlyAccessDoesNotClaimWriterLock(t *testing.T) {
 func TestOpen_supportsSpecialCharactersInDerivedStateRoot(t *testing.T) {
 	// Given
 	vaultRoot := t.TempDir()
-	derivedRoot := filepath.Join(t.TempDir(), "state?#")
+	derivedRoot := filepath.Join(t.TempDir(), "state%")
 	options := OpenOptions{VaultRoot: vaultRoot, DerivedStateRoot: derivedRoot, BuiltByVersion: "test"}
 	writer, err := Open(context.Background(), options)
 	if err != nil {
@@ -266,6 +266,19 @@ func TestOpen_supportsSpecialCharactersInDerivedStateRoot(t *testing.T) {
 	}
 	if count != 1 {
 		t.Fatalf("special note count = %d, want 1", count)
+	}
+}
+
+func TestSQLiteDSN_escapesReservedPathCharacters(t *testing.T) {
+	path := filepath.Join(string(filepath.Separator), "state?#%", "store.sqlite")
+	for _, readOnly := range []bool{false, true} {
+		dsn := sqliteDSN(path, readOnly)
+		if !strings.Contains(dsn, "%3F") || !strings.Contains(dsn, "%23") || !strings.Contains(dsn, "%25") {
+			t.Fatalf("sqlite DSN %q does not escape reserved path characters", dsn)
+		}
+		if readOnly && !strings.HasSuffix(dsn, "?mode=ro") {
+			t.Fatalf("read-only sqlite DSN %q lacks mode=ro", dsn)
+		}
 	}
 }
 
