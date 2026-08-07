@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
-	"net/url"
+	"strings"
 	"time"
 
 	// Register the SQLite driver for database/sql.
@@ -92,7 +92,7 @@ func Open(ctx context.Context, options OpenOptions) (_ *Store, err error) {
 
 	dsn := location.Database
 	if options.ReadOnly {
-		dsn = (&url.URL{Scheme: "file", Path: dsn, RawQuery: "mode=ro"}).String()
+		dsn = "file:" + strings.NewReplacer("%", "%25", "?", "%3F", "#", "%23").Replace(dsn) + "?mode=ro"
 	}
 	db, err := sql.Open(sqliteDriverName, dsn)
 	if err != nil {
