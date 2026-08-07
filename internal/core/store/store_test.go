@@ -295,6 +295,41 @@ func TestOpen_reportsSchemaVersionMismatchWithoutMutation(t *testing.T) {
 	}
 }
 
+func TestOpen_reportsOlderSchemaVersionMismatch(t *testing.T) {
+	// Given
+	options := OpenOptions{VaultRoot: t.TempDir(), DerivedStateRoot: t.TempDir(), BuiltByVersion: "test"}
+	store, err := Open(context.Background(), options)
+	if err != nil {
+		t.Fatalf("open initial store: %v", err)
+	}
+	location := store.location
+	if err := store.Close(); err != nil {
+		t.Fatalf("close initial store: %v", err)
+	}
+	db, err := sql.Open(sqliteDriverName, location.Database)
+	if err != nil {
+		t.Fatalf("open database for test setup: %v", err)
+	}
+	if _, err := db.Exec("UPDATE meta SET schema_version = ?", "0"); err != nil {
+		t.Fatalf("stamp old schema version: %v", err)
+	}
+	if err := db.Close(); err != nil {
+		t.Fatalf("close test setup database: %v", err)
+	}
+
+	// When
+	_, err = Open(context.Background(), options)
+
+	// Then
+	var rebuildErr *RebuildRequiredError
+	if !errors.As(err, &rebuildErr) {
+		t.Fatalf("open error = %v, want RebuildRequiredError", err)
+	}
+	if rebuildErr.Reason != RebuildReasonSchemaVersion || rebuildErr.Actual != "0" {
+		t.Fatalf("rebuild error = %+v, want schema_version mismatch for 0", rebuildErr)
+	}
+}
+
 func TestOpen_reportsCorruptSchemaWithMatchingMetadata(t *testing.T) {
 	// Given
 	options := OpenOptions{VaultRoot: t.TempDir(), DerivedStateRoot: t.TempDir(), BuiltByVersion: "test"}

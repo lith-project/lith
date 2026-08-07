@@ -9,6 +9,7 @@ import (
 	"os"
 	"time"
 
+	// Register the SQLite driver for database/sql.
 	_ "modernc.org/sqlite"
 
 	"github.com/lith-project/lith/internal/core/daemon"
