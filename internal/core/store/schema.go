@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 )
 
@@ -148,12 +149,17 @@ func createSchema(ctx context.Context, db *sql.DB) error {
 	if err != nil {
 		return fmt.Errorf("store: begin schema transaction: %w", err)
 	}
-	defer tx.Rollback()
+	rollback := func(operationErr error) error {
+		if rollbackErr := tx.Rollback(); rollbackErr != nil {
+			return errors.Join(operationErr, fmt.Errorf("store: rollback schema transaction: %w", rollbackErr))
+		}
+		return operationErr
+	}
 	if _, err := tx.ExecContext(ctx, schemaDDL); err != nil {
-		return fmt.Errorf("store: create schema: %w", err)
+		return rollback(fmt.Errorf("store: create schema: %w", err))
 	}
 	if err := validatePhysicalSchema(ctx, tx); err != nil {
-		return err
+		return rollback(err)
 	}
 	if err := tx.Commit(); err != nil {
 		return fmt.Errorf("store: commit schema transaction: %w", err)
@@ -161,13 +167,18 @@ func createSchema(ctx context.Context, db *sql.DB) error {
 	return nil
 }
 
-func validatePhysicalSchema(ctx context.Context, db *sql.Tx) error {
+type schemaQueryer interface {
+	QueryContext(context.Context, string, ...any) (*sql.Rows, error)
+}
+
+func validatePhysicalSchema(ctx context.Context, db schemaQueryer) error {
 	for _, table := range schemaTables {
 		rows, err := db.QueryContext(ctx, "PRAGMA table_info("+table.Name+")")
 		if err != nil {
 			return fmt.Errorf("store: inspect schema table %s: %w", table.Name, err)
 		}
 		actual := make(map[string]struct{}, len(table.Columns))
+		actualPrimaryKey := make(map[int]string, len(table.NaturalKey))
 		for rows.Next() {
 			var cid int
 			var name, typ string
@@ -178,6 +189,9 @@ func validatePhysicalSchema(ctx context.Context, db *sql.Tx) error {
 				return fmt.Errorf("store: read schema table %s: %w", table.Name, err)
 			}
 			actual[name] = struct{}{}
+			if primaryKey > 0 {
+				actualPrimaryKey[primaryKey] = name
+			}
 		}
 		if err := rows.Err(); err != nil {
 			rows.Close()
@@ -194,6 +208,21 @@ func validatePhysicalSchema(ctx context.Context, db *sql.Tx) error {
 				return fmt.Errorf("store: schema table %s is missing column %s", table.Name, column)
 			}
 		}
+		if len(actualPrimaryKey) != len(table.NaturalKey) {
+			return fmt.Errorf("store: schema table %s has %d primary-key columns, want %d", table.Name, len(actualPrimaryKey), len(table.NaturalKey))
+		}
+		for position, expected := range table.NaturalKey {
+			if actual := actualPrimaryKey[position+1]; actual != expected {
+				return fmt.Errorf("store: schema table %s primary-key column %d = %q, want %q", table.Name, position+1, actual, expected)
+			}
+		}
+	}
+	return nil
+}
+
+func requirePhysicalSchema(ctx context.Context, db schemaQueryer) error {
+	if err := validatePhysicalSchema(ctx, db); err != nil {
+		return &RebuildRequiredError{Reason: RebuildReasonSchemaIntegrity, Expected: "complete physical schema", Actual: err.Error()}
 	}
 	return nil
 }

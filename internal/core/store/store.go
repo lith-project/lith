@@ -9,8 +9,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/lith-project/lith/internal/core/daemon"
 	_ "modernc.org/sqlite"
+
+	"github.com/lith-project/lith/internal/core/daemon"
 )
 
 const sqliteDriverName = "sqlite"
@@ -20,9 +21,10 @@ var ErrWriterLocked = errors.New("store: writer is already claimed")
 type RebuildReason string
 
 const (
-	RebuildReasonSchemaVersion RebuildReason = "schema_version"
-	RebuildReasonFingerprint   RebuildReason = "vault_fingerprint"
-	RebuildReasonTokenizer     RebuildReason = "tokenizer"
+	RebuildReasonSchemaVersion   RebuildReason = "schema_version"
+	RebuildReasonFingerprint     RebuildReason = "vault_fingerprint"
+	RebuildReasonTokenizer       RebuildReason = "tokenizer"
+	RebuildReasonSchemaIntegrity RebuildReason = "schema_integrity"
 )
 
 type RebuildRequiredError struct {
@@ -63,7 +65,7 @@ func Open(ctx context.Context, options OpenOptions) (_ *Store, err error) {
 	if !options.ReadOnly {
 		lock, err = daemon.Acquire(options.VaultRoot, location.WriterLock, slog.Default())
 		if errors.Is(err, daemon.ErrLocked) {
-			return nil, fmt.Errorf("%w: %v", ErrWriterLocked, err)
+			return nil, fmt.Errorf("%w: %w", ErrWriterLocked, err)
 		}
 		if err != nil {
 			return nil, fmt.Errorf("store: claim writer: %w", err)
@@ -77,7 +79,9 @@ func Open(ctx context.Context, options OpenOptions) (_ *Store, err error) {
 	db, err := sql.Open(sqliteDriverName, dsn)
 	if err != nil {
 		if lock != nil {
-			lock.Release()
+			if releaseErr := lock.Release(); releaseErr != nil {
+				return nil, errors.Join(fmt.Errorf("store: open sqlite: %w", err), fmt.Errorf("store: release writer: %w", releaseErr))
+			}
 		}
 		return nil, fmt.Errorf("store: open sqlite: %w", err)
 	}
@@ -134,7 +138,10 @@ func initialize(ctx context.Context, db *sql.DB, location Location, builtByVersi
 		var version, fingerprint, tokenizer string
 		err := db.QueryRowContext(ctx, "SELECT schema_version, vault_fingerprint, tokenizer FROM meta WHERE singleton = 1").Scan(&version, &fingerprint, &tokenizer)
 		if err == nil {
-			return metadataError(version, fingerprint, tokenizer, location)
+			if err := metadataError(version, fingerprint, tokenizer, location); err != nil {
+				return err
+			}
+			return requirePhysicalSchema(ctx, db)
 		}
 		if !errors.Is(err, sql.ErrNoRows) {
 			return fmt.Errorf("store: read metadata: %w", err)
@@ -180,7 +187,10 @@ func verifyMetadata(ctx context.Context, db *sql.DB, location Location) error {
 	if err := db.QueryRowContext(ctx, "SELECT schema_version, vault_fingerprint, tokenizer FROM meta WHERE singleton = 1").Scan(&version, &fingerprint, &tokenizer); err != nil {
 		return fmt.Errorf("store: read metadata: %w", err)
 	}
-	return metadataError(version, fingerprint, tokenizer, location)
+	if err := metadataError(version, fingerprint, tokenizer, location); err != nil {
+		return err
+	}
+	return requirePhysicalSchema(ctx, db)
 }
 
 func (s *Store) Close() error {
