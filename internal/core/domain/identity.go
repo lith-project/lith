@@ -2,8 +2,9 @@ package domain
 
 import (
 	"errors"
-	"github.com/lith-project/lith/internal/core/vaultpath"
 	"slices"
+
+	"github.com/lith-project/lith/internal/core/vaultpath"
 )
 
 var ErrInvalidSectionID = errors.New("domain: invalid section identity")

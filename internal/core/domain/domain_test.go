@@ -2,9 +2,10 @@ package domain_test
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/lith-project/lith/internal/core/domain"
 	"github.com/lith-project/lith/internal/core/vaultpath"
-	"testing"
 )
 
 func noteID(t *testing.T) domain.NoteID {
