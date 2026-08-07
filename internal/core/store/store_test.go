@@ -371,6 +371,41 @@ func TestOpen_reportsCorruptSchemaWithMatchingMetadata(t *testing.T) {
 	}
 }
 
+func TestOpen_reportsMissingFTSIndexWithMatchingMetadata(t *testing.T) {
+	// Given
+	options := OpenOptions{VaultRoot: t.TempDir(), DerivedStateRoot: t.TempDir(), BuiltByVersion: "test"}
+	store, err := Open(context.Background(), options)
+	if err != nil {
+		t.Fatalf("open initial store: %v", err)
+	}
+	location := store.location
+	if err := store.Close(); err != nil {
+		t.Fatalf("close initial store: %v", err)
+	}
+	db, err := sql.Open(sqliteDriverName, location.Database)
+	if err != nil {
+		t.Fatalf("open database for test setup: %v", err)
+	}
+	if _, err := db.Exec("DROP TABLE fts_index"); err != nil {
+		t.Fatalf("remove FTS index from schema fixture: %v", err)
+	}
+	if err := db.Close(); err != nil {
+		t.Fatalf("close test setup database: %v", err)
+	}
+
+	// When
+	_, err = Open(context.Background(), options)
+
+	// Then
+	var rebuildErr *RebuildRequiredError
+	if !errors.As(err, &rebuildErr) {
+		t.Fatalf("open error = %v, want RebuildRequiredError", err)
+	}
+	if rebuildErr.Reason != RebuildReasonSchemaIntegrity {
+		t.Fatalf("rebuild reason = %q, want %q", rebuildErr.Reason, RebuildReasonSchemaIntegrity)
+	}
+}
+
 func TestValidateClassification_rejectsMissingAndExtraColumns(t *testing.T) {
 	// Given
 	manifest := cloneClassificationManifest(schemaClassification)

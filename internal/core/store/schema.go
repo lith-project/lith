@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strings"
 )
 
 const (
@@ -216,6 +217,28 @@ func validatePhysicalSchema(ctx context.Context, db schemaQueryer) error {
 				return fmt.Errorf("store: schema table %s primary-key column %d = %q, want %q", table.Name, position+1, actual, expected)
 			}
 		}
+	}
+	rows, err := db.QueryContext(ctx, "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'fts_index'")
+	if err != nil {
+		return fmt.Errorf("store: inspect FTS index: %w", err)
+	}
+	if !rows.Next() {
+		closeErr := rows.Close()
+		if closeErr != nil {
+			return errors.Join(fmt.Errorf("store: schema is missing FTS index"), fmt.Errorf("store: close FTS inspection: %w", closeErr))
+		}
+		return fmt.Errorf("store: schema is missing FTS index")
+	}
+	var definition sql.NullString
+	if err := rows.Scan(&definition); err != nil {
+		rows.Close()
+		return fmt.Errorf("store: read FTS index definition: %w", err)
+	}
+	if err := rows.Close(); err != nil {
+		return fmt.Errorf("store: close FTS inspection: %w", err)
+	}
+	if !strings.Contains(strings.ToLower(definition.String), "using fts5") {
+		return fmt.Errorf("store: FTS index is not an FTS5 virtual table")
 	}
 	return nil
 }
