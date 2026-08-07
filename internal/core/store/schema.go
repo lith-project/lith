@@ -34,6 +34,27 @@ var schemaTables = []tableDefinition{
 	{Name: "task", Columns: []string{"note_id", "range_start", "state_kind", "state_raw"}, NaturalKey: []string{"note_id", "range_start"}},
 }
 
+type tableRequirements struct {
+	Check        bool
+	ForeignKey   bool
+	WithoutRowid bool
+}
+
+var physicalRequirements = map[string]tableRequirements{
+	"asset":      {WithoutRowid: true},
+	"block":      {Check: true, ForeignKey: true, WithoutRowid: true},
+	"diagnostic": {Check: true, ForeignKey: true, WithoutRowid: true},
+	"fm_entry":   {Check: true, ForeignKey: true, WithoutRowid: true},
+	"fts_row":    {ForeignKey: true},
+	"link":       {Check: true, ForeignKey: true, WithoutRowid: true},
+	"meta":       {Check: true, WithoutRowid: true},
+	"note":       {Check: true, WithoutRowid: true},
+	"resolution": {Check: true, ForeignKey: true, WithoutRowid: true},
+	"section":    {Check: true, ForeignKey: true, WithoutRowid: true},
+	"tag":        {Check: true, ForeignKey: true, WithoutRowid: true},
+	"task":       {ForeignKey: true, WithoutRowid: true},
+}
+
 const schemaDDL = `
 CREATE TABLE IF NOT EXISTS meta (
     singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
@@ -217,6 +238,9 @@ func validatePhysicalSchema(ctx context.Context, db schemaQueryer) error {
 				return fmt.Errorf("store: schema table %s primary-key column %d = %q, want %q", table.Name, position+1, actual, expected)
 			}
 		}
+		if err := validateTableRequirements(ctx, db, table.Name, physicalRequirements[table.Name]); err != nil {
+			return err
+		}
 	}
 	rows, err := db.QueryContext(ctx, "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'fts_index'")
 	if err != nil {
@@ -239,6 +263,36 @@ func validatePhysicalSchema(ctx context.Context, db schemaQueryer) error {
 	}
 	if !strings.Contains(strings.ToLower(definition.String), "using fts5") {
 		return fmt.Errorf("store: FTS index is not an FTS5 virtual table")
+	}
+	return nil
+}
+
+func validateTableRequirements(ctx context.Context, db schemaQueryer, tableName string, requirements tableRequirements) error {
+	rows, err := db.QueryContext(ctx, "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = ?", tableName)
+	if err != nil {
+		return fmt.Errorf("store: inspect SQL definition for %s: %w", tableName, err)
+	}
+	if !rows.Next() {
+		rows.Close()
+		return fmt.Errorf("store: schema is missing SQL definition for %s", tableName)
+	}
+	var definition sql.NullString
+	if err := rows.Scan(&definition); err != nil {
+		rows.Close()
+		return fmt.Errorf("store: read SQL definition for %s: %w", tableName, err)
+	}
+	if err := rows.Close(); err != nil {
+		return fmt.Errorf("store: close SQL definition for %s: %w", tableName, err)
+	}
+	normalized := strings.Join(strings.Fields(strings.ToLower(definition.String)), " ")
+	if requirements.Check && !strings.Contains(normalized, "check") {
+		return fmt.Errorf("store: schema table %s is missing CHECK constraints", tableName)
+	}
+	if requirements.ForeignKey && !strings.Contains(normalized, "foreign key") {
+		return fmt.Errorf("store: schema table %s is missing foreign-key constraints", tableName)
+	}
+	if requirements.WithoutRowid && !strings.Contains(normalized, "without rowid") {
+		return fmt.Errorf("store: schema table %s must be WITHOUT ROWID", tableName)
 	}
 	return nil
 }

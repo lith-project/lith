@@ -113,6 +113,21 @@ func isOutsideRoot(path, root string) bool {
 	return !isWithinRoot(path, root)
 }
 
+func validateResolvedLocation(location Location, vaultRoot string) error {
+	vault, err := canonicalExistingPath(vaultRoot)
+	if err != nil {
+		return fmt.Errorf("store: canonicalize vault root: %w", err)
+	}
+	resolved, err := canonicalPath(location.Directory)
+	if err != nil {
+		return fmt.Errorf("store: canonicalize store directory: %w", err)
+	}
+	if resolved != filepath.Clean(location.Directory) || isWithinRoot(resolved, vault) {
+		return ErrDerivedStateInsideVault
+	}
+	return nil
+}
+
 func containsSymlinkComponent(path, root string) (bool, error) {
 	relative, err := filepath.Rel(root, path)
 	if err != nil {

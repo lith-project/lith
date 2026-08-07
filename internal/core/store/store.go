@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
-	"os"
+	"net/url"
 	"time"
 
 	// Register the SQLite driver for database/sql.
@@ -57,13 +57,24 @@ func Open(ctx context.Context, options OpenOptions) (_ *Store, err error) {
 		return nil, err
 	}
 	if !options.ReadOnly {
-		if err := os.MkdirAll(location.Directory, 0o755); err != nil {
+		if err := validateResolvedLocation(location, options.VaultRoot); err != nil {
+			return nil, err
+		}
+		if err := safeMkdirAll(location.Directory, 0o755); err != nil {
 			return nil, fmt.Errorf("store: create derived state directory: %w", err)
 		}
+		if err := validateResolvedLocation(location, options.VaultRoot); err != nil {
+			return nil, err
+		}
+	} else if err := validateResolvedLocation(location, options.VaultRoot); err != nil {
+		return nil, err
 	}
 
 	var lock *daemon.Lock
 	if !options.ReadOnly {
+		if err := validateResolvedLocation(location, options.VaultRoot); err != nil {
+			return nil, err
+		}
 		lock, err = daemon.Acquire(options.VaultRoot, location.WriterLock, slog.Default())
 		if errors.Is(err, daemon.ErrLocked) {
 			return nil, fmt.Errorf("%w: %w", ErrWriterLocked, err)
@@ -71,11 +82,17 @@ func Open(ctx context.Context, options OpenOptions) (_ *Store, err error) {
 		if err != nil {
 			return nil, fmt.Errorf("store: claim writer: %w", err)
 		}
+		if err := validateResolvedLocation(location, options.VaultRoot); err != nil {
+			if releaseErr := lock.Release(); releaseErr != nil {
+				return nil, errors.Join(err, fmt.Errorf("store: release writer: %w", releaseErr))
+			}
+			return nil, err
+		}
 	}
 
 	dsn := location.Database
 	if options.ReadOnly {
-		dsn = "file:" + dsn + "?mode=ro"
+		dsn = (&url.URL{Scheme: "file", Path: dsn, RawQuery: "mode=ro"}).String()
 	}
 	db, err := sql.Open(sqliteDriverName, dsn)
 	if err != nil {
