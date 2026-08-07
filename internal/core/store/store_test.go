@@ -234,6 +234,41 @@ func TestOpen_readOnlyAccessDoesNotClaimWriterLock(t *testing.T) {
 	}
 }
 
+func TestOpen_supportsSpecialCharactersInDerivedStateRoot(t *testing.T) {
+	// Given
+	vaultRoot := t.TempDir()
+	derivedRoot := filepath.Join(t.TempDir(), "state?#")
+	options := OpenOptions{VaultRoot: vaultRoot, DerivedStateRoot: derivedRoot, BuiltByVersion: "test"}
+	writer, err := Open(context.Background(), options)
+	if err != nil {
+		t.Fatalf("open writer: %v", err)
+	}
+	if _, err := writer.db.Exec("INSERT INTO note (note_id, raw_path, content_hash, size_bytes, mtime_unix, encoding) VALUES ('special.md', 'special.md', 'hash', 0, 0, 'utf-8')"); err != nil {
+		t.Fatalf("insert note: %v", err)
+	}
+	if err := writer.Close(); err != nil {
+		t.Fatalf("close writer: %v", err)
+	}
+
+	// When
+	readerOptions := options
+	readerOptions.ReadOnly = true
+	reader, err := Open(context.Background(), readerOptions)
+
+	// Then
+	if err != nil {
+		t.Fatalf("open read-only store: %v", err)
+	}
+	defer func() { _ = reader.Close() }()
+	var count int
+	if err := reader.db.QueryRow("SELECT COUNT(*) FROM note WHERE note_id = 'special.md'").Scan(&count); err != nil {
+		t.Fatalf("read note from read-only store: %v", err)
+	}
+	if count != 1 {
+		t.Fatalf("special note count = %d, want 1", count)
+	}
+}
+
 func TestOpen_reportsSchemaVersionMismatchWithoutMutation(t *testing.T) {
 	// Given
 	options := OpenOptions{VaultRoot: t.TempDir(), DerivedStateRoot: t.TempDir(), BuiltByVersion: "test"}

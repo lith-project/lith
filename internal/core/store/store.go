@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/url"
+	"runtime"
 	"strings"
 	"time"
 
@@ -90,10 +92,7 @@ func Open(ctx context.Context, options OpenOptions) (_ *Store, err error) {
 		}
 	}
 
-	dsn := location.Database
-	if options.ReadOnly {
-		dsn = "file:" + strings.NewReplacer("%", "%25", "?", "%3F", "#", "%23").Replace(dsn) + "?mode=ro"
-	}
+	dsn := sqliteDSN(location.Database, options.ReadOnly)
 	db, err := sql.Open(sqliteDriverName, dsn)
 	if err != nil {
 		if lock != nil {
@@ -125,6 +124,21 @@ func Open(ctx context.Context, options OpenOptions) (_ *Store, err error) {
 		return nil, err
 	}
 	return store, nil
+}
+
+func sqliteDSN(path string, readOnly bool) string {
+	if runtime.GOOS == "windows" {
+		escaped := strings.NewReplacer("%", "%25", "?", "%3F", "#", "%23").Replace(path)
+		if readOnly {
+			return "file:" + escaped + "?mode=ro"
+		}
+		return "file:" + escaped
+	}
+	fileURL := &url.URL{Scheme: "file", Path: path}
+	if readOnly {
+		fileURL.RawQuery = "mode=ro"
+	}
+	return fileURL.String()
 }
 
 func configureConnection(ctx context.Context, db *sql.DB, readOnly bool) error {
